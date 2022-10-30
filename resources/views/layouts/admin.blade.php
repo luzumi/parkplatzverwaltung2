@@ -20,7 +20,10 @@
         <hr />
         <ul class="nav flex-column">
             <li><a href="{{ route('admin.home.index') }}" class="nav-link text-white">- Admin - Home</a></li>
-            <li><a href="#" class="nav-link text-white">- Admin - Products</a></li>
+            <li><a href="{{ route("admin.car.index") }}" class="nav-link text-white">- Admin - Fahrzeuge</a></li>
+            <li><a href="{{ route("admin.user.index") }}" class="nav-link text-white">- Admin - User</a></li>
+            <li><a href="{{ route("admin.parking_spot.index") }}" class="nav-link text-white">- Admin - Parkplätze</a></li>
+
             <li>
                 <a href="{{ route('home.index') }}" class="mt-2 btn bg-primary text-white">Go back to the home page</a>
             </li>
@@ -30,7 +33,7 @@
     <div class="col content-grey">
         <nav class="p-3 shadow text-end">
             <span class="profile-font">Admin</span>
-            <img class="img-profile rounded-circle" src="{{ asset('/img/undraw_profile.svg') }}" alt="image not found">
+            <img class="img-profile rounded-circle" src="{{ asset('/img/undraw_profile.svg') }}" alt="Image not Found">
         </nav>
 
         <div class="g-0 m-5">

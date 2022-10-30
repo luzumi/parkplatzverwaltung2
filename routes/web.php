@@ -25,3 +25,8 @@ Route::get('/parking_spot/{id}', 'App\Http\Controllers\ParkingSpotController@sho
 
 Route::get('/user', 'App\Http\Controllers\UserController@index')->name("user.index");
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user.show");
+
+Route::get('/admin', 'App\Http\Controllers\Admin\AdminHomeController@index')->name("admin.home.index");
+Route::get('/admin/cars', 'App\Http\Controllers\Admin\AdminCarController@index')->name("admin.car.index");
+Route::get('/admin/users', 'App\Http\Controllers\Admin\AdminUserController@index')->name("admin.user.index");
+Route::get('/admin/parking_spots', 'App\Http\Controllers\Admin\AdminParkingSpotController@index')->name("admin.parking_spot.index");
