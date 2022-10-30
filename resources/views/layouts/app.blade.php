@@ -46,8 +46,8 @@
         <small>
             Copyright - <a class="text-reset fw-bold text-decoration-none" target="_blank"
                            href="https://twitter.com/danielgarax">
-                luzumi
-            </a> - <b>Daniel Neubieser</b>
+                Daniel
+            </a> - <b>luzumi</b>
         </small>
     </div>
 </div>

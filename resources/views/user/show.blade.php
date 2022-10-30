@@ -15,7 +15,7 @@
                         Telefon: {{ $viewData["user"]->getTelefon() }} <br>
                         User-Status: {{ $viewData["user"]->getStatus() }} <br>
                     </h5>
-                    <p class="card-text">{{ $viewData["user"]->getImage() }}</p>
+                    Letzter Login: <p class="card-text">{{ $viewData["user"]->getupdatedAt() }}</p>
                     <p class="card-text"><small class="text-muted">Userdaten bearbeiten</small></p>
                 </div>
             </div>
