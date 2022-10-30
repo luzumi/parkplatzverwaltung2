@@ -3,25 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,4 +29,120 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /**
+     * CAR ATTRIBUTES
+     * $this->attributes['id'] - int - contains the user primary key
+     * $this->attributes['name'] - string - contains the user name
+     * $this->attributes['email'] - string - contains the user email-adresse
+     * $this->attributes['email-verified-at'] - string - contains the user email-verified
+     * $this->attributes['password'] - string - contains the user password
+     * $this->attributes['image'] - string - contains the user image
+     * $this->attributes['telefon'] - string - contains the user telefon
+     * $this->attributes['status'] - string - contains the user status
+     * $this->attributes['remember_token'] - string - contains the user remember_token
+     * $this->attributes['created_at'] - timestamp - contains the user creation date
+     * $this->attributes['updated_at'] - timestamp - contains the user updated date
+     *
+     */
+    public function getId()
+    {
+        return $this->attributes['id'];
+    }
+
+    public function getSetId($id)
+    {
+        $this->attributes['id'] = $id;
+    }
+
+    public function getName()
+    {
+        return $this->attributes['name'];
+    }
+
+    public function getSetName($name)
+    {
+        $this->attributes['name'] = $name;
+    }
+
+    public function getEmail()
+    {
+        return $this->attributes['email'];
+    }
+
+    public function getSetEmail($email)
+    {
+        $this->attributes['email'] = $email;
+    }
+
+    public function getEmailVerifiedAt()
+    {
+        return $this->attributes['email_verified_at'];
+    }
+
+    public function getSetEmailVerifiedAt($email_verified_at)
+    {
+        $this->attributes['email_verified_at'] = $email_verified_at;
+    }
+
+//TODO: Anzeige Passwort nur für aktuellen User erlauben
+    public function getPassword()
+    {
+        return $this->attributes['password'];
+    }
+
+    public function getSetPassword($password)
+    {
+        $this->attributes['password'] = $password;
+    }
+
+    public function getImage()
+    {
+        return $this->attributes['image'];
+    }
+
+    public function getSetImage($image)
+    {
+        $this->attributes['image'] = $image;
+    }
+
+    public function getTelefon()
+    {
+        return $this->attributes['telefon'];
+    }
+
+    public function getSetTelefon($telefon)
+    {
+        $this->attributes['telefon'] = $telefon;
+    }
+
+    public function getStatus()
+    {
+        return $this->attributes['status'];
+    }
+
+    public function getSetStatus($status)
+    {
+        $this->attributes['status'] = $status;
+    }
+    public function getRememberToken()
+    {
+        return $this->attributes['remember_token'];
+    }
+
+    public function setRememberToken($rememberToken)
+    {
+        $this->attributes['remember_token'] = $rememberToken;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->attributes['updated_at'];
+    }
+
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->attributes['updated_at'] = $updatedAt;
+    }
 }
