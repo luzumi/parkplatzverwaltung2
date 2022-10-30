@@ -18,6 +18,7 @@ class Car extends Model
      * $this->attributes['updated_at'] - timestamp - contains the car updated date
      *
      */
+    protected $fillable = ['sign', 'manufacturer', 'model', 'color', 'image', 'status'];
 
     public function getId()
     {

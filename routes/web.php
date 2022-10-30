@@ -30,3 +30,7 @@ Route::get('/admin', 'App\Http\Controllers\Admin\AdminHomeController@index')->na
 Route::get('/admin/cars', 'App\Http\Controllers\Admin\AdminCarController@index')->name("admin.car.index");
 Route::get('/admin/users', 'App\Http\Controllers\Admin\AdminUserController@index')->name("admin.user.index");
 Route::get('/admin/parking_spots', 'App\Http\Controllers\Admin\AdminParkingSpotController@index')->name("admin.parking_spot.index");
+
+Route::post('/admin/cars/store', 'App\Http\Controllers\Admin\AdminCarController@store')->name("admin.car.store");
+Route::post('/admin/users/store', 'App\Http\Controllers\Admin\AdminUserController@store')->name("admin.user.store");
+Route::post('/admin/parking_spots/store', 'App\Http\Controllers\Admin\AdminParkingSpotController@store')->name("admin.parking_spot.store");

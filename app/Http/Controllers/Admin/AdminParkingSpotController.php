@@ -17,4 +17,16 @@ class AdminParkingSpotController extends Controller
 
         return view('admin.parking_spot.index')->with("viewData", $viewData);
     }
+
+    public function store(Request $request)
+    {
+        $count = ParkingSpot::all()->count() + 1;
+        $creationData = $request->only(['status']);
+        $creationData['number'] = $count;
+        $creationData['row'] = intdiv($count+1, 3) + 1;
+        $creationData['image'] = 'reserved parking spot.jpg';
+        ParkingSpot::create($creationData);
+
+        return back();
+    }
 }

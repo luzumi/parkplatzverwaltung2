@@ -19,6 +19,8 @@ class ParkingSpot extends Model
      *
      */
 
+    protected $fillable = ['number', 'row', 'image', 'status'];
+
     public function getId()
     {
         return $this->attributes['id'];
