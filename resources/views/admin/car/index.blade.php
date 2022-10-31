@@ -15,7 +15,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('admin.car.store') }}">
+            <form method="POST" action="{{ route('admin.car.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col">
@@ -28,35 +28,38 @@
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
-                            <dic class="col-lg-10 col-md-6 col-sm-12">
+                            <div class="col-lg-10 col-md-6 col-sm-12">
                                 <input name="manufacturer" value="{{ old('manufacturer') }}" type="text" class="form-control">
                             <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Hersteller</label>
-                            </dic>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
-                            <dic class="col-lg-10 col-md-6 col-sm-12">
+                            <div class="col-lg-10 col-md-6 col-sm-12">
                                 <input name="model" value="{{ old('model') }}" type="text" class="form-control">
                             <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Model</label>
-                            </dic>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
-                            <dic class="col-lg-10 col-md-6 col-sm-12">
+                            <div class="col-lg-10 col-md-6 col-sm-12">
                                 <input name="color" value="{{ old('color') }}" type="text" class="form-control">
                             <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Farbe</label>
-                            </dic>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
-                            <dic class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="image" value="{{ old('image') }}" type="text" class="form-control">
-                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Bild</label>
-                            </dic>
+                            <div class="col-lg-10 col-md-6 col-sm-12">
+                                <input name="image" value="{{ old('image') }}" type="file" class="form-control-sm">
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Bild</label>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col">
+                        &nbsp;
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Absenden</button>
@@ -89,8 +92,20 @@
                         <td>{{ $car->getManufacturer() }}</td>
                         <td>{{ $car->getModel() }}</td>
                         <td>{{ $car->getColor() }}</td>
-                        <td>Edit</td>
-                        <td>Delete</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{route('admin.car.edit', ['id'=>$car->getId()])}}">
+                                <i class="bi-pencil"> </i>
+                            </a>
+                        </td>
+                        <td>
+                            <form action="{{ route('admin.car.delete', $car->getID()) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">
+                                    <i class="bi-trash"> </i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

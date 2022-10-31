@@ -58,8 +58,20 @@
                         <td>{{ $parking_spot->getRow() }}</td>
                         <td>{{ $parking_spot->getStatus() }}</td>
                         <td>{{ $parking_spot->getImage() }}</td>
-                        <td>Edit</td>
-                        <td>Delete</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{ route('admin.parking-spot.edit', ['id'=>$parking_spot->getId()]) }}">
+                                <i class="bi-pencil"> </i>
+                            </a>
+                        </td>
+                        <td>
+                            <form action="{{ route('admin.parking_spot.delete', $parking_spot->getID()) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">
+                                    <i class="bi-trash"> </i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

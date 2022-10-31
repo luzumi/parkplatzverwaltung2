@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static create(array $creationData)
+ * @method static findOrFail($id)
+ */
 class Car extends Model
 {
     /**
@@ -18,6 +22,17 @@ class Car extends Model
      * $this->attributes['updated_at'] - timestamp - contains the car updated date
      *
      */
+    public static function validate($request)
+    {
+        $request->validate([
+            "sign" => "required|max:12",
+            'manufacturer' => "required",
+            "model" => "required",
+            "color" => "required",
+            "image" => "image",
+        ]);
+    }
+
     protected $fillable = ['sign', 'manufacturer', 'model', 'color', 'image', 'status'];
 
     public function getId()

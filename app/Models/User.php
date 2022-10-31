@@ -7,6 +7,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method static create(array $creationData)
+ * @method static findOrFail($id)
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
@@ -32,6 +36,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function validate(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            "name" => "required",
+            "email" => "required|email",
+            "telefon" => "required",
+            "image" => "image",
+        ]);
+    }
 
 
     /**
@@ -134,9 +148,9 @@ class User extends Authenticatable
         return $this->attributes['remember_token'];
     }
 
-    public function setRememberToken($rememberToken)
+    public function setRememberToken($value)
     {
-        $this->attributes['remember_token'] = $rememberToken;
+        $this->attributes['remember_token'] = $value;
     }
 
     public function getUpdatedAt()
@@ -144,8 +158,8 @@ class User extends Authenticatable
         return $this->attributes['updated_at'];
     }
 
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt($value)
     {
-        $this->attributes['updated_at'] = $updatedAt;
+        $this->attributes['updated_at'] = $value;
     }
 }

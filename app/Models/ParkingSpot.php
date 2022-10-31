@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static create(array $creationData)
+ * @method static findOrFail($id)
+ */
 class ParkingSpot extends Model
 {
     /**
@@ -20,6 +24,13 @@ class ParkingSpot extends Model
      */
 
     protected $fillable = ['number', 'row', 'image', 'status'];
+
+    public static function validate(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            "status" => "required",
+        ]);
+    }
 
     public function getId()
     {
