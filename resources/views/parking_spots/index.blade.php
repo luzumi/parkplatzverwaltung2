@@ -12,9 +12,9 @@
                     {{ $parking_spot->getStatus() ? 'bg-danger' : 'opacity-25' }}" alt="image not found">
                     <div class="card-body text-center ">
                         <a href="{{ route('parking_spots.show', ['id'=> $parking_spot->getId()]) }}"
-                           class="btn {{ $parking_spot->getStatus() ? 'btn-success' : 'btn-danger' }} text-white>"
+                           class="btn {{ $parking_spot->switchStatus() }} text-white>"
                         > Parkplatz {{ $parking_spot->getNumber() }}
-                            {{ $parking_spot->getStatus() ? ' derzeit frei' : ' besetzt'}}
+                            {{ $parking_spot->getStatusMessage() }}
                         </a>
                     </div>
                 </div>

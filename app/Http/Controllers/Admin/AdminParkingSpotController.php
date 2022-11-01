@@ -35,7 +35,7 @@ class AdminParkingSpotController extends Controller
                 file_get_contents($request->file('image')->getRealPath())
             );
         } else {
-            $creationData['image'] = 'reserved parking spot.jpg';
+            $creationData['image'] = $request['status'] . '.jpg';
         }
 
 
