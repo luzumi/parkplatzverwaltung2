@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -30,6 +29,38 @@ class ParkingSpot extends Model
         $request->validate([
             "status" => "required",
         ]);
+    }
+
+    /**
+     * @return string CSS-Style
+     */
+    public function switchStatus()
+    {
+        return match ($this->getStatus()) {
+            'frei', 'Behindertenparkplatz' => 'btn-success',
+            'electro' => 'btn-info',
+            'reserviert' => 'btn-warning',
+            'besetzt' =>'btn-outline-danger',
+            'gesperrt' => 'btn-danger',
+            default => 'alert-dark ',
+        };
+    }
+
+    public function getStatus()
+    {
+        return $this->attributes['status'];
+    }
+
+    /**
+     * @return string ButtonText
+     */
+    public function getStatusMessage()
+    {
+        return match ($this->getStatus()) {
+            'frei', 'electro', 'Behindertenparkplatz' => ' - derzeit frei',
+            'reserviert', 'besetzt', 'gesperrt' => ' - Parken derzeit nicht möglich',
+            default => ' !!! Parkplatzstatus ungültig! Informieren SIe einen Administrator !!!',
+        };
     }
 
     public function getId()
@@ -70,11 +101,6 @@ class ParkingSpot extends Model
     public function setImage($image)
     {
         $this->attributes['image'] = $image;
-    }
-
-    public function getStatus()
-    {
-        return $this->attributes['status'];
     }
 
     public function setStatus($status)

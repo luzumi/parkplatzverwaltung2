@@ -28,14 +28,14 @@ class AdminParkingSpotController extends Controller
         $creationData['number'] = $count;
         $creationData['row'] = intdiv($count + 1, 3) + 1;
         if ($request->hasFile('image')) {
-            $imageName = $request->input('sign') . "." . $request->file('image')->extension();
+            $imageName = $request->input('status') . "." . $request->file('image')->extension();
             $creationData['image'] = $imageName;
             Storage::disk('public')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
             );
         } else {
-            $creationData['image'] = 'reserved parking spot.jpg';
+            $creationData['image'] = $request['status'] . '.jpg';
         }
 
 
@@ -67,15 +67,16 @@ class AdminParkingSpotController extends Controller
         $parking_spot = ParkingSpot::findOrFail($id);
         $parking_spot->setStatus($request->input('status'));
 
+        $parking_spot['image'] = $request->input('status') . ".jpg";
 
-        if ($request->hasFile('image')) {
-            $imageName = $request->input('status') . "." . $request->file('image')->extension();
-            $parking_spot['image'] = $imageName;
-            Storage::disk('public')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        }
+//        if ($request->hasFile('image')) {
+//            $imageName = $request->input('status') . "." . $request->file('image')->extension();
+//            $parking_spot['image'] = $imageName;
+//            Storage::disk('public')->put(
+//                $imageName,
+//                file_get_contents($request->file('image')->getRealPath())
+//            );
+//        }
 
         $parking_spot->save();
 

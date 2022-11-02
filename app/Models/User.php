@@ -68,7 +68,7 @@ class User extends Authenticatable
         return $this->attributes['id'];
     }
 
-    public function getSetId($id)
+    public function setId($id)
     {
         $this->attributes['id'] = $id;
     }
@@ -78,7 +78,7 @@ class User extends Authenticatable
         return $this->attributes['name'];
     }
 
-    public function getSetName($name)
+    public function setName($name)
     {
         $this->attributes['name'] = $name;
     }
@@ -88,7 +88,7 @@ class User extends Authenticatable
         return $this->attributes['email'];
     }
 
-    public function getSetEmail($email)
+    public function setEmail($email)
     {
         $this->attributes['email'] = $email;
     }
@@ -98,7 +98,7 @@ class User extends Authenticatable
         return $this->attributes['email_verified_at'];
     }
 
-    public function getSetEmailVerifiedAt($email_verified_at)
+    public function setEmailVerifiedAt($email_verified_at)
     {
         $this->attributes['email_verified_at'] = $email_verified_at;
     }
@@ -109,7 +109,7 @@ class User extends Authenticatable
         return $this->attributes['password'];
     }
 
-    public function getSetPassword($password)
+    public function setPassword($password)
     {
         $this->attributes['password'] = $password;
     }
@@ -119,7 +119,7 @@ class User extends Authenticatable
         return $this->attributes['image'];
     }
 
-    public function getSetImage($image)
+    public function setImage($image)
     {
         $this->attributes['image'] = $image;
     }
@@ -129,7 +129,7 @@ class User extends Authenticatable
         return $this->attributes['telefon'];
     }
 
-    public function getSetTelefon($telefon)
+    public function setTelefon($telefon)
     {
         $this->attributes['telefon'] = $telefon;
     }
@@ -139,7 +139,7 @@ class User extends Authenticatable
         return $this->attributes['status'];
     }
 
-    public function getSetStatus($status)
+    public function setStatus($status)
     {
         $this->attributes['status'] = $status;
     }

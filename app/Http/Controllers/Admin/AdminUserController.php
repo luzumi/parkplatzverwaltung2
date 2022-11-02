@@ -79,7 +79,6 @@ class AdminUserController extends Controller
         $user->setName($request->input('name'));
         $user->setEmail($request->input('email'));
         $user->setTelefon($request->input('telefon'));
-        $user->setColor($request->input('color'));
         $user->setStatus($request->input('status'));
 
         if ($request->hasFile('image')) {
