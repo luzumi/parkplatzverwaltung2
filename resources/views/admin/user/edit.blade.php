@@ -46,8 +46,8 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="status" value="{{ $viewData['user']->getStatus() }}" type="text" class="form-control-sm">
-                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Status:</label>
+                                <input name="role" value="{{ $viewData['user']->getRole() }}" type="text" class="form-control-sm">
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Rolle:</label>
                             </div>
                         </div>
                     </div>

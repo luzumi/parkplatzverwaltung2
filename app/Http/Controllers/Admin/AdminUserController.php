@@ -28,7 +28,7 @@ class AdminUserController extends Controller
 //        $newCar -> setModel($request->input('model'));
 //        $newCar -> setColor($request->input('color'));
 //        $newCar -> setImage($request->input('testCar.png'));
-//        $newCar -> setStatus(true);
+//        $newCar -> set  (true);
 //        $newCar -> save();
 
         $creationData = $request->only(['name', 'email', 'telefon']);
@@ -45,7 +45,7 @@ class AdminUserController extends Controller
             $creationData['image'] = 'unregistered_user.png';
         }
 
-        $creationData['status'] = 'user';
+        $creationData['role'] = 'client';
         $creationData['password'] = 'password';
         $creationData['remember_token'] = 'token_';
         $creationData['email_verified_at'] = now();
@@ -79,7 +79,6 @@ class AdminUserController extends Controller
         $user->setName($request->input('name'));
         $user->setEmail($request->input('email'));
         $user->setTelefon($request->input('telefon'));
-        $user->setStatus($request->input('status'));
 
         if ($request->hasFile('image')) {
             $imageName = $request->input('name') . "." . $request->file('image')->extension();

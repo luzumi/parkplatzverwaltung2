@@ -16,7 +16,15 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
 
 
-    protected $fillable = ['name', 'email', 'email_verified_at', 'password', 'image', 'telefon', 'remember_token', 'status'];
+    protected $fillable = ['name',
+        'email',
+        'email_verified_at',
+        'password',
+        'image',
+        'telefon',
+        'balance',
+        'remember_token',
+        'role'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,12 +60,13 @@ class User extends Authenticatable
      * CAR ATTRIBUTES
      * $this->attributes['id'] - int - contains the user primary key
      * $this->attributes['name'] - string - contains the user name
-     * $this->attributes['email'] - string - contains the user email-adresse
+     * $this->attributes['email'] - string - contains the user email-address
      * $this->attributes['email-verified-at'] - string - contains the user email-verified
      * $this->attributes['password'] - string - contains the user password
      * $this->attributes['image'] - string - contains the user image
      * $this->attributes['telefon'] - string - contains the user telefon
-     * $this->attributes['status'] - string - contains the user status
+     * $this->attributes['role'] - string - contains the user role (client or admin)
+     * $this->attributes['balance'] - string - contains the user balance
      * $this->attributes['remember_token'] - string - contains the user remember_token
      * $this->attributes['created_at'] - timestamp - contains the user creation date
      * $this->attributes['updated_at'] - timestamp - contains the user updated date
@@ -103,7 +112,6 @@ class User extends Authenticatable
         $this->attributes['email_verified_at'] = $email_verified_at;
     }
 
-//TODO: Anzeige Passwort nur für aktuellen User erlauben
     public function getPassword()
     {
         return $this->attributes['password'];
@@ -124,6 +132,25 @@ class User extends Authenticatable
         $this->attributes['image'] = $image;
     }
 
+    public function getRole()
+    {
+        return $this->attributes['role'];
+    }
+
+    public function setRole($image)
+    {
+        $this->attributes['role'] = $image;
+    }
+
+    public function getBalance()
+    {
+        return $this->attributes['balance'];
+    }
+
+    public function setBalance($image)
+    {
+        $this->attributes['balance'] = $image;
+    }
     public function getTelefon()
     {
         return $this->attributes['telefon'];
@@ -134,15 +161,6 @@ class User extends Authenticatable
         $this->attributes['telefon'] = $telefon;
     }
 
-    public function getStatus()
-    {
-        return $this->attributes['status'];
-    }
-
-    public function setStatus($status)
-    {
-        $this->attributes['status'] = $status;
-    }
     public function getRememberToken()
     {
         return $this->attributes['remember_token'];

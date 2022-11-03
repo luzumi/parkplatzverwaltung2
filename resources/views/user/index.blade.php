@@ -11,7 +11,7 @@
                     <div class="card-body text-center">
                         <a href="{{ route('user.show', ['id'=> $user->getId()]) }}"
                            class="btn bg-primary text-white">
-                            {{ $user->getName() }} <br> {{ $user->getStatus() }}</a>
+                            {{ $user->getName() }} <br> {{ $user->getRole() }}</a>
                     </div>
                 </div>
             </div>

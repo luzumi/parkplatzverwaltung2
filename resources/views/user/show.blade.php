@@ -13,7 +13,11 @@
                         Name: {{ $viewData["user"]->getName() }} <br>
                         eMail: {{ $viewData["user"]->getEmail() }} <br>
                         Telefon: {{ $viewData["user"]->getTelefon() }} <br>
-                        User-Status: {{ $viewData["user"]->getStatus() }} <br>
+                        User-Rolle: {{ $viewData["user"]->getRole() }} <br>
+                        Fahrzeuge:
+                        @foreach($viewData['cars'] as $car)
+                            {{ $car }} <br>
+                        @endforeach
                     </h5>
                     Letzter Login: <p class="card-text">{{ $viewData["user"]->getupdatedAt() }}</p>
                     <p class="card-text"><small class="text-muted">Userdaten bearbeiten</small></p>

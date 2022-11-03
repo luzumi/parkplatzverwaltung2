@@ -21,9 +21,21 @@
             <div class="navbar-nav ms-auto">
                 <a class="nav-link active" href="{{ route('home.index') }}">Home</a>
                 <a class="nav-link active" href="{{ route('user.index') }}">User</a>
-                <a class="nav-link active" href="{{ route('car.index') }}">Cars</a>
+                <a class="nav-link active" href="{{ route('user.addCar.index') }}">Add Car</a>
+{{--                <a class="nav-link active" href="{{ route('car.index') }}">Cars</a>--}}
                 <a class="nav-link active" href="{{ route('parking_spot.index') }}">Parkplatz</a>
                 <a class="nav-link active" href="{{ route('home.about') }}">About</a>
+                <div class="vr bg-white mx-2 d-none d-lg-block"></div>
+                @guest
+                    <a class="nav-link active" href="{{ route('login') }}">Login</a>
+                    <a class="nav-link active" href="{{ route('register') }}">Register</a>
+                @else
+                    <form id="logout" action="{{ route('logout') }}" method="POST">
+                        <a role="button" class="nav-link active"
+                           onclick="document.getElementById('logout').submit();">Logout</a>
+                        @csrf
+                    </form>
+                @endguest
             </div>
         </div>
     </div>

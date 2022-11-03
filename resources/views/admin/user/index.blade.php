@@ -72,7 +72,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">email</th>
                     <th scope="col">Telefon</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Role</th>
                     <th scope="col">Bild</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
@@ -85,7 +85,7 @@
                         <td>{{ $user->getName() }}</td>
                         <td>{{ $user->getEmail() }}</td>
                         <td>{{ $user->getTelefon() }}</td>
-                        <td>{{ $user->getStatus() }}</td>
+                        <td>{{ $user->getRole() }}</td>
                         <td>{{ $user->getImage() }}</td>
                         <td>
                             <a class="btn btn-primary" href="{{ route('admin.user.edit', ['id'=>$user->getId()]) }}">
