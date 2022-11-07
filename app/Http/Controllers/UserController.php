@@ -30,9 +30,11 @@ class UserController extends Controller
         $viewData["user"] = $user;
         //TODO geht nicht
         $cars = DB::table('cars')
-            ->join('car_users', 'user_id', '=', Auth::id())
+            ->select()
+            ->join('car_users', 'cars.id' , '=', 'car_users.car_id')
+            ->where('car_users.user_id', Auth::id())
         ->get();
-        $viewData['cars'] = typeOf($cars);
+        $viewData['cars'] = $cars;
         return view('user.show')->with("viewData", $viewData);
     }
 }

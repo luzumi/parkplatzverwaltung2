@@ -29,7 +29,7 @@ class CarUserController extends Controller
         Car::validate($request);
 
         if ($request->hasFile('image')) {
-            $imageName = $request->input('name') .".". $request->file('image')->extension();
+            $imageName = $request->input('sign') .".". $request->file('image')->extension();
             Storage::disk('public')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())

@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ms-auto">
                 <a class="nav-link active" href="{{ route('home.index') }}">Home</a>
-                <a class="nav-link active" href="{{ route('user.index') }}">User</a>
+                <a class="nav-link active" href="{{ route('user.show', Auth::id()) }}">User</a>
                 <a class="nav-link active" href="{{ route('user.addCar.index') }}">Add Car</a>
 {{--                <a class="nav-link active" href="{{ route('car.index') }}">Cars</a>--}}
                 <a class="nav-link active" href="{{ route('parking_spot.index') }}">Parkplatz</a>

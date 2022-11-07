@@ -23,8 +23,11 @@ Route::get('/car/{id}', 'App\Http\Controllers\CarController@show')->name("cars.s
 
 Route::get('/parking_spots', 'App\Http\Controllers\ParkingSpotController@index')->name("parking_spot.index");
 Route::get('/parking_spot/{id}', 'App\Http\Controllers\ParkingSpotController@show')->name("parking_spots.show");
+Route::post('/parking_spot/reserve/reserve/{id}', 'App\Http\Controllers\ParkingSpotUserController@index')->name("parking_spot.reserve");
+//Route::post('/parking_spot/reserve/store_reserve', 'App\Http\Controllers\ParkingSpotController@index')->name("parking_spot.store-reserve");
 
-Route::get('/user', 'App\Http\Controllers\UserController@index')->name("user.index");
+
+Route::get('/user/{id}', 'App\Http\Controllers\UserController@index')->name("user.show");
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user.show");
 
 Route::get('/user/addCar/index', 'App\Http\Controllers\CarUserController@index')->name('user.addCar.index');
@@ -51,6 +54,8 @@ Route::middleware('admin')->group(function(){
     Route::put('/admin/cars/{id}/update', 'App\Http\Controllers\Admin\AdminCarController@update')->name("admin.car.update");
     Route::put('/admin/users/{id}/update', 'App\Http\Controllers\Admin\AdminUserController@update')->name("admin.user.update");
     Route::put('/admin/parking_spots/{id}/update', 'App\Http\Controllers\Admin\AdminParkingSpotController@update')->name("admin.parking-spot.update");
+
+    Route::get('/user', 'App\Http\Controllers\UserController@index')->name("user.index");
 });
 
 Auth::routes();
