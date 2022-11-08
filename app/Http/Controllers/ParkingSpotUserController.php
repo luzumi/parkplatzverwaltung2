@@ -2,34 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
+use App\Models\CarUser;
+use App\Models\ParkingSpot;
 use App\Models\ParkingSpotUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ParkingSpotUserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $viewData = [];
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
+        $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
 
-        $viewData['users'] = User::all()->where('id', Auth::id());
+        $viewData['users'] = User::all()->where('id', Auth::id())->first();
+        $viewData['parking_spot'] = ParkingSpot::all('number');
+        $viewData['cars'] = Car::all();
 
-        $viewData['cars'] = DB::table('cars')
-            ->select()
-            ->join('car_users', 'cars.id', '=', 'car_users.car_id')
-            ->where('car_users.user_id', Auth::id())
-            ->get();
+//            DB::table('cars')
+//            ->select()
+//            ->join('car_users', 'cars.id', '=', 'car_users.car_id')
+//            ->where('car_users.user_id', Auth::id())
+//            ->get();
 
-        $viewData['parking_spots'] = DB::table('parking_spots')
-            ->select()
-            ->join('parking_spot_user', 'parking_spot_user.parking_spot_id', '=', 'parking_spots.id')
-            ->where('parking_spot_user.user_id', Auth::id())
-            ->get();
 
-        return view('user.parking_spots/reserve/store_reserve')->with("viewData", $viewData);
+
+
+        return view('parking_spots.reserve.store_reserve')->with("viewData", $viewData);
     }
 
 
@@ -41,12 +43,14 @@ class ParkingSpotUserController extends Controller
 
         $parking_spot_user = new ParkingSpotUser();
         $parking_spot_user->setParkingSpotId($parking_spot_id);
-        $parking_spot_user->setUserId(User::findOrFail(Auth::id()));
-        $parking_spot_user->setIsFree(true);
-        $parking_spot_user->setCreatedAt(now());
-        $parking_spot_user->setupdatedAt(now());
+        $parking_spot_user->setUserId(Auth::id());
+        $parking_spot_user->setIsFree(false);
         $parking_spot_user->save();
 
-        return view('parking_spot.reserve', $parking_spot_id);
+        $viewData = [];
+        $viewData['car'] = Car::all()->last();
+        $viewData['parking_spot'] = ParkingSpot::findOrFail($parking_spot_id);
+        $viewData['users'] = User::findOrFail(Auth::id());
+        return view('user.show')->with("viewData", $viewData);
     }
 }

@@ -1,3 +1,4 @@
+@php use function PHPUnit\Framework\isEmpty; @endphp
 @extends('welcome')
 @section('title', $viewData["title"])
 @section('subtitle', $viewData["subtitle"])
@@ -23,6 +24,7 @@
                                 <th>Model</th>
                                 <th>Farbe</th>
                                 <th>Vorschau</th>
+                                <th>Parkplatz</th>
                             </tr>
                             @foreach($viewData['cars'] as $car)
                                 <tr class="table-active">
@@ -30,7 +32,11 @@
                                     <td>{{ $car->manufacturer }}</td>
                                     <td>{{ $car->model }}</td>
                                     <td>{{ $car->color }}</td>
-                                    <td><img src="{{ asset('/storage/'. $car->image) }}" class="img-thumbnail col-sm-4"></td>
+                                    <td><img src="{{ asset('/storage/'. $car->image) }}"
+                                             class="img-thumbnail col-sm-4" alt="image not found"></td>
+                                    @if(isset($car->parking_spot_id))
+                                        <td>{{ $car->parking_spot_id }}</td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </table>

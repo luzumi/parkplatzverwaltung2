@@ -9,6 +9,16 @@ class ParkingSpotUser extends Model
 {
     protected $fillable = ['user_id', 'parking_spot_id'];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public static function validate($request)
     {
         $request->validate([
@@ -49,12 +59,12 @@ class ParkingSpotUser extends Model
 
     public function getParkingSpotId()
     {
-        return $this->attributes['car_id'];
+        return $this->attributes['parking_spot_id'];
     }
 
     public function setParkingSpotId($car_id)
     {
-        $this->attributes['car_id'] = $car_id;
+        $this->attributes['parking_spot_id'] = $car_id;
     }
 
     public function getCreatedAt()

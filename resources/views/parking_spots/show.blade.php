@@ -19,7 +19,7 @@
                     </h5>
 
                     @if($viewData["parking_spot"]->getStatus() == 'frei')
-                        <form method="POST" action="{{ route('parking_spot.reserve',  $viewData["parking_spot"]->getNumber()) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('parking_spots.reserve_index',  $viewData["parking_spot"]->getNumber()) }}" enctype="multipart/form-data">
                             @csrf
 
                             <h5 class="card-title">
@@ -33,6 +33,7 @@
                                         <th>Model</th>
                                         <th>Farbe</th>
                                         <th>Vorschau</th>
+                                        //TODO anzeigen welchen parkplatz das auto belegt
                                     </tr>
                                     @foreach($viewData['cars'] as $car)
                                         <tr class="table-active">
@@ -48,7 +49,7 @@
                                             <td>{{ $car->model }}</td>
                                             <td>{{ $car->color }}</td>
                                             <td><img src="{{ asset('/storage/'. $car->image) }}"
-                                                     class="img-thumbnail col-sm-4"></td>
+                                                     class="img-thumbnail col-sm-6" alt="image not found"></td>
                                         </tr>
                                     @endforeach
                                 </table>

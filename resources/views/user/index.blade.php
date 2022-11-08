@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 @extends('layouts.app')
 @section('title', $viewData["title"])
 @section('subtitle', $viewData["subtitle"])
@@ -9,7 +10,7 @@
                     <img src="{{ asset('/storage/'. $user->getImage()) }}" class="card-img-top img-card"
                          alt="Image not found">
                     <div class="card-body text-center">
-                        <a href="{{ route('user.show', ['id'=> $user->getId()]) }}"
+                        <a href="{{ route('user.show', Auth::id()) }}"
                            class="btn bg-primary text-white">
                             {{ $user->getName() }} <br> {{ $user->getRole() }}</a>
                     </div>

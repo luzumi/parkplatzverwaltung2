@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\ParkingSpot;
-use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +25,8 @@ class ParkingSpotController extends Controller
         $viewData["user"] = \App\Models\User::findOrFail(Auth::id());
         $viewData["title"] = "Parkplatzansicht";
         $viewData["subtitle"] =  "Parkplatz Nr. " . $parking_spot->getNumber();
-        $viewData["parking_spot"] = $parking_spot;        $viewData["cars"] = DB::table('cars')
+        $viewData["parking_spot"] = $parking_spot;
+        $viewData["cars"] = DB::table('cars')
         ->select()
         ->join('car_users', 'cars.id' , '=', 'car_users.car_id')
         ->where('car_users.user_id', Auth::id())
