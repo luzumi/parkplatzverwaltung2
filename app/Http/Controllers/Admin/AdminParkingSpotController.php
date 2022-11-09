@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ParkingSpot;
+use App\Models\ParkingSpotUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminParkingSpotController extends Controller
@@ -41,16 +43,21 @@ class AdminParkingSpotController extends Controller
 
         ParkingSpot::create($creationData);
 
+        $userSpot['user_id'] = Auth::id();
+        $userSpot['parking_spot_id'] = ParkingSpot::all()->count();
+
+        ParkingSpotUser::create($userSpot);
+
         return back();
     }
 
-    public function delete($id)
+    public function delete($id): \Illuminate\Http\RedirectResponse
     {
         ParkingSpot::destroy($id);
         return back();
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
@@ -60,7 +67,7 @@ class AdminParkingSpotController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         ParkingSpot::validate($request);
 

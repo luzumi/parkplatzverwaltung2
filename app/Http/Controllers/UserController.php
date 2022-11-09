@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
+use App\Models\CarUser;
 use App\Models\ParkingSpot;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
@@ -9,6 +11,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function React\Promise\all;
 
 class UserController extends Controller
 {
@@ -30,34 +33,24 @@ class UserController extends Controller
         $viewData["subtitle"] = $user["name"] . " - User information";
         $viewData["user"] = $user;
 
-//        $viewData['cars'] = DB::table('parking_spot_users')
-//            ->select('parking_spot_id')
-//            ->where('user_id', Auth::id())
-//            ->where('parking_spot_id', '>', 0)
+
+        $carUsers = CarUser::first();
+        $user = User::where('id', Auth::id())
+            ->get();
+
+
+
+
+        $viewData['cars'] = $user;
+
+//        $viewData['cars'] = DB::table('cars')
+//            ->select()
+//            ->join('car_users', 'cars.id', '=', 'car_users.car_id')
+//            ->where('car_users.user_id', Auth::id())
+//            ->join('parking_spot_users', 'car_users.user_id', '<', 'parking_spot_users.user_id')
 //            ->get();
 
 
-//        $viewData['cars'] = ParkingSpot::with('ParkingSpotUsers')
-//            ->with('Users')->where('id', Auth::id())
-//            ->get('id');
-
-        $viewData['cars'] = DB::table('cars')
-            ->select()
-            ->join('car_users', 'cars.id', '=', 'car_users.car_id')
-            ->where('car_users.user_id', Auth::id())
-            ->join('parking_spot_users', 'car_users.user_id', '<', 'parking_spot_users.user_id')
-            ->get();
-
-        /**
-         * wenn kein Eintrag für den User in der Tabelle parking-spot-users vorhanden (kein Parkplatz reserviert)
-         */
-//        if ($reserved_parking_spots->count() < 1) {
-//            $viewData['cars'] = DB::table('cars')
-//                ->select()
-//                ->join('car_users', 'cars.id', '=', 'car_users.car_id')
-//                ->where('car_users.user_id', Auth::id())
-//                ->get();
-//        }
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }

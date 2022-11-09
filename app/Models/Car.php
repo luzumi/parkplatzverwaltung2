@@ -110,9 +110,9 @@ class Car extends Model
         return $this->attributes['created_at'];
     }
 
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt($value)
     {
-        $this->attributes['created_at'] = $createdAt;
+        $this->attributes['created_at'] = $value;
     }
 
     public function getUpdatedAt()
@@ -120,24 +120,39 @@ class Car extends Model
         return $this->attributes['updated_at'];
     }
 
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt($value)
     {
-        $this->attributes['updated_at'] = $updatedAt;
+        $this->attributes['updated_at'] = $value;
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     public function getUser()
     {
-        return $this->user;
+        return $this->attributes['user'];
     }
 
     public function setUser($user)
     {
-        $this->user = $user;
+        $this->attributes['user'] = $user;
+    }
+
+    public function carUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(CarUser::class);
+    }
+
+    public function getCarUser()
+    {
+        return $this->attributes['carUser'];
+    }
+
+    public function setCarUser($carUser)
+    {
+        $this->attributes['carUser'] = $carUser;
     }
 
 }

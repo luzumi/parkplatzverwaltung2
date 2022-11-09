@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static get(string $string)
+ */
 class CarUser extends Model
 {
     protected $fillable = ['user_id', 'car_id'];
@@ -55,5 +58,35 @@ class CarUser extends Model
     public function setCreatedAt($created_at)
     {
         $this->attributes['created_at'] = $created_at;
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getUser()
+    {
+        return $this->attributes['user'];
+    }
+
+    public function setUser($user)
+    {
+        $this->attributes['user'] = $user;
+    }
+
+    public function car(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Car::class);
+    }
+
+    public function getCar()
+    {
+        return $this->attributes['car'];
+    }
+
+    public function setCar($car)
+    {
+        $this->attributes['car'] = $car;
     }
 }

@@ -34,7 +34,7 @@ class ParkingSpot extends Model
     /**
      * @return string CSS-Style
      */
-    public function switchStatus()
+    public function switchStatus(): string
     {
         return match ($this->getStatus()) {
             'frei', 'Behindertenparkplatz' => 'btn-success',
@@ -54,7 +54,7 @@ class ParkingSpot extends Model
     /**
      * @return string ButtonText
      */
-    public function getStatusMessage()
+    public function getStatusMessage(): string
     {
         return match ($this->getStatus()) {
             'frei', 'electro', 'Behindertenparkplatz' => ' - derzeit frei',
@@ -128,33 +128,33 @@ class ParkingSpot extends Model
         $this->attributes['updated_at'] = $updatedAt;
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     public function getUser()
     {
-        return $this->user;
+        return $this->attributes['user'];
     }
 
     public function setUser($user)
     {
-        $this->user = $user;
+        $this->attributes['user'] = $user;
     }
 
-    public function parkingSpotUser()
+    public function parkingSpotUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasOne(ParkingSpotUser::class);
+        return $this->belongsTo(CarUser::class);
     }
 
     public function getParkingSpotUser()
     {
-        return $this->parkingSpotUser;
+        return $this->attributes['parkingSpotUser'];
     }
 
     public function setParkingSpotUser($parkingSpotUser)
     {
-        $this->parkingSpotUser = $parkingSpotUser;
+        $this->attributes['parkingSpotUser'] = $parkingSpotUser;
     }
 }

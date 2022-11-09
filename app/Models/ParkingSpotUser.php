@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static create(array $userSpot)
+ */
 class ParkingSpotUser extends Model
 {
     protected $fillable = ['user_id', 'parking_spot_id'];
@@ -109,12 +112,12 @@ class ParkingSpotUser extends Model
 
     public function getUser()
     {
-        return $this->user;
+        return $this->attributes['user'];
     }
 
     public function setUser($user)
     {
-        $this->user = $user;
+        $this->attributes['user'] = $user;
     }
 
     public function car()
@@ -124,11 +127,11 @@ class ParkingSpotUser extends Model
 
     public function getCar()
     {
-        return $this->car;
+        return $this->attributes['car'];
     }
 
     public function setCar($car)
     {
-        $this->car = $car;
+        $this->attributes['car'] = $car;
     }
 }

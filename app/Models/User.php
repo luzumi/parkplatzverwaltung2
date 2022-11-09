@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * @method static create(array $creationData)
  * @method static findOrFail($id)
+ * @method static first()
  */
 class User extends Authenticatable
 {
@@ -181,33 +182,63 @@ class User extends Authenticatable
         $this->attributes['updated_at'] = $value;
     }
 
-    public function car()
+    public function car(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Car::class);
     }
 
     public function getCar()
     {
-        return $this->car;
+        return $this->attributes['car'];
     }
 
     public function setCar($car)
     {
-        $this->car = $car;
+        $this->attributes['car'] = $car;
     }
 
-    public function parking_spot()
+    public function parking_spot(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(ParkingSpot::class);
     }
 
     public function getParkingSpot()
     {
-        return $this->parking_spot;
+        return $this->attributes['parking_spot'];
     }
 
     public function setParkingSpot($parking_spot)
     {
-        $this->parking_spot = $parking_spot;
+        $this->attributes['parking_spot'] = $parking_spot;
+    }
+
+    public function parkingSpotUser(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(CarUser::class);
+    }
+
+    public function getParkingSpotUser()
+    {
+        return $this->attributes['parkingSpotUser'];
+    }
+
+    public function setParkingSpotUser($parkingSpotUser)
+    {
+        $this->attributes['parkingSpotUser'] = $parkingSpotUser;
+    }
+
+    public function carUser(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(CarUser::class);
+    }
+
+    public function getCarUser()
+    {
+        return $this->attributes['carUser'];
+    }
+
+    public function setCarUser($carUser)
+    {
+        $this->attributes['carUser'] = $carUser;
     }
 }
