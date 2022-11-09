@@ -6,7 +6,7 @@
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="/storage/app/public/reserviert.jpg"
+                <img src=src="{{ asset('/storage/app/public/reserviert.jpg') }}"
                      class="img-fluid rounded-start" alt="Image not found">
             </div>
             <div class="col-md-12">

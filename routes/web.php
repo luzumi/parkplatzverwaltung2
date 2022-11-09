@@ -26,10 +26,8 @@ Route::get('/parking_spot/{id}', 'App\Http\Controllers\ParkingSpotController@sho
 
 Route::post('/parking_spots/reserve/reserve/{id}', 'App\Http\Controllers\ParkingSpotUserController@index')
     ->name("parking_spots.reserve_index");
-
-Route::get('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\ParkingSpotUserController@store')
+Route::post('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\ParkingSpotUserController@store')
     ->name("parking_spots.reserve.store_reserve");
-
 
 Route::get('/user/', 'App\Http\Controllers\UserController@index')->name("user.index");
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user.show");
@@ -41,15 +39,18 @@ Route::middleware('admin')->group(function(){
     Route::get('/admin', 'App\Http\Controllers\Admin\AdminHomeController@index')->name("admin.home.index");
     Route::get('/admin/cars', 'App\Http\Controllers\Admin\AdminCarController@index')->name("admin.car.index");
     Route::get('/admin/users', 'App\Http\Controllers\Admin\AdminUserController@index')->name("admin.user.index");
-    Route::get('/admin/parking_spots', 'App\Http\Controllers\Admin\AdminParkingSpotController@index')->name("admin.parking_spot.index");
+    Route::get('/admin/parking_spots', 'App\Http\Controllers\Admin\AdminParkingSpotController@index')
+        ->name("admin.parking_spot.index");
 
     Route::post('/admin/cars/store', 'App\Http\Controllers\Admin\AdminCarController@store')->name("admin.car.store");
     Route::post('/admin/users/store', 'App\Http\Controllers\Admin\AdminUserController@store')->name("admin.user.store");
-    Route::post('/admin/parking_spots/store', 'App\Http\Controllers\Admin\AdminParkingSpotController@store')->name("admin.parking_spot.store");
+    Route::post('/admin/parking_spots/store', 'App\Http\Controllers\Admin\AdminParkingSpotController@store')
+        ->name("admin.parking_spot.store");
 
     Route::delete('/admin/cars/{id}/delete', 'App\Http\Controllers\Admin\AdminCarController@delete')->name("admin.car.delete");
     Route::delete('/admin/users/{id}/delete', 'App\Http\Controllers\Admin\AdminUserController@delete')->name("admin.user.delete");
-    Route::delete('/admin/parking_spots/{id}/delete', 'App\Http\Controllers\Admin\AdminParkingSpotController@delete')->name("admin.parking_spot.delete");
+    Route::delete('/admin/parking_spots/{id}/delete', 'App\Http\Controllers\Admin\AdminParkingSpotController@delete')
+        ->name("admin.parking_spot.delete");
 
     Route::get('/admin/cars/{id}/edit', 'App\Http\Controllers\Admin\AdminCarController@edit')->name("admin.car.edit");
     Route::get('/admin/users/{id}/edit', 'App\Http\Controllers\Admin\AdminUserController@edit')->name("admin.user.edit");

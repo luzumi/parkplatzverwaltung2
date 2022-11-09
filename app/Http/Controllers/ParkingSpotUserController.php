@@ -22,15 +22,13 @@ class ParkingSpotUserController extends Controller
         $viewData['parking_spot'] = ParkingSpot::all('number');
         $viewData['cars'] = Car::all();
 
-//            DB::table('cars')
-//            ->select()
-//            ->join('car_users', 'cars.id', '=', 'car_users.car_id')
-//            ->where('car_users.user_id', Auth::id())
-//            ->get();
 
-
-
-
+        $parking_spot_user = new ParkingSpotUser();
+        $parking_spot_user->setParkingSpotId( $request['radio'] );
+        $parking_spot_user->setUserId(Auth::id());
+        $parking_spot_user->setIsFree(false);
+        $parking_spot_user->save();
+//        $this->store($request);
         return view('parking_spots.reserve.store_reserve')->with("viewData", $viewData);
     }
 
@@ -51,6 +49,7 @@ class ParkingSpotUserController extends Controller
         $viewData['car'] = Car::all()->last();
         $viewData['parking_spot'] = ParkingSpot::findOrFail($parking_spot_id);
         $viewData['users'] = User::findOrFail(Auth::id());
-        return view('user.show')->with("viewData", $viewData);
+//        return redirect()->route('user.show')->with('jsAlert', $parking_spot_user)->with("viewData", $viewData);
+//        return view('user.show')->with("viewData", $viewData);
     }
 }

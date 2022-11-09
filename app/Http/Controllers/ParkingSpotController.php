@@ -34,20 +34,20 @@ class ParkingSpotController extends Controller
         return view('parking_spots.show')->with("viewData", $viewData);
     }
 
-    public function reserve()
-    {
-        $viewData = [];
-        $viewData["title"] = "Parkplatz-Reservierung";
-        $viewData['parking_spot'] = ParkingSpot::findOrFail(0);
-        $viewData["subtitle"] =  "Reservierung für Parkplatz Nr. " . $viewData['parking_spot']->number;
-
-        $viewData["user"] = \App\Models\User::findOrFail(Auth::id());
-        $viewData["cars"] = DB::table('cars')
-            ->select()
-            ->join('car_users', 'cars.id' , '=', 'car_users.car_id')
-            ->where('car_users.user_id', Auth::id())
-            ->get();
-
-        return view( 'parking_spots.reserve.store')->with("viewData", $viewData);
-    }
+//    public function reserve()
+//    {
+//        $viewData = [];
+//        $viewData["title"] = "Parkplatz-Reservierung";
+//        $viewData['parking_spot'] = ParkingSpot::findOrFail(0);
+//        $viewData["subtitle"] =  "Reservierung für Parkplatz Nr. " . $viewData['parking_spot']->number;
+//
+//        $viewData["user"] = \App\Models\User::findOrFail(Auth::id());
+//        $viewData["cars"] = DB::table('cars')
+//            ->select()
+//            ->join('car_users', 'cars.id' , '=', 'car_users.car_id')
+//            ->where('car_users.user_id', Auth::id())
+//            ->get();
+//
+//        return view( 'parking_spots.reserve.store')->with("viewData", $viewData);
+//    }
 }

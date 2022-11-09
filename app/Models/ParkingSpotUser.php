@@ -86,4 +86,49 @@ class ParkingSpotUser extends Model
     {
         $this->attributes['updated_at'] = $updated_at;
     }
+
+    public function parkingSpot()
+    {
+        return $this->hasOne(ParkingSpot::class);
+    }
+
+    public function getParkingSpot()
+    {
+        return $this->parkingSpot;
+    }
+
+    public function setParkingSpot($parkingSpot)
+    {
+        $this->parkingSpot = $parkingSpot;
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function car()
+    {
+        return $this->hasOne(Car::class);
+    }
+
+    public function getCar()
+    {
+        return $this->car;
+    }
+
+    public function setCar($car)
+    {
+        $this->car = $car;
+    }
 }

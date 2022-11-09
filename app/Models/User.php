@@ -180,4 +180,34 @@ class User extends Authenticatable
     {
         $this->attributes['updated_at'] = $value;
     }
+
+    public function car()
+    {
+        return $this->belongsToMany(Car::class);
+    }
+
+    public function getCar()
+    {
+        return $this->car;
+    }
+
+    public function setCar($car)
+    {
+        $this->car = $car;
+    }
+
+    public function parking_spot()
+    {
+        return $this->belongsToMany(ParkingSpot::class);
+    }
+
+    public function getParkingSpot()
+    {
+        return $this->parking_spot;
+    }
+
+    public function setParkingSpot($parking_spot)
+    {
+        $this->parking_spot = $parking_spot;
+    }
 }

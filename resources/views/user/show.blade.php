@@ -39,6 +39,7 @@
                                     @endif
                                 </tr>
                             @endforeach
+                                    <p>{{ $viewData['cars'] }} </p>
                         </table>
                     </h5>
                     Letzter Login: <p class="card-text">{{ $viewData["user"]->getupdatedAt() }}</p>

@@ -125,4 +125,19 @@ class Car extends Model
         $this->attributes['updated_at'] = $updatedAt;
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
 }

@@ -33,7 +33,7 @@
                                         <th>Model</th>
                                         <th>Farbe</th>
                                         <th>Vorschau</th>
-                                        //TODO anzeigen welchen parkplatz das auto belegt
+{{--                                        TODO anzeigen welchen parkplatz das auto belegt--}}
                                     </tr>
                                     @foreach($viewData['cars'] as $car)
                                         <tr class="table-active">
