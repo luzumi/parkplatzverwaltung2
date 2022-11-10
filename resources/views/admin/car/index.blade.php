@@ -75,7 +75,7 @@
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">User</th>
                     <th scope="col">Kennzeichen</th>
                     <th scope="col">Hersteller</th>
                     <th scope="col">Modell</th>
@@ -87,13 +87,13 @@
                 <tbody>
                 @foreach ($viewData["cars"] as $car)
                     <tr>
-                        <td>{{ $car->getId() }}</td>
+                        <td>{{ $car->getUserID() }}</td>
                         <td>{{ $car->getSign() }}</td>
                         <td>{{ $car->getManufacturer() }}</td>
                         <td>{{ $car->getModel() }}</td>
                         <td>{{ $car->getColor() }}</td>
                         <td>
-                            <a class="btn btn-primary" href="{{route('admin.car.edit', ['id'=>$car->getId()])}}">
+                            <a class="btn btn-primary" href="{{ route('admin.car.edit', ['id'=>$car->getId()]) }}">
                                 <i class="bi-pencil"> </i>
                             </a>
                         </td>

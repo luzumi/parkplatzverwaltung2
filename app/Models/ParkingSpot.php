@@ -2,29 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
 
 /**
- * @method static create(array $creationData)
  * @method static findOrFail($id)
+ * @method static create(array $creationData)
+ * @method static where(string $string, string $selected_ps_number)
  */
 class ParkingSpot extends Model
 {
-    /**
-     * CAR ATTRIBUTES
-     * $this->attributes['id'] - int - contains the parking_spot primary key
-     * $this->attributes['number'] - string - contains the parking_spot number
-     * $this->attributes['row'] - string - contains the parking_spot row
-     * $this->attributes['image'] - string - contains the parking_spot image
-     * $this->attributes['status'] - string - contains the parking_spot status
-     * $this->attributes['created_at'] - timestamp - contains the parking_spot creation date
-     * $this->attributes['updated_at'] - timestamp - contains the parking_spot updated date
-     *
-     */
+    use HasFactory;
 
-    protected $fillable = ['number', 'row', 'image', 'status'];
+    protected $fillable = ['user_id', 'car_id', 'number', 'row', 'image', 'status'];
 
-    public static function validate(\Illuminate\Http\Request $request)
+    public static function validate(Request $request)
     {
         $request->validate([
             "status" => "required",
@@ -46,11 +40,6 @@ class ParkingSpot extends Model
         };
     }
 
-    public function getStatus()
-    {
-        return $this->attributes['status'];
-    }
-
     /**
      * @return string ButtonText
      */
@@ -63,6 +52,8 @@ class ParkingSpot extends Model
         };
     }
 
+
+    //Getter/Setter
     public function getId()
     {
         return $this->attributes['id'];
@@ -71,6 +62,26 @@ class ParkingSpot extends Model
     public function setId($id)
     {
         $this->attributes['id'] = $id;
+    }
+
+    public function getUserId()
+    {
+        return $this->attributes['user_id'];
+    }
+
+    public function setUserId($user_id)
+    {
+        $this->attributes['user_id'] = $user_id;
+    }
+
+    public function getCarId()
+    {
+        return $this->attributes['car_id'];
+    }
+
+    public function setCarId($car_id)
+    {
+        $this->attributes['car_id'] = $car_id;
     }
 
     public function getNumber()
@@ -103,19 +114,14 @@ class ParkingSpot extends Model
         $this->attributes['image'] = $image;
     }
 
+    public function getStatus()
+    {
+        return $this->attributes['status'];
+    }
+
     public function setStatus($status)
     {
         $this->attributes['status'] = $status;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->attributes['created_at'];
-    }
-
-    public function setCreatedAt($createdAt)
-    {
-        $this->attributes['created_at'] = $createdAt;
     }
 
     public function getUpdatedAt()
@@ -123,38 +129,20 @@ class ParkingSpot extends Model
         return $this->attributes['updated_at'];
     }
 
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt($value)
     {
-        $this->attributes['updated_at'] = $updatedAt;
+        $this->attributes['updated_at'] = $value;
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id')->withDefault([
+            'user_id' => '1'
+        ]);
     }
 
-    public function getUser()
+    public function car(): BelongsTo
     {
-        return $this->attributes['user'];
-    }
-
-    public function setUser($user)
-    {
-        $this->attributes['user'] = $user;
-    }
-
-    public function parkingSpotUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(CarUser::class);
-    }
-
-    public function getParkingSpotUser()
-    {
-        return $this->attributes['parkingSpotUser'];
-    }
-
-    public function setParkingSpotUser($parkingSpotUser)
-    {
-        $this->attributes['parkingSpotUser'] = $parkingSpotUser;
+        return $this->belongsTo(Car::class, 'car_id', 'id');
     }
 }

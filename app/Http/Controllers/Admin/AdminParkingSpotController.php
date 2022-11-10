@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ParkingSpot;
-use App\Models\ParkingSpotUser;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminParkingSpotController extends Controller
 {
-    public function index()
+    public function index(): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - Parkplatzübersicht - Parkplatzverwaltung';
@@ -20,13 +22,14 @@ class AdminParkingSpotController extends Controller
         return view('admin.parking_spot.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         ParkingSpot::validate($request);
 
         $count = ParkingSpot::all()->count() + 1;
 
         $creationData = $request->only(['status']);
+        $creationData['user_id'] = 1;
         $creationData['number'] = $count;
         $creationData['row'] = intdiv($count + 1, 3) + 1;
         if ($request->hasFile('image')) {
@@ -40,24 +43,18 @@ class AdminParkingSpotController extends Controller
             $creationData['image'] = $request['status'] . '.jpg';
         }
 
-
         ParkingSpot::create($creationData);
-
-        $userSpot['user_id'] = Auth::id();
-        $userSpot['parking_spot_id'] = ParkingSpot::all()->count();
-
-        ParkingSpotUser::create($userSpot);
 
         return back();
     }
 
-    public function delete($id): \Illuminate\Http\RedirectResponse
+    public function delete($id): RedirectResponse
     {
         ParkingSpot::destroy($id);
         return back();
     }
 
-    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function edit($id): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
@@ -67,7 +64,7 @@ class AdminParkingSpotController extends Controller
 
     }
 
-    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, $id): RedirectResponse
     {
         ParkingSpot::validate($request);
 

@@ -59,7 +59,7 @@
                         </form>
                     @endif
 
-                    Letzte Änderung: <p class="card-text">{{ $viewData["parking_spot"]->getUpdatedAT() }}</p>
+                    Letzte Änderung: <p class="card-text">{{ $viewData["parking_spot"]->getUpdatedAt() }}</p>
                     <p class="card-text"><small class="text-muted">****************************</small></p>
                     <a href="{{ route('user.show', Auth::id()) }}"
                        class="btn {{ $viewData["parking_spot"]->switchStatus() }} text-white offset-lg-7">

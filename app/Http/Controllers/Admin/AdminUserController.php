@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class AdminUserController extends Controller
 {
-    public function index()
+    public function index(): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - User-Übersicht - Parkplatzverwaltung';
@@ -18,7 +22,7 @@ class AdminUserController extends Controller
         return view('admin.user.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         User::validate($request);
 
@@ -55,13 +59,13 @@ class AdminUserController extends Controller
         return back();
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         User::destroy($id);
         return back();
     }
 
-    public function edit($id)
+    public function edit($id): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
@@ -71,7 +75,7 @@ class AdminUserController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         User::validate($request);
 

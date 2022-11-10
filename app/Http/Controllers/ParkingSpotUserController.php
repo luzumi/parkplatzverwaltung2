@@ -7,12 +7,15 @@ use App\Models\CarUser;
 use App\Models\ParkingSpot;
 use App\Models\ParkingSpotUser;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ParkingSpotUserController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
@@ -23,10 +26,10 @@ class ParkingSpotUserController extends Controller
         $viewData['cars'] = Car::all();
 
 
-        $parking_spot_user = new ParkingSpotUser();
-        $parking_spot_user->setParkingSpotId( $request['radio'] );
+        $parking_spot_user = new ParkingSpot();
+        $parking_spot_user->setId( $request['radio'] );
         $parking_spot_user->setUserId(Auth::id());
-        $parking_spot_user->setIsFree(false);
+//        $parking_spot_user->setIsFree(false);
         $parking_spot_user->save();
 //        $this->store($request);
         return view('parking_spots.reserve.store_reserve')->with("viewData", $viewData);
@@ -35,14 +38,14 @@ class ParkingSpotUserController extends Controller
 
     public function store(Request $request)
     {
-        ParkingSpotUser::validate($request);
+        ParkingSpot::validate($request);
 
         $parking_spot_id = $request->get('radio');
 
-        $parking_spot_user = new ParkingSpotUser();
-        $parking_spot_user->setParkingSpotId($parking_spot_id);
+        $parking_spot_user = new ParkingSpot();
+        $parking_spot_user->setId($parking_spot_id);
         $parking_spot_user->setUserId(Auth::id());
-        $parking_spot_user->setIsFree(false);
+//        $parking_spot_user->setIsFree(false);
         $parking_spot_user->save();
 
         $viewData = [];

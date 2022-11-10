@@ -3,29 +3,32 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @method static findOrFail(int|string|null $id)
+ * @method static validate(\Illuminate\Http\Request $request)
  * @method static create(array $creationData)
- * @method static findOrFail($id)
- * @method static first()
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-
-    protected $fillable = ['name',
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
         'email',
-        'email_verified_at',
         'password',
-        'image',
-        'telefon',
-        'balance',
-        'remember_token',
-        'role'];
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,16 +49,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function validate(\Illuminate\Http\Request $request)
-    {
-        $request->validate([
-            "name" => "required",
-            "email" => "required|email",
-            "telefon" => "required",
-            "image" => "image",
-        ]);
-    }
 
+//Getter/setter
 
     /**
      * CAR ATTRIBUTES
@@ -182,63 +177,26 @@ class User extends Authenticatable
         $this->attributes['updated_at'] = $value;
     }
 
-    public function car(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function car(): BelongsTo
     {
-        return $this->belongsToMany(Car::class);
+        return $this->belongsTo(Car::class, 'user_id', 'id')->withDefault([
+            'status' => true,
+            'image' => 'storage/app/public/testCar.png',
+        ]);
     }
 
-    public function getCar()
+    public function cars(): BelongsToMany
     {
-        return $this->attributes['car'];
+        return $this->belongsToMany(Car::class,'user_id', 'id');
     }
 
-    public function setCar($car)
+    public function parkingSpot(): BelongsTo
     {
-        $this->attributes['car'] = $car;
+        return $this->belongsTo(ParkingSpot::class, 'user_id', 'id');
     }
 
-    public function parking_spot(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function parkingSpots(): BelongsToMany
     {
-        return $this->belongsToMany(ParkingSpot::class);
-    }
-
-    public function getParkingSpot()
-    {
-        return $this->attributes['parking_spot'];
-    }
-
-    public function setParkingSpot($parking_spot)
-    {
-        $this->attributes['parking_spot'] = $parking_spot;
-    }
-
-    public function parkingSpotUser(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(CarUser::class);
-    }
-
-    public function getParkingSpotUser()
-    {
-        return $this->attributes['parkingSpotUser'];
-    }
-
-    public function setParkingSpotUser($parkingSpotUser)
-    {
-        $this->attributes['parkingSpotUser'] = $parkingSpotUser;
-    }
-
-    public function carUser(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(CarUser::class);
-    }
-
-    public function getCarUser()
-    {
-        return $this->attributes['carUser'];
-    }
-
-    public function setCarUser($carUser)
-    {
-        $this->attributes['carUser'] = $carUser;
+        return $this->belongsToMany(ParkingSpot::class, 'parking_spots', 'user_id');
     }
 }

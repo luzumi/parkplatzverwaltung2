@@ -34,23 +34,9 @@ class UserController extends Controller
         $viewData["user"] = $user;
 
 
-        $carUsers = CarUser::first();
-        $user = User::where('id', Auth::id())
-            ->get();
+        $cars = Car::with('user')->where('cars.user_id', '=' ,Auth::id())->get();
 
-
-
-
-        $viewData['cars'] = $user;
-
-//        $viewData['cars'] = DB::table('cars')
-//            ->select()
-//            ->join('car_users', 'cars.id', '=', 'car_users.car_id')
-//            ->where('car_users.user_id', Auth::id())
-//            ->join('parking_spot_users', 'car_users.user_id', '<', 'parking_spot_users.user_id')
-//            ->get();
-
-
+        $viewData['cars'] = $cars;
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }

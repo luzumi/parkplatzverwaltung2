@@ -12,10 +12,12 @@
             <div class="col-md-12">
                 <div class="card-body">
                     <h3 class="offset-lg-5">
-                        {{ $viewData['users']->getName() }}
+                        {{ $viewData['users']->first()->getAttribute('name') }}
                         <h5 class="card-body ">
-                            Der Parkplatz Nr.<strong>{{ $viewData['parking_spot'][0]->number }}</strong>
-                            wurde für Ihr Fahrzeug mit dem Kennzeichen <strong>{{ $viewData['cars'][0]->sign }}</strong> zur Reservierung angemeldet.
+                            Der Parkplatz Nr.<strong>{{ $viewData['parking_spot']->first()->getAttribute('number') }}</strong>
+                            wurde für Ihr Fahrzeug mit dem Kennzeichen
+                            <strong>{{ $viewData['cars']->first()->getAttribute('sign') }}</strong>
+                            zur Reservierung angemeldet.
                         </h5>
                     </h3>
                 </div>

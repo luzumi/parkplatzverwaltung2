@@ -19,9 +19,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('image');
-            $table->string('telefon');
+            $table->string('image')->default('storage/app/public/undraw_profile.svg');
+            $table->string('telefon')->nullable();
             $table->string('status')->default(true);
+            $table->string('role')->default('client');
+            $table->integer('balance')->default(5555);
             $table->rememberToken();
             $table->timestamps();
         });

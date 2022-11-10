@@ -2,26 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @method static create(array $creationData)
  * @method static findOrFail($id)
+ * @method static create(array $creationData)
  */
 class Car extends Model
 {
-    /**
-     * CAR ATTRIBUTES
-     * $this->attributes['id'] - int - contains the car primary key
-     * $this->attributes['sign'] - string - contains the car sign
-     * $this->attributes['manufacturer'] - string - contains the car manufacturer
-     * $this->attributes['model'] - string - contains the car model
-     * $this->attributes['color'] - string - contains the car color
-     * $this->attributes['status'] - string - contains the car status
-     * $this->attributes['created_at'] - timestamp - contains the car creation date
-     * $this->attributes['updated_at'] - timestamp - contains the car updated date
-     *
-     */
     public static function validate($request)
     {
         $request->validate([
@@ -33,8 +24,10 @@ class Car extends Model
         ]);
     }
 
-    protected $fillable = ['sign', 'manufacturer', 'model', 'color', 'image', 'status'];
+    protected $fillable = ['user_id', 'sign', 'manufacturer', 'model', 'color', 'image', 'status'];
 
+
+    //Getter/Setter
     public function getId()
     {
         return $this->attributes['id'];
@@ -43,6 +36,16 @@ class Car extends Model
     public function setId($id)
     {
         $this->attributes['id'] = $id;
+    }
+
+    public function getUserId()
+    {
+        return $this->attributes['user_id'];
+    }
+
+    public function setUserId($user_id)
+    {
+        $this->attributes['user_id'] = $user_id;
     }
 
     public function getSign()
@@ -125,11 +128,6 @@ class Car extends Model
         $this->attributes['updated_at'] = $value;
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function getUser()
     {
         return $this->attributes['user'];
@@ -140,11 +138,6 @@ class Car extends Model
         $this->attributes['user'] = $user;
     }
 
-    public function carUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(CarUser::class);
-    }
-
     public function getCarUser()
     {
         return $this->attributes['carUser'];
@@ -153,6 +146,16 @@ class Car extends Model
     public function setCarUser($carUser)
     {
         $this->attributes['carUser'] = $carUser;
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function parkingSpot(): BelongsTo
+    {
+        return $this->belongsTo(ParkingSpot::class, 'id', 'car_id');
     }
 
 }

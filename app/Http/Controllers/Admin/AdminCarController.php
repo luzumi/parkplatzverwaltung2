@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Car;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class AdminCarController extends Controller
 {
-    public function index()
+    public function index(): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - Fahrzeugübersicht - Parkplatzverwaltung';
@@ -18,24 +22,16 @@ class AdminCarController extends Controller
         return view('admin.car.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         Car::validate($request);
 
-//        $newCar = new Car();
-//        $newCar -> setSign($request->input('sign'));
-//        $newCar -> setManufacturer($request->input('manufacturer'));
-//        $newCar -> setModel($request->input('model'));
-//        $newCar -> setColor($request->input('color'));
-//        $newCar -> setImage($request->input('testCar.png'));
-//        $newCar -> setStatus(true);
-//        $newCar -> save();
-
-        $creationData = $request->only(['sign', 'manufacturer', 'model', 'color']);
+        $creationData = $request->only(['id', 'sign', 'manufacturer', 'model', 'color']);
 
         if ($request->hasFile('image')) {
             $imageName = $request->input('sign') . "." . $request->file('image')->extension();
             $creationData['image'] = $imageName;
+
             Storage::disk('public')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
@@ -45,18 +41,19 @@ class AdminCarController extends Controller
         }
 
         $creationData['status'] = true;
+
         Car::create($creationData);
 
         return back();
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         Car::destroy($id);
         return back();
     }
 
-    public function edit($id)
+    public function edit($id): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
@@ -66,7 +63,7 @@ class AdminCarController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         Car::validate($request);
 

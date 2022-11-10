@@ -39,6 +39,7 @@ class CarUserController extends Controller
         }
 
         $newCar = new Car();
+        $newCar -> setUserId(Auth::id());
         $newCar -> setSign($request->input('sign'));
         $newCar -> setManufacturer($request->input('manufacturer'));
         $newCar -> setModel($request->input('model'));
@@ -46,12 +47,6 @@ class CarUserController extends Controller
         $newCar -> setImage($imageName);
         $newCar -> setStatus(true);
         $newCar -> save();
-
-        $id = Car::all()->last()['id'];
-        $carUserEntry = new CarUser();
-        $carUserEntry['car_id'] = $id;
-        $carUserEntry['user_id'] = Auth::id();
-        $carUserEntry->save();
 
         return redirect('/user/' . Auth::id());
     }

@@ -24,9 +24,9 @@ Route::get('/car/{id}', 'App\Http\Controllers\CarController@show')->name("cars.s
 Route::get('/parking_spots', 'App\Http\Controllers\ParkingSpotController@index')->name("parking_spot.index");
 Route::get('/parking_spot/{id}', 'App\Http\Controllers\ParkingSpotController@show')->name("parking_spots.show");
 
-Route::post('/parking_spots/reserve/reserve/{id}', 'App\Http\Controllers\ParkingSpotUserController@index')
+Route::post('/parking_spots/reserve/reserve/{id}', 'App\Http\Controllers\ParkingSpotController@storeIndex')
     ->name("parking_spots.reserve_index");
-Route::post('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\ParkingSpotUserController@store')
+Route::post('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\ParkingSpotController@store')
     ->name("parking_spots.reserve.store_reserve");
 
 Route::get('/user/', 'App\Http\Controllers\UserController@index')->name("user.index");
