@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\StorageLinker;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AdminUserController extends Controller
@@ -39,7 +41,7 @@ class AdminUserController extends Controller
 
 
         if ($request->hasFile('image')) {
-            $imageName = $request->input('name') .".". $request->file('image')->extension();
+            $imageName = $request->input('name') . "." . $request->file('image')->extension();
             $creationData['image'] = $imageName;
             Storage::disk('public')->put(
                 $imageName,
@@ -78,21 +80,29 @@ class AdminUserController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         User::validate($request);
-
         $user = User::findOrFail($id);
-        $user->setName($request->input('name'));
+
+        $input = $request->input('name');
+        $hashInput = Hash::make($input);
+        $extension = $request->file('image')->extension();
+
+        $user->setName($input);
         $user->setEmail($request->input('email'));
         $user->setTelefon($request->input('telefon'));
 
         if ($request->hasFile('image')) {
-            $imageName = $request->input('name') . "." . $request->file('image')->extension();
+            $imageName = $hashInput . "." . $extension;
             Storage::disk('public')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
+
             );
         }
-
+        $user->setImage($imageName ?? 'no image');
         $user->save();
+
+        new StorageLinker([$input, $extension]);
+
 
         return redirect()->route('admin.user.index');
     }

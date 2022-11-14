@@ -28,18 +28,18 @@
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
-                            <dic class="col-lg-10 col-md-6 col-sm-12">
+                            <div class="col-lg-10 col-md-6 col-sm-12">
                                 <input name="email" value="{{ old('email') }}" type="text" class="form-control">
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">eMail</label>
-                            </dic>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
-                            <dic class="col-lg-10 col-md-6 col-sm-12">
+                            <div class="col-lg-10 col-md-6 col-sm-12">
                                 <input name="telefon" value="{{ old('telefon') }}" type="text" class="form-control">
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Telefon</label>
-                            </dic>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
@@ -80,13 +80,13 @@
                 </thead>
                 <tbody>
                 @foreach ($viewData["users"] as $user)
-                    <tr>
+                    <tr >
                         <td>{{ $user->getId() }}</td>
                         <td>{{ $user->getName() }}</td>
                         <td>{{ $user->getEmail() }}</td>
                         <td>{{ $user->getTelefon() }}</td>
                         <td>{{ $user->getRole() }}</td>
-                        <td>{{ $user->getImage() }}</td>
+                        <td>{{ '...' . substr($user->getImage(), 40) }}</td>
                         <td>
                             <a class="btn btn-primary" href="{{ route('admin.user.edit', ['id'=>$user->getId()]) }}">
                                 <i class="bi-pencil"> </i>

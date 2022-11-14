@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -138,24 +139,14 @@ class Car extends Model
         $this->attributes['user'] = $user;
     }
 
-    public function getCarUser()
-    {
-        return $this->attributes['carUser'];
-    }
-
-    public function setCarUser($carUser)
-    {
-        $this->attributes['carUser'] = $carUser;
-    }
-
     public function user(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->hasOne(User::class, 'id');
     }
 
-    public function parkingSpot(): BelongsTo
+    public function parkingSpot(): HasMany
     {
-        return $this->belongsTo(ParkingSpot::class, 'id', 'car_id');
+        return $this->hasMany(ParkingSpot::class);
     }
 
 }

@@ -59,6 +59,8 @@ class ParkingSpotController extends Controller
         ParkingSpot::findOrFail($ps_id)->update([
             'user_id' => Auth::id(),
             'car_id' => $id,
+            'image' => 'reserviert.jpg',
+            'status' => 'reserviert'
         ]);
 //        dd($parking_spot);
         return view('parking_spots.reserve.store_reserve')->with("viewData", $viewData);
@@ -77,11 +79,5 @@ class ParkingSpotController extends Controller
 //        $parking_spot_user->setIsFree(false);
         $parking_spot_user->save();
 
-        $viewData = [];
-        $viewData['car'] = Car::all()->last();
-        $viewData['parking_spot'] = ParkingSpot::findOrFail($parking_spot_id);
-        $viewData['users'] = User::findOrFail(Auth::id());
-//        return redirect()->route('user.show')->with('jsAlert', $parking_spot_user)->with("viewData", $viewData);
-//        return view('user.show')->with("viewData", $viewData);
     }
 }

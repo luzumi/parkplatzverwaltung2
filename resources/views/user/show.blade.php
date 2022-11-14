@@ -26,7 +26,8 @@
                                 <th>Vorschau</th>
                                 <th>Parkplatz</th>
                             </tr>
-                            @foreach($viewData['cars'] as $car)
+                            {{ $i = 0 }}
+                            @foreach($viewData['user']->cars as $car)
                                 <tr class="table-active">
                                     <td>{{ $car->sign }}</td>
                                     <td>{{ $car->manufacturer }}</td>
@@ -34,12 +35,13 @@
                                     <td>{{ $car->color }}</td>
                                     <td><img src="{{ asset('/storage/'. $car->image) }}"
                                              class="img-thumbnail col-sm-4" alt="image not found"></td>
-                                    @if(isset($car->parking_spot_id))
-                                        <td>{{ $car->parking_spot_id }}</td>
-                                    @endif
+                                    <td>{{ $viewData['user']->parkingSpot[$i]->number?? 'button' }}</td>
+                                    {{$i++}}
                                 </tr>
                             @endforeach
-                                    <p>{{ $viewData['cars'][0]->user->name }} </p>
+
+
+                            {{--                            <p>{{ $viewData['cars'][0]->user->name }} </p>--}}
                         </table>
                     </h5>
                     Letzter Login: <p class="card-text">{{ $viewData["user"]->getupdatedAt() }}</p>

@@ -32,8 +32,8 @@ Route::post('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\P
 Route::get('/user/', 'App\Http\Controllers\UserController@index')->name("user.index");
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user.show");
 
-Route::get('/user/addCar/index', 'App\Http\Controllers\CarUserController@index')->name('user.addCar.index');
-Route::post('/user/addCar/storeCar', 'App\Http\Controllers\CarUserController@storeCar')->name('user.addCar.storeCar');
+Route::get('/user/addCar/index', 'App\Http\Controllers\CarController@storeIndex')->name('user.addCar.index');
+Route::post('/user/addCar/storeCar', 'App\Http\Controllers\CarController@storeCar')->name('user.addCar.storeCar');
 
 Route::middleware('admin')->group(function(){
     Route::get('/admin', 'App\Http\Controllers\Admin\AdminHomeController@index')->name("admin.home.index");
@@ -62,6 +62,13 @@ Route::middleware('admin')->group(function(){
 
     Route::get('/user', 'App\Http\Controllers\UserController@index')->name("user.index");
 });
+//
+//Route::group(['middleware' => ['auth']], function() {
+//    /**
+//     * Logout Route
+//     */
+//    Route::get('/', 'App\Http\Controllers\LogoutController@perform')->name('logout.perform');
+//});
 
 Auth::routes();
 

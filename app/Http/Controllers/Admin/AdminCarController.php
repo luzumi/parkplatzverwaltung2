@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Car;
+use App\Models\StorageLinker;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AdminCarController extends Controller
@@ -65,6 +67,10 @@ class AdminCarController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
+        $input = $request->input('sign');
+        $hashInput = Hash::make($input);
+        $extension = $request->file('image')->extension();
+
         Car::validate($request);
 
         $car = Car::findOrFail($id);
@@ -75,7 +81,7 @@ class AdminCarController extends Controller
 
 
         if ($request->hasFile('image')) {
-            $imageName = $request->input('sign') . "." . $request->file('image')->extension();
+            $imageName = $hashInput . "." . $extension;
             Storage::disk('public')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
@@ -83,6 +89,7 @@ class AdminCarController extends Controller
         }
 
         $car->save();
+        new StorageLinker([$input, $extension]);
 
         return redirect()->route('admin.car.index');
     }

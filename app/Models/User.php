@@ -6,13 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @method static findOrFail(int|string|null $id)
- * @method static validate(\Illuminate\Http\Request $request)
  * @method static create(array $creationData)
  */
 class User extends Authenticatable
@@ -49,6 +50,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public static function validate(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required'
+        ]);
+    }
 
 //Getter/setter
 
@@ -181,22 +189,22 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Car::class, 'user_id', 'id')->withDefault([
             'status' => true,
-            'image' => 'storage/app/public/testCar.png',
+            'image' => 'storage/testCar.png',
         ]);
     }
 
-    public function cars(): BelongsToMany
+    public function cars(): HasMany
     {
-        return $this->belongsToMany(Car::class,'user_id', 'id');
+        return $this->hasMany(Car::class);
     }
 
-    public function parkingSpot(): BelongsTo
+    public function parkingSpot(): HasMany
     {
-        return $this->belongsTo(ParkingSpot::class, 'user_id', 'id');
+        return $this->hasMany(ParkingSpot::class);
     }
 
     public function parkingSpots(): BelongsToMany
     {
-        return $this->belongsToMany(ParkingSpot::class, 'parking_spots', 'user_id');
+        return $this->belongsToMany(ParkingSpot::class);
     }
 }

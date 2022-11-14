@@ -56,7 +56,7 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input class="form-control" type="file" name="image">
+                                <input name="image" value="{{ $viewData['user']->getImage() }}" type="file" class="form-control" >
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Image:</label>
                             </div>
                         </div>

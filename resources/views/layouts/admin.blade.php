@@ -22,6 +22,7 @@
         <ul class="nav flex-column">
             <li><a href="{{ route('admin.home.index') }}" class="nav-link text-white">- Admin - Home</a></li>
             <li><a href="{{ route("admin.car.index") }}" class="nav-link text-white">- Admin - Fahrzeuge</a></li>
+            <li><a href="{{ route("user.index") }}" class="nav-link text-white">- Admin - all Users</a></li>
             <li><a href="{{ route("admin.user.index") }}" class="nav-link text-white">- Admin - User</a></li>
             <li><a href="{{ route("admin.parking_spot.index") }}" class="nav-link text-white">- Admin - Parkplätze</a></li>
 
@@ -34,6 +35,7 @@
     <div class="col content-grey">
         <nav class="p-3 shadow text-end">
             <span class="profile-font">Admin</span>
+            <span class="profile-font"><a href="{{ route('logout.perform') }}" > Logout </a></span>
             <img class="img-profile rounded-circle" src="{{ asset('/img/undraw_profile.svg') }}" alt="Image not Found">
         </nav>
 

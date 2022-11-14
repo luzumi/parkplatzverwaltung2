@@ -32,6 +32,7 @@ class AdminParkingSpotController extends Controller
         $creationData['user_id'] = 1;
         $creationData['number'] = $count;
         $creationData['row'] = intdiv($count + 1, 3) + 1;
+
         if ($request->hasFile('image')) {
             $imageName = $request->input('status') . "." . $request->file('image')->extension();
             $creationData['image'] = $imageName;
