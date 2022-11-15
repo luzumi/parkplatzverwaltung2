@@ -36,8 +36,14 @@
     <div class="col content-grey">
         <nav class="p-3 shadow text-end">
             <span class="profile-font">Admin</span>
+            <form id="logout" action="{{ route('logout') }}" method="POST">
+                <a role="button" class="nav-link active"
+                   onclick="document.getElementById('logout').submit();">Logout</a>
+                @csrf
             <span class="profile-font">{{--<a href="{{ route('logout.perform') }}" > Logout </a>--}}</span>
-            <img class="img-profile rounded-circle" src="{{ asset('/storage/media/undraw_profile.svg') }}" alt="Image not Found">
+                <img class="img-profile rounded-circle" src="{{ asset('/storage/media/undraw_profile.svg') }}" alt="Image not Found">
+            </form>
+               
         </nav>
 
         <div class="g-0 m-5">
