@@ -28,35 +28,29 @@ class AdminUserController extends Controller
     {
         User::validate($request);
 
-//        $newCar = new Car();
-//        $newCar -> setSign($request->input('sign'));
-//        $newCar -> setManufacturer($request->input('manufacturer'));
-//        $newCar -> setModel($request->input('model'));
-//        $newCar -> setColor($request->input('color'));
-//        $newCar -> setImage($request->input('testCar.png'));
-//        $newCar -> set  (true);
-//        $newCar -> save();
+        $input = $request->input('name') ?? 'unregistered_user.png';
+        $extension = $request->file('image')->extension();
+        $linker = new StorageLinker([$input, $extension]);
 
-        $creationData = $request->only(['name', 'email', 'telefon']);
-
+        $user = $request->only(['name', 'email', 'telefon']);
 
         if ($request->hasFile('image')) {
-            $imageName = $request->input('name') . "." . $request->file('image')->extension();
-            $creationData['image'] = $imageName;
-            Storage::disk('public')->put(
+            $imageName = $linker['hash'];
+            $user['image'] = $imageName;
+            Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
             );
         } else {
-            $creationData['image'] = 'unregistered_user.png';
+            $user['image'] = 'unregistered_user.png';
         }
 
-        $creationData['role'] = 'client';
-        $creationData['password'] = 'password';
-        $creationData['remember_token'] = 'token_';
-        $creationData['email_verified_at'] = now();
+        $user['role'] = 'client';
+        $user['password'] = 'password';
+        $user['remember_token'] = 'token_';
+        $user['email_verified_at'] = now();
 
-        User::create($creationData);
+        User::create($user);
 
         return back();
     }
@@ -80,29 +74,27 @@ class AdminUserController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         User::validate($request);
-        $user = User::findOrFail($id);
 
         $input = $request->input('name');
-        $hashInput = Hash::make($input);
         $extension = $request->file('image')->extension();
-
+        $linker = new StorageLinker([$input, $extension]);
+        $user = User::findOrFail($id);
         $user->setName($input);
         $user->setEmail($request->input('email'));
         $user->setTelefon($request->input('telefon'));
 
         if ($request->hasFile('image')) {
-            $imageName = $hashInput . "." . $extension;
-            Storage::disk('public')->put(
+            $imageName = $linker['hash'];
+            Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
 
             );
         }
+
         $user->setImage($imageName ?? 'no image');
+
         $user->save();
-
-        new StorageLinker([$input, $extension]);
-
 
         return redirect()->route('admin.user.index');
     }

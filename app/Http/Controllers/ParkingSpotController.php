@@ -33,9 +33,13 @@ class ParkingSpotController extends Controller
         $viewData["subtitle"] = "Parkplatz Nr. " . $parking_spot->getNumber();
         $viewData["parking_spot"] = $parking_spot;
 
-        $car = Car::with('user')->where('cars.user_id', Auth::id())->get();
+        $car = Car::with('parkingSpot')
+            ->join('parking_spots', 'car_id', '!=', 'cars.id')
+            ->where('cars.user_id', Auth::id())
+            ->where('parking_spots.user_id', '=', Auth::id())
+            ->get();
+//dd($car);
         $viewData["cars"] = $car;
-
         return view('parking_spots.show')->with("viewData", $viewData);
     }
 
@@ -48,7 +52,7 @@ class ParkingSpotController extends Controller
         $selected_ps_number = substr($request->getRequestUri(), -1);
         $viewData['users'] = User::all()->where('id', Auth::id())->first();
         $parking_spot = ParkingSpot::all()->where('number', $selected_ps_number);
-        $car = Car::all()->where('id', Auth::id());
+        $car = Car::all()->where('user_id', Auth::id());
 
         $viewData['parking_spot'] = $parking_spot;
         $viewData['cars'] = $car;
@@ -62,7 +66,7 @@ class ParkingSpotController extends Controller
             'image' => 'reserviert.jpg',
             'status' => 'reserviert'
         ]);
-//        dd($parking_spot);
+        //dd($parking_spot);
         return view('parking_spots.reserve.store_reserve')->with("viewData", $viewData);
     }
 

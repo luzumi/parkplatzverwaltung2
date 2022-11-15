@@ -51,11 +51,11 @@ class CarController extends Controller
 
         $input = $request->input('name') ?? 'unregistered_user.png';
         $extension = $request->file('image')->extension();
-        $hashInput = Hash::make($input) . "." . $extension;
+        $linker = new StorageLinker([$input, $extension]);
 
         if ($request->hasFile('image')) {
-            $imageName = $request->input('sign') . "." . $extension;
-            Storage::disk('public')->put(
+            $imageName = $linker['hash'];
+            Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
             );
@@ -67,11 +67,10 @@ class CarController extends Controller
         $newCar->setManufacturer($request->input('manufacturer'));
         $newCar->setModel($request->input('model'));
         $newCar->setColor($request->input('color'));
-        $newCar->setImage($hashInput);
+        $newCar->setImage($linker['hash']);
         $newCar->setStatus(true);
         $newCar->save();
 
-        new StorageLinker([$input, $extension]);
 
         return redirect('/user/' . Auth::id());
     }

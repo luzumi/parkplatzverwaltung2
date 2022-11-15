@@ -6,7 +6,7 @@
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="{{ asset('/storage/'. $viewData['parking_spot']->getImage()) }}"
+                <img src="{{ asset('/storage/media/'. $viewData['parking_spot']->getImage()) }}"
                      class="img-fluid rounded-start" alt="Image not found">
             </div>
             <div class="col-md-8">
@@ -19,7 +19,9 @@
                     </h5>
 
                     @if($viewData["parking_spot"]->getStatus() == 'frei')
-                        <form method="POST" action="{{ route('parking_spots.reserve_index',  $viewData["parking_spot"]->getNumber()) }}" enctype="multipart/form-data">
+                        <form method="POST"
+                              action="{{ route('parking_spots.reserve_index',  $viewData["parking_spot"]->getNumber()) }}"
+                              enctype="multipart/form-data">
                             @csrf
 
                             <h5 class="card-title">
@@ -33,9 +35,10 @@
                                         <th>Model</th>
                                         <th>Farbe</th>
                                         <th>Vorschau</th>
-{{--                                        TODO anzeigen welchen parkplatz das auto belegt--}}
                                     </tr>
+
                                     @foreach($viewData['cars'] as $car)
+{{--                                        {{dd($car->parkingSpot)}}--}}
                                         <tr class="table-active">
                                             <td>
                                                 <div class="radio">
@@ -48,7 +51,7 @@
                                             <td>{{ $car->manufacturer }}</td>
                                             <td>{{ $car->model }}</td>
                                             <td>{{ $car->color }}</td>
-                                            <td><img src="{{ asset('/storage/'. $car->image) }}"
+                                            <td><img src="{{ asset('/storage/media/'. $car->find($car->car_id)->image) }}"
                                                      class="img-thumbnail col-sm-6" alt="image not found"></td>
                                         </tr>
                                     @endforeach

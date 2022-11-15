@@ -35,8 +35,8 @@ Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user
 Route::get('/user/addCar/index', 'App\Http\Controllers\CarController@storeIndex')->name('user.addCar.index');
 Route::post('/user/addCar/storeCar', 'App\Http\Controllers\CarController@storeCar')->name('user.addCar.storeCar');
 
-Route::middleware('admin')->group(function(){
-    Route::get('/admin', 'App\Http\Controllers\Admin\AdminHomeController@index')->name("admin.home.index");
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
+    Route::get('/', 'App\Http\Controllers\Admin\AdminHomeController@index')->name("admin.home.index");
     Route::get('/admin/cars', 'App\Http\Controllers\Admin\AdminCarController@index')->name("admin.car.index");
     Route::get('/admin/users', 'App\Http\Controllers\Admin\AdminUserController@index')->name("admin.user.index");
     Route::get('/admin/parking_spots', 'App\Http\Controllers\Admin\AdminParkingSpotController@index')
@@ -61,6 +61,10 @@ Route::middleware('admin')->group(function(){
     Route::put('/admin/parking_spots/{id}/update', 'App\Http\Controllers\Admin\AdminParkingSpotController@update')->name("admin.parking-spot.update");
 
     Route::get('/user', 'App\Http\Controllers\UserController@index')->name("user.index");
+});
+
+Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
+    Route::get('/admin', 'Admin\AdminHomeController@index');
 });
 //
 //Route::group(['middleware' => ['auth']], function() {

@@ -59,7 +59,6 @@
                         </div>
                     </div>
                     <div class="col">
-                        &nbsp;<label>{{ $viewData['test'] }}</label>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Absenden</button>

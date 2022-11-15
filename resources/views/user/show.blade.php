@@ -6,7 +6,7 @@
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="{{ asset('/storage/'. $viewData['user']->getImage()) }}" class="img-fluid rounded-start"
+                <img src="{{ asset('/storage/media/'. $viewData['user']->getImage()) }}" class="img-fluid rounded-start"
                      alt="Image not found">
             </div>
             <div class="col-md-8">
@@ -27,13 +27,14 @@
                                 <th>Parkplatz</th>
                             </tr>
                             {{ $i = 0 }}
+
                             @foreach($viewData['user']->cars as $car)
                                 <tr class="table-active">
                                     <td>{{ $car->sign }}</td>
                                     <td>{{ $car->manufacturer }}</td>
                                     <td>{{ $car->model }}</td>
                                     <td>{{ $car->color }}</td>
-                                    <td><img src="{{ asset('/storage/'. $car->image) }}"
+                                    <td><img src="{{ asset('/storage/media/'. $car->image) }}"
                                              class="img-thumbnail col-sm-4" alt="image not found"></td>
                                     <td>{{ $viewData['user']->parkingSpot[$i]->number?? 'button' }}</td>
                                     {{$i++}}

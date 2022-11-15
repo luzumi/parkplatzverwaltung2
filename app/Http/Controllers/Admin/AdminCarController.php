@@ -28,23 +28,25 @@ class AdminCarController extends Controller
     {
         Car::validate($request);
 
-        $creationData = $request->only(['id', 'sign', 'manufacturer', 'model', 'color']);
+        $input = $request->input('sign');
+        $extension = $request->file('image')->extension();
+        $linker = new StorageLinker([$input, $extension]);
 
+        $car = $request->only(['id', 'sign', 'manufacturer', 'model', 'color']);
         if ($request->hasFile('image')) {
-            $imageName = $request->input('sign') . "." . $request->file('image')->extension();
-            $creationData['image'] = $imageName;
-
-            Storage::disk('public')->put(
+            $imageName = $linker['hash'];
+            $car['image'] = $imageName;
+            Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
             );
         } else {
-            $creationData['image'] = 'testCar.png';
+            $car['image'] = 'testCar.png';
         }
 
-        $creationData['status'] = true;
+        $car['status'] = true;
 
-        Car::create($creationData);
+        Car::create($car);
 
         return back();
     }
@@ -67,29 +69,29 @@ class AdminCarController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
-        $input = $request->input('sign');
-        $hashInput = Hash::make($input);
-        $extension = $request->file('image')->extension();
-
         Car::validate($request);
+
+        $input = $request->input('sign');
+        $extension = $request->file('image')->extension();
+        $linker = new StorageLinker([$input, $extension]);
 
         $car = Car::findOrFail($id);
         $car->setSign($request->input('sign'));
         $car->setManufacturer($request->input('manufacturer'));
         $car->setModel($request->input('model'));
         $car->setColor($request->input('color'));
+        $car->setImage($linker['hash']);
 
 
         if ($request->hasFile('image')) {
-            $imageName = $hashInput . "." . $extension;
-            Storage::disk('public')->put(
+            $imageName = $linker['hash'];
+            Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
             );
         }
 
         $car->save();
-        new StorageLinker([$input, $extension]);
 
         return redirect()->route('admin.car.index');
     }

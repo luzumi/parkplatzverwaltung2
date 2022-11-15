@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
           crossorigin="anonymous" />
-    <link href="{{ asset('/css/admin.css') }}" rel="stylesheet" />
+{{--    <link href="{{ asset('/css/admin.css') }}" rel="stylesheet" />--}}
     <title>@yield('title', 'Admin - Online Store')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
 </head>
@@ -21,8 +21,9 @@
         <hr />
         <ul class="nav flex-column">
             <li><a href="{{ route('admin.home.index') }}" class="nav-link text-white">- Admin - Home</a></li>
+            <li><a href="{{ route("admin.car.index") }}" class="nav-link text-white">- Admin - alle Fahrzeuge</a></li>
             <li><a href="{{ route("admin.car.index") }}" class="nav-link text-white">- Admin - Fahrzeuge</a></li>
-            <li><a href="{{ route("user.index") }}" class="nav-link text-white">- Admin - all Users</a></li>
+            <li><a href="{{ route("user.index") }}" class="nav-link text-white">- Admin - alle Users</a></li>
             <li><a href="{{ route("admin.user.index") }}" class="nav-link text-white">- Admin - User</a></li>
             <li><a href="{{ route("admin.parking_spot.index") }}" class="nav-link text-white">- Admin - Parkplätze</a></li>
 
@@ -35,8 +36,8 @@
     <div class="col content-grey">
         <nav class="p-3 shadow text-end">
             <span class="profile-font">Admin</span>
-            <span class="profile-font"><a href="{{ route('logout.perform') }}" > Logout </a></span>
-            <img class="img-profile rounded-circle" src="{{ asset('/img/undraw_profile.svg') }}" alt="Image not Found">
+            <span class="profile-font">{{--<a href="{{ route('logout.perform') }}" > Logout </a>--}}</span>
+            <img class="img-profile rounded-circle" src="{{ asset('/storage/media/undraw_profile.svg') }}" alt="Image not Found">
         </nav>
 
         <div class="g-0 m-5">

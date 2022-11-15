@@ -6,7 +6,7 @@
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src=src="{{ asset('/storage/app/public/reserviert.jpg') }}"
+                <img src="{{ asset('/storage/media/' . $viewData['parking_spot']->first()->getAttribute('image')) }}"
                      class="img-fluid rounded-start" alt="Image not found">
             </div>
             <div class="col-md-12">

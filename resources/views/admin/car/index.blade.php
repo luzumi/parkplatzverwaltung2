@@ -76,6 +76,7 @@
                 <thead>
                 <tr>
                     <th scope="col">User</th>
+                    <th scope="col">Vorschau</th>
                     <th scope="col">Kennzeichen</th>
                     <th scope="col">Hersteller</th>
                     <th scope="col">Modell</th>
@@ -88,6 +89,7 @@
                 @foreach ($viewData["cars"] as $car)
                     <tr>
                         <td>{{ $car->getUserID() }}</td>
+                        <td><img src="{{ asset('/storage/media/'. $car->getImage()) }}" class="img-fluid rounded-start" alt="Image not found"></td>
                         <td>{{ $car->getSign() }}</td>
                         <td>{{ $car->getManufacturer() }}</td>
                         <td>{{ $car->getModel() }}</td>

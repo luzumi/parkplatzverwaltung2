@@ -69,6 +69,7 @@
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
+                    <th scope="col">Vorschau</th>
                     <th scope="col">Name</th>
                     <th scope="col">email</th>
                     <th scope="col">Telefon</th>
@@ -82,6 +83,8 @@
                 @foreach ($viewData["users"] as $user)
                     <tr >
                         <td>{{ $user->getId() }}</td>
+                        <td><img src="{{ asset('/storage/media/'. $user->image) }}"
+                                 class="img-thumbnail col-sm-6" alt="image not found"></td>
                         <td>{{ $user->getName() }}</td>
                         <td>{{ $user->getEmail() }}</td>
                         <td>{{ $user->getTelefon() }}</td>

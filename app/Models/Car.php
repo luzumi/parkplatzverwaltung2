@@ -144,9 +144,9 @@ class Car extends Model
         return $this->hasOne(User::class, 'id');
     }
 
-    public function parkingSpot(): HasMany
+    public function parkingSpot(): HasOne
     {
-        return $this->hasMany(ParkingSpot::class);
+        return $this->hasOne(ParkingSpot::class);
     }
 
 }

@@ -36,7 +36,7 @@ class AdminParkingSpotController extends Controller
         if ($request->hasFile('image')) {
             $imageName = $request->input('status') . "." . $request->file('image')->extension();
             $creationData['image'] = $imageName;
-            Storage::disk('public')->put(
+            Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
             );
