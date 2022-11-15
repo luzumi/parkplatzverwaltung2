@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('parking_spots', function (Blueprint $table) {
-            $table->id('pid');
+            $table->id('id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('car_id')->nullable();
             $table->string('number');

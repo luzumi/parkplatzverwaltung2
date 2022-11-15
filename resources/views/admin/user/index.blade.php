@@ -84,7 +84,7 @@
                     <tr >
                         <td>{{ $user->getId() }}</td>
                         <td><img src="{{ asset('/storage/media/'. $user->image) }}"
-                                 class="img-thumbnail col-sm-6" alt="image not found"></td>
+                                 class="img-profile" alt="image not found"></td>
                         <td>{{ $user->getName() }}</td>
                         <td>{{ $user->getEmail() }}</td>
                         <td>{{ $user->getTelefon() }}</td>

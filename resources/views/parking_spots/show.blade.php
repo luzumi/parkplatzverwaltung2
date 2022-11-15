@@ -38,7 +38,6 @@
                                     </tr>
 
                                     @foreach($viewData['cars'] as $car)
-{{--                                        {{dd($car->parkingSpot)}}--}}
                                         <tr class="table-active">
                                             <td>
                                                 <div class="radio">
@@ -51,7 +50,7 @@
                                             <td>{{ $car->manufacturer }}</td>
                                             <td>{{ $car->model }}</td>
                                             <td>{{ $car->color }}</td>
-                                            <td><img src="{{ asset('/storage/media/'. $car->find($car->car_id)->image) }}"
+                                            <td><img src="{{ asset('/storage/media/'. $car->image) }}"
                                                      class="img-thumbnail col-sm-6" alt="image not found"></td>
                                         </tr>
                                     @endforeach

@@ -53,8 +53,8 @@ class User extends Authenticatable
     public static function validate(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
-            'email' => 'required'
+            'name' => 'required|string|max:30',
+            'email' => 'email:rfc,dns|required|max:50'
         ]);
     }
 

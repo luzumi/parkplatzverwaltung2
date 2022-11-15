@@ -25,7 +25,6 @@ class ParkingSpotController extends Controller
     public function show($id): Factory|View|Application
     {
         $parking_spot = ParkingSpot::findOrFail($id);
-
         $viewData = [];
 
         $viewData["user"] = User::findOrFail(Auth::id());
@@ -34,11 +33,13 @@ class ParkingSpotController extends Controller
         $viewData["parking_spot"] = $parking_spot;
 
         $car = Car::with('parkingSpot')
-            ->join('parking_spots', 'car_id', '!=', 'cars.id')
+            ->select('cars.sign', 'cars.image', 'cars.manufacturer', 'cars.model', 'cars.color')
             ->where('cars.user_id', Auth::id())
-            ->where('parking_spots.user_id', '=', Auth::id())
+            ->join('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
+            ->where( 'cars.id', '!=', Auth::id())
+            ->distinct()
             ->get();
-//dd($car);
+
         $viewData["cars"] = $car;
         return view('parking_spots.show')->with("viewData", $viewData);
     }
@@ -66,7 +67,7 @@ class ParkingSpotController extends Controller
             'image' => 'reserviert.jpg',
             'status' => 'reserviert'
         ]);
-        //dd($parking_spot);
+
         return view('parking_spots.reserve.store_reserve')->with("viewData", $viewData);
     }
 

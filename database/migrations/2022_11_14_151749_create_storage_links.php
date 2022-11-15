@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('storage_links', function (Blueprint $table) {
+        Schema::create('storage_linkers', function (Blueprint $table) {
             $table->id();
             $table->string('original');
             $table->string('hash');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('storage_links');
+        Schema::dropIfExists('storage_linkers');
     }
 };

@@ -87,9 +87,9 @@
                 </thead>
                 <tbody>
                 @foreach ($viewData["cars"] as $car)
-                    <tr>
+                    <tr class="img-thumbnail img-card">
                         <td>{{ $car->getUserID() }}</td>
-                        <td><img src="{{ asset('/storage/media/'. $car->getImage()) }}" class="img-fluid rounded-start" alt="Image not found"></td>
+                        <td class="img-profile"><img src="{{ asset('/storage/media/'. $car->getImage()) }}" class="img-fluid rounded-start" alt="Image not found"></td>
                         <td>{{ $car->getSign() }}</td>
                         <td>{{ $car->getManufacturer() }}</td>
                         <td>{{ $car->getModel() }}</td>
