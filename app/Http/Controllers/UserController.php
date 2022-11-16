@@ -32,4 +32,16 @@ class UserController extends Controller
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }
+
+    public function edit($id)
+    {
+        $user_id = $id == Auth::id() ? Auth::id() : $id;
+        $viewData = [];
+        $user = User::findOrFail($user_id);
+        $viewData["user"] = $user;
+        $viewData["title"] = $user["name"] . "Benutzerdaten - Parkplatzverwaltung";
+        $viewData["subtitle"] = $user["name"] . " - User edit";
+
+        return view('user.edit', [$id])->with("viewData", $viewData);
+    }
 }

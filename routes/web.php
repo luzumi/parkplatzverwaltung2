@@ -31,6 +31,7 @@ Route::post('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\P
 
 Route::get('/user/', 'App\Http\Controllers\UserController@index')->name("user.index");
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user.show");
+Route::get('/user/edit/{id}', 'App\Http\Controllers\UserController@edit')->name("user.edit");
 
 Route::get('/user/addCar/index', 'App\Http\Controllers\CarController@storeIndex')->name('user.addCar.index');
 Route::post('/user/addCar/storeCar', 'App\Http\Controllers\CarController@storeCar')->name('user.addCar.storeCar');
@@ -47,18 +48,25 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::post('/admin/parking_spots/store', 'App\Http\Controllers\Admin\AdminParkingSpotController@store')
         ->name("admin.parking_spot.store");
 
-    Route::delete('/admin/cars/{id}/delete', 'App\Http\Controllers\Admin\AdminCarController@delete')->name("admin.car.delete");
-    Route::delete('/admin/users/{id}/delete', 'App\Http\Controllers\Admin\AdminUserController@delete')->name("admin.user.delete");
+    Route::delete('/admin/cars/{id}/delete', 'App\Http\Controllers\Admin\AdminCarController@delete')
+        ->name("admin.car.delete");
+    Route::delete('/admin/users/{id}/delete', 'App\Http\Controllers\Admin\AdminUserController@delete')
+        ->name("admin.user.delete");
     Route::delete('/admin/parking_spots/{id}/delete', 'App\Http\Controllers\Admin\AdminParkingSpotController@delete')
         ->name("admin.parking_spot.delete");
 
     Route::get('/admin/cars/{id}/edit', 'App\Http\Controllers\Admin\AdminCarController@edit')->name("admin.car.edit");
-    Route::get('/admin/users/{id}/edit', 'App\Http\Controllers\Admin\AdminUserController@edit')->name("admin.user.edit");
-    Route::get('/admin/parking_spots/{id}/edit', 'App\Http\Controllers\Admin\AdminParkingSpotController@edit')->name("admin.parking-spot.edit");
+    Route::get('/admin/users/{id}/edit', 'App\Http\Controllers\Admin\AdminUserController@edit')
+        ->name("admin.user.edit");
+    Route::get('/admin/parking_spots/{id}/edit', 'App\Http\Controllers\Admin\AdminParkingSpotController@edit')
+        ->name("admin.parking-spot.edit");
 
-    Route::put('/admin/cars/{id}/update', 'App\Http\Controllers\Admin\AdminCarController@update')->name("admin.car.update");
-    Route::put('/admin/users/{id}/update', 'App\Http\Controllers\Admin\AdminUserController@update')->name("admin.user.update");
-    Route::put('/admin/parking_spots/{id}/update', 'App\Http\Controllers\Admin\AdminParkingSpotController@update')->name("admin.parking-spot.update");
+    Route::put('/admin/cars/{id}/update', 'App\Http\Controllers\Admin\AdminCarController@update')
+        ->name("admin.car.update");
+    Route::put('/admin/users/{id}/update', 'App\Http\Controllers\Admin\AdminUserController@update')
+        ->name("admin.user.update");
+    Route::put('/admin/parking_spots/{id}/update', 'App\Http\Controllers\Admin\AdminParkingSpotController@update')
+        ->name("admin.parking-spot.update");
 
     Route::get('/user', 'App\Http\Controllers\UserController@index')->name("user.index");
 });

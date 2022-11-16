@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -10,6 +11,7 @@ class HomeController extends Controller
     {
         $viewData = [];
         $viewData["title"] = "Home Page - Parkplatzverwaltung";
+        $viewData['image'] = Auth::user()->image ?? '/storage/media/unregistered_user.png';
         return view('home.index')->with("viewData", $viewData);
     }
 

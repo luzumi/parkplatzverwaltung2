@@ -38,6 +38,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+
         $this->middleware('guest')->except('logout');
     }
 
@@ -45,7 +46,7 @@ class LoginController extends Controller
     {
         if (Auth::user()->getRole() == 'admin') {
             return redirect()->route('admin.home.index');
-        } else if(Auth::user()->getRole() == 'client'){
+        } elseif (Auth::user()->getRole() == 'client') {
             return redirect()->route('home.index');
         }
         return redirect()->route('home.index');

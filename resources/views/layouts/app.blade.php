@@ -1,4 +1,5 @@
-<!doctype html>
+@php use Illuminate\Support\Facades\Auth; @endphp
+    <!doctype html>
 <html lang="de">
 <head>
     <meta charset="utf-8"/>
@@ -22,7 +23,7 @@
                 <a class="nav-link active" href="{{ route('home.index') }}">Home</a>
                 <a class="nav-link active" href="{{ route('user.show', (Auth::check())? Auth::id() : 0) }}">User</a>
                 <a class="nav-link active" href="{{ route('user.addCar.index') }}">Add Car</a>
-{{--                <a class="nav-link active" href="{{ route('car.index') }}">Cars</a>--}}
+                {{--                <a class="nav-link active" href="{{ route('car.index') }}">Cars</a>--}}
                 <a class="nav-link active" href="{{ route('parking_spot.index') }}">Parkplatz</a>
                 <a class="nav-link active" href="{{ route('home.about') }}">About</a>
                 <div class="vr bg-white mx-2 d-none d-lg-block"></div>
@@ -36,6 +37,8 @@
                         @csrf
                     </form>
                 @endguest
+                <img class="img-profile rounded-circle"
+                     src=" {{asset( '/storage/media/'. (Auth::user()->image ?? 'undraw_profile.svg')) }} " alt="z">
             </div>
         </div>
     </div>

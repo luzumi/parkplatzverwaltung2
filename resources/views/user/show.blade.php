@@ -7,7 +7,7 @@
         <div class="row g-0">
             <div class="col-md-4">
                 {{--                {{dd($viewData['user'], 1231123)}}--}}
-                <img src="{{ asset('/storage/media/'. $viewData['user']->getImage()) }}" class="img-fluid rounded-start"
+                <img src="{{ asset('/storage/media/'. $viewData['user']->getImage()) }}" class="img-card rounded-start"
                      alt="Image not found">
             </div>
             <div class="col-md-8">
@@ -35,7 +35,7 @@
                                     <td>{{ $car->model }}</td>
                                     <td>{{ $car->color }}</td>
                                     <td><img src="{{ asset('/storage/media/'. $car->image) }}"
-                                             class="img-thumbnail col-sm-4" alt="image not found"></td>
+                                             class="img-thumbnail row-cols-sm-4" alt="image not found"></td>
                                     <td>{{ $viewData['user']->parkingSpot[$i++]->number ??  'button'}} </td>
                                 </tr>
                             @endforeach
@@ -45,7 +45,12 @@
                         </table>
                     </h5>
                     <p class="card-text">Letzter Login: {{ $viewData["user"]->getupdatedAt() }}</p>
-                    <p class="card-text"><small class="text-muted">Userdaten bearbeiten (coming soon)</small></p>
+                    <p class="card-text">
+                        <a class="link-light" href="{{ route('user.edit', $viewData["user"]->id) }}">
+                            <small class="text-muted">Userdaten bearbeiten (coming soon)>
+                            </small>
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
