@@ -33,7 +33,7 @@ Route::post('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\P
 
 Route::get('/user/', 'App\Http\Controllers\UserController@index')->name("user.index");
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user.show");
-Route::post('user/editor/{id}', 'App\Http\Controllers\Admin\AdminUserController@editor')->name("user.editor-id");
+Route::get('user/editor/{id}', 'App\Http\Controllers\UserController@editor')->name("user.editor-id");
 
 Route::get('/user/addCar/index', 'App\Http\Controllers\CarController@storeIndex')->name('user.addCar.index');
 Route::post('/user/addCar/storeCar', 'App\Http\Controllers\CarController@storeCar')->name('user.addCar.storeCar');
@@ -73,7 +73,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 //    Route::get('/user', 'App\Http\Controllers\UserController@index')->name("user.index");
 });
 
-Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
+Route::group(['prefix'=>'admin','middleware'=>'auth'], function () {
     Route::get('/admin', 'Admin\AdminHomeController@index');
 });
 

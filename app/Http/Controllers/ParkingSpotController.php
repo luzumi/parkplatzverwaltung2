@@ -95,7 +95,7 @@ class ParkingSpotController extends Controller
 
     public function storeThisCar(Request $request): Factory|View|Application
     {
-       dd($request);
+//       dd($request);
         $viewData = [];
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';

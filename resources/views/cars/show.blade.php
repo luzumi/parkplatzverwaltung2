@@ -31,7 +31,6 @@
                                                 <select name="status" id="spot">
                                                     @foreach($viewData['parking_spots'] as $spot)
                                                         <option value="{{ $spot->id }}" name="id">{{$spot->number}}</option>
-                                                        {{$viewData['selected_spot'] = $spot->id}}
                                                     @endforeach
                                                 </select>
                                                 <button type="submit" class="btn btn-primary">Reservieren</button>
