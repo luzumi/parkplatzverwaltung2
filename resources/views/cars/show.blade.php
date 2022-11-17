@@ -19,7 +19,6 @@
                     <tr class="table-primary">
                         <th>Parkplatz mieten - Nummer:</th>
                         <th>
-
                             <form method="POST"
                                   action="{{ route('parking_spots.storeThisCar') }}"
                                   enctype="multipart/form-data">
