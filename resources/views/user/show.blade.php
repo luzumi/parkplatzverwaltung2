@@ -29,21 +29,21 @@
                                 <th>Parkplatz</th>
                             </tr>
                             <object{{ $i = 0 }}>
-
-                                @foreach(Car::all()->where('user_id', $viewData['user']) as $car))
+                            @foreach(Car::all()->where('user_id', $viewData['user']->id) as $car)
                                 <tr class="table-active">
                                     <td>{{ $car->sign }}</td>
                                     <td>{{ $car->manufacturer }}</td>
                                     <td>{{ $car->model }}</td>
                                     <td>{{ $car->color }}</td>
-                                    <td>
+                                    <td>{{--//TODO angepasste View nach fahrzueg reserviert selbst Parkplatz--}}
                                         <a href="{{ route('cars.show', ['id'=> $car->getId()]) }}">
                                             <img src="{{ asset('/storage/media/'. $car->image) }}"
                                                  class="img-thumbnail row-cols-sm-4" alt="image not found">
                                         </a>
                                     </td>
-                                                                {{--//TODO PASCHT NET--}}
-                                    <td>{{ ParkingSpot::findOrFail($viewData['user'])[$i]->number ?? 'button'}} </td>
+
+                                    <td>{{ ParkingSpot::all()->where('user_id', $viewData['user']->id)[$i]->number ?? 'button'}} </td>
+
                                 </tr>
                             @endforeach
                         </table>
