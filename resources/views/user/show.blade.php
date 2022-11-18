@@ -6,17 +6,18 @@
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="{{ asset('/storage/media/'. User::findOrFail($viewData['user'])->getImage()) }}"
+                <img src="{{ asset('/storage/media/'. $viewData['user']->getImage()) }}"
                      class="img-card rounded-start"
                      alt="Image not found">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">
-                        Name: {{ User::findOrFail($viewData["user"])->getName() }} <br>
-                        eMail: {{ User::findOrFail($viewData["user"])->getEmail() }} <br>
-                        Telefon: {{ User::findOrFail($viewData["user"])->getTelefon() }} <br>
-                        User-Rolle: {{ User::findOrFail($viewData["user"])->getRole() }} <br><br>
+                        Name: {{ $viewData["user"]->getName() }} <br>
+{{--                        {{dd($viewData)}}--}}
+                        eMail: {{ $viewData["user"]->getEmail() }} <br>
+                        Telefon: {{ $viewData["user"]->getTelefon() }} <br>
+                        User-Rolle: {{ $viewData["user"]->getRole() }} <br><br>
                         Fahrzeuge:
                         <table class="table table-bordered">
                             <tr class="table-primary">
@@ -28,6 +29,7 @@
                                 <th>Parkplatz</th>
                             </tr>
                             <object{{ $i = 0 }}>
+
                                 @foreach(Car::all()->where('user_id', $viewData['user']) as $car))
                                 <tr class="table-active">
                                     <td>{{ $car->sign }}</td>
@@ -46,10 +48,10 @@
                             @endforeach
                         </table>
                     </h5>
-                    <p class="card-text">Letzter Login: {{ User::findOrFail($viewData["user"])->getupdatedAt() }}</p>
+                    <p class="card-text">Letzter Login: {{ $viewData["user"]->getupdatedAt() }}</p>
                     <p class="card-text">
                         <a class="link-light"
-                           href="{{ route('user.editor-id', User::findOrFail($viewData["user"])->getId()) }}">
+                           href="{{ route('user.editor-id', $viewData["user"]->getId()) }}">
                             <small class="text-muted">Userdaten bearbeiten (coming soon)</small>
                         </a>
                     </p>

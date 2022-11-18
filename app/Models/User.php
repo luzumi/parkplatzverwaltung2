@@ -58,24 +58,7 @@ class User extends Authenticatable
         ]);
     }
 
-//Getter/setter
 
-    /**
-     * CAR ATTRIBUTES
-     * $this->attributes['id'] - int - contains the user primary key
-     * $this->attributes['name'] - string - contains the user name
-     * $this->attributes['email'] - string - contains the user email-address
-     * $this->attributes['email-verified-at'] - string - contains the user email-verified
-     * $this->attributes['password'] - string - contains the user password
-     * $this->attributes['image'] - string - contains the user image
-     * $this->attributes['telefon'] - string - contains the user telefon
-     * $this->attributes['role'] - string - contains the user role (client or admin)
-     * $this->attributes['balance'] - string - contains the user balance
-     * $this->attributes['remember_token'] - string - contains the user remember_token
-     * $this->attributes['created_at'] - timestamp - contains the user creation date
-     * $this->attributes['updated_at'] - timestamp - contains the user updated date
-     *
-     */
     public function getId()
     {
         return $this->attributes['id'];
@@ -189,7 +172,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Car::class, 'user_id', 'id')->withDefault([
             'status' => true,
-            'image' => 'storage/testCar.png',
+            'image' => 'testCar.png',
         ]);
     }
 
