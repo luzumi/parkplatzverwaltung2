@@ -34,6 +34,12 @@ Route::post('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\P
 Route::get('/user/', 'App\Http\Controllers\UserController@index')->name("user.index");
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user.show");
 Route::get('user/editor/{id}', 'App\Http\Controllers\UserController@editor')->name("user.editor-id");
+Route::put('user/{id}/update', 'App\Http\Controllers\UserController@update')
+    ->name("user.update");
+Route::put('user/{id}/updatePicture', 'App\Http\Controllers\UserController@updatePicture')
+    ->name("user.updatePicture");
+Route::put('address/{id}/create', 'App\Http\Controllers\AddressController@create')
+    ->name("address.create");
 
 Route::get('/user/addCar/index', 'App\Http\Controllers\CarController@storeIndex')->name('user.addCar.index');
 Route::post('/user/addCar/storeCar', 'App\Http\Controllers\CarController@storeCar')->name('user.addCar.storeCar');

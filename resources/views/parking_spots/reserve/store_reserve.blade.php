@@ -12,7 +12,7 @@
             <div class="col-md-12">
                 <div class="card-body">
                     <h3 class="offset-lg-5">
-                        {{ $viewData['users']->first()->getAttribute('name') }}
+                        {{ $viewData['user']->first()->getAttribute('name') }}
                         <h5 class="card-body ">
                             Der Parkplatz Nr.<strong>{{ $viewData['parking_spot']->first()->getAttribute('number') }}</strong>
                             wurde für Ihr Fahrzeug mit dem Kennzeichen

@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parking_spot_users', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('parking_spot_id');
-            $table->foreign('parking_spot_id')->references('id')->on('parking_spots');
-            $table->boolean('isFree')->default(false);
+            $table->string('Land');
+            $table->integer('PLZ', false, true);
+            $table->string('Stadt');
+            $table->string('Strasse');
+            $table->integer('Nummer', false, true);
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parking_spot_user');
+        Schema::dropIfExists('addresses');
     }
 };

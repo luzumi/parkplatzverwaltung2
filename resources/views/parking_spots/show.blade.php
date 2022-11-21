@@ -39,6 +39,8 @@
 
                                     @foreach($viewData['cars'] as $car)
                                         <tr class="table-active">
+                                            @if(!isset($car->parkingSpot))
+
                                             <td>
                                                 <div class="radio">
                                                     <label class="input-group-sm">
@@ -46,6 +48,9 @@
                                                     </label>
                                                 </div>
                                             </td>
+                                            @else
+                                                <td></td>
+                                            @endif
                                             <td>{{ $car->sign }}</td>
                                             <td>{{ $car->manufacturer }}</td>
                                             <td>{{ $car->model }}</td>

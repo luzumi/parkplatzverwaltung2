@@ -19,6 +19,7 @@ class ParkingSpotController extends Controller
         $viewData["title"] = "Parkplatzverwaltung";
         $viewData["subtitle"] = "Parkplatzübersicht";
         $viewData["parking_spots"] = ParkingSpot::all();
+
         return view('parking_spots.index')->with("viewData", $viewData);
     }
 
@@ -33,12 +34,20 @@ class ParkingSpotController extends Controller
         $viewData["parking_spot"] = $parking_spot;
 
         $car = Car::with('parkingSpot')
-            ->select('cars.sign', 'cars.image', 'cars.manufacturer', 'cars.model', 'cars.color')
+            ->select(
+                'cars.id',
+                'cars.sign',
+                'cars.image',
+                'cars.manufacturer',
+                'cars.model',
+                'cars.color',
+                'parking_spots.number'
+            )
             ->where('cars.user_id', Auth::id())
             ->join('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
-            ->where( 'cars.id', '!=', Auth::id())
             ->distinct()
             ->get();
+//        dd($viewData);
 
         $viewData["cars"] = $car;
         return view('parking_spots.show')->with("viewData", $viewData);
@@ -55,7 +64,6 @@ class ParkingSpotController extends Controller
         $viewData['user'] = User::all()->where('id', Auth::id())->first();
         $parking_spot = ParkingSpot::all()->where('number', $selected_ps_number);
         $car = Car::all()->where('user_id', Auth::id());
-
         $viewData['parking_spot'] = $parking_spot;
         $viewData['cars'] = $car;
 
@@ -103,24 +111,32 @@ class ParkingSpotController extends Controller
         $parking_spot_id = $request['status'];
         $parking_spot_user = ParkingSpot::findOrFail($parking_spot_id);
         $parking_spot_user->setId($parking_spot_id);
+
         $parking_spot_user->setUserId(Auth::id());
-        $parking_spot_user->setCarId(substr($request->session()->previousUrl(), strripos($request->session()->previousUrl(), '/')+1));
+
+        $offset = strripos($request->session()->previousUrl(), '/') + 1;
+        $parking_spot_user->setCarId(substr($request->session()->previousUrl(), $offset));
+
         $parking_spot_user->setStatus('reserviert');
         $parking_spot_user->setImage('reserviert.jpg');
 
-        $parking_spot_user->update();
 
-        $viewData['car'] = Car::all()->where('user_id', Auth::id())
-            ->join('parking_spots.user_id', Auth::id());
         $car = Car::with('parkingSpot')
-            ->select('cars.sign', 'cars.image', 'cars.manufacturer', 'cars.model', 'cars.color', 'parking_spots.number')
+            ->select(
+                'cars.id',
+                'cars.sign',
+                'cars.image',
+                'cars.manufacturer',
+                'cars.model',
+                'cars.color'
+            )
             ->where('cars.user_id', Auth::id())
             ->join('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
-            ->where( 'cars.id', '!=', Auth::id())
             ->distinct()
             ->get();
-dd($car);
-        $viewData['parking_spots'] = ParkingSpot::where('user_id', Auth::id())->get();
+
+        $viewData['cars'] = $car;
+        $parking_spot_user->update();
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }
