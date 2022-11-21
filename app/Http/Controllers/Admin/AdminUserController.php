@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\StorageLinker;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
@@ -66,36 +67,50 @@ class AdminUserController extends Controller
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
         $viewData['user'] = User::findOrFail($id);
+        $viewData['address'] = Address::all()->where('user_id', $id)->first();
 
         return view('admin.user.edit')->with('viewData', $viewData);
 
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id): Application|Factory|View
     {
         User::validate($request);
-
         $input = $request->input('name');
-        $extension = $request->file('image')->extension();
-        $linker = new StorageLinker([$input, $extension]);
         $user = User::findOrFail($id);
         $user->setName($input);
         $user->setEmail($request->input('email'));
         $user->setTelefon($request->input('telefon'));
 
         if ($request->hasFile('image')) {
+            $extension = $request->file('image')->extension();
+            $linker = new StorageLinker([$input, $extension]);
             $imageName = $linker['hash'];
             Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
 
             );
+            $user->setImage($imageName);
         }
 
-        $user->setImage($imageName ?? 'no image');
+        $user->update();
 
-        $user->save();
+        $address = Address::all()->where('user_id', $id)->first();
+        $address->Land = $request['Land'];
+        $address->PLZ = $request->input('PLZ');
+        $address->Stadt = $request->input('Stadt');
+        $address->Strasse = $request->input('Strasse');
+        $address->Nummer = $request->input('Nummer');
+        $address->setCreatedAt(now());
+        $address->setUpdatedAt(now());
+//        dd($address);
+        $address->update();
 
-        return redirect()->route('admin.user.index');
+        $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
+        $viewData['users'] = User::all();
+        $viewData['address'] = Address::all()->where('user_id', $id)->first();
+
+        return view('admin.user.index')->with("viewData", $viewData);
     }
 }

@@ -24,6 +24,7 @@
                         . $viewData["address"]['Nummer'] }} <br>
                         <br>
                         <p class="mb-sm-auto">Letzter Login: {{ $viewData["user"]->getupdatedAt() }}</p>
+
                         User-Rolle: {{ $viewData["user"]->getRole() }} <br><br>
                         <p class="card-text">
                             <a class="align-content-lg-center"
