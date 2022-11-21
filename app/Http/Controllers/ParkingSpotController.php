@@ -95,20 +95,32 @@ class ParkingSpotController extends Controller
 
     public function storeThisCar(Request $request): Factory|View|Application
     {
-//       dd($request);
         $viewData = [];
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
-        $viewData['user'] = Auth::id();
+        $viewData['user'] = User::all()->where('id', Auth::id())->first();
 
         $parking_spot_id = $request['status'];
         $parking_spot_user = ParkingSpot::findOrFail($parking_spot_id);
         $parking_spot_user->setId($parking_spot_id);
         $parking_spot_user->setUserId(Auth::id());
+        $parking_spot_user->setCarId(substr($request->session()->previousUrl(), strripos($request->session()->previousUrl(), '/')+1));
         $parking_spot_user->setStatus('reserviert');
         $parking_spot_user->setImage('reserviert.jpg');
 
         $parking_spot_user->update();
+
+        $viewData['car'] = Car::all()->where('user_id', Auth::id())
+            ->join('parking_spots.user_id', Auth::id());
+        $car = Car::with('parkingSpot')
+            ->select('cars.sign', 'cars.image', 'cars.manufacturer', 'cars.model', 'cars.color', 'parking_spots.number')
+            ->where('cars.user_id', Auth::id())
+            ->join('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
+            ->where( 'cars.id', '!=', Auth::id())
+            ->distinct()
+            ->get();
+dd($car);
+        $viewData['parking_spots'] = ParkingSpot::where('user_id', Auth::id())->get();
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }

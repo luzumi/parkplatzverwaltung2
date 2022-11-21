@@ -29,7 +29,7 @@
                                 <th>Parkplatz</th>
                             </tr>
                             <object{{ $i = 0 }}>
-                            @foreach(Car::all()->where('user_id', $viewData['user']->id) as $car)
+                            @foreach($viewData['car'] as $car)
                                 <tr class="table-active">
                                     <td>{{ $car->sign }}</td>
                                     <td>{{ $car->manufacturer }}</td>
@@ -41,8 +41,8 @@
                                                  class="img-thumbnail row-cols-sm-4" alt="image not found">
                                         </a>
                                     </td>
-
-                                    <td>{{ ParkingSpot::all()->where('user_id', $viewData['user']->id)[$i]->number ?? 'button'}} </td>
+                                    {{ dd($viewData['car'][0]->parkingSpot, $viewData['car'][2]->parkingSpot) }}
+                                    <td>{{ $viewData['cars'][$i++]->parkingSpot->number ?? 'button'}} </td>
 
                                 </tr>
                             @endforeach

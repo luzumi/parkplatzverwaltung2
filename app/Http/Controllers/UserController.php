@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ParkingSpot;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -30,6 +31,7 @@ class UserController extends Controller
         $viewData['cars'] = $user->cars;
         $viewData['title'] = $user['name'] . " - Parkplatzverwaltung";
         $viewData['subtitle'] = $user['name'] . " - User information";
+        $viewData['parking_spots'] = ParkingSpot::where('user_id', Auth::id())->get();
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }
