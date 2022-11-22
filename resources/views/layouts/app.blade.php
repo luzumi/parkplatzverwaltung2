@@ -21,9 +21,10 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ms-auto">
                 <a class="nav-link active" href="{{ route('home.index') }}">Home</a>
-                <a class="nav-link active" href="{{ route('user.show', (Auth::check())? Auth::id() : 0) }}">User</a>
-                <a class="nav-link active" href="{{ route('user.addCar.index') }}">Add Car</a>
-                {{--                <a class="nav-link active" href="{{ route('car.index') }}">Cars</a>--}}
+                @if (auth()->check())
+                    <a class="nav-link active" href="{{ route('user.show', (Auth::check())? Auth::id() : 0) }}">User</a>
+                    <a class="nav-link active" href="{{ route('user.addCar.index') }}">Add Car</a>
+                @endif
                 <a class="nav-link active" href="{{ route('parking_spot.index') }}">Parkplatz</a>
                 <a class="nav-link active" href="{{ route('home.about') }}">About</a>
                 <div class="vr bg-white mx-2 d-none d-lg-block"></div>

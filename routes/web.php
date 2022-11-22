@@ -30,6 +30,8 @@ Route::post('/parking_spots/reserve/store', 'App\Http\Controllers\ParkingSpotCon
     ->name("parking_spots.storeThisCar");
 Route::post('/parking_spots/reserve/store_reserve/{id}', 'App\Http\Controllers\ParkingSpotController@store')
     ->name("parking_spots.reserve.store_reserve");
+Route::get('/parking_spots/reserve/store_cancel/{id}', 'App\Http\Controllers\ParkingSpotController@cancel')
+    ->name("parking_spots.reserve.cancel");
 
 Route::get('/user/', 'App\Http\Controllers\UserController@index')->name("user.index");
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name("user.show");
@@ -40,6 +42,7 @@ Route::put('user/{id}/updatePicture', 'App\Http\Controllers\UserController@updat
     ->name("user.updatePicture");
 Route::put('address/{id}/create', 'App\Http\Controllers\AddressController@create')
     ->name("address.create");
+Route::delete('/user/delete/', 'App\Http\Controllers\UserController@delete')->name("user.delete");
 
 Route::get('/user/addCar/index', 'App\Http\Controllers\CarController@storeIndex')->name('user.addCar.index');
 Route::post('/user/addCar/storeCar', 'App\Http\Controllers\CarController@storeCar')->name('user.addCar.storeCar');

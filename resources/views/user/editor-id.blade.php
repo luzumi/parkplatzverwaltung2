@@ -83,19 +83,21 @@
                         </form>
                     </div>
                 </div>
+            </div>
                 <div class="col-lg-12">
                     <!-- Delete account card-->
-                    <div class="card mb-10">
-                        <div class="card-header">Delete Account</div>
-                        <div class="card-body">
-                            <p>Das Löschen Ihres Kontos ist eine dauerhafte Aktion und kann nicht rückgängig gemacht
-                                werden. Wenn Sie sicher sind, dass Sie Ihr Konto löschen möchten, wählen Sie die
-                                Schaltfläche unten.</p>
-                            <button class="btn btn-danger-soft text-danger" type="button">Ich habe verstanden,
-                                Account löschen!
-                            </button>
-                        </div>
-                    </div>
+                    <div class="card-header">Delete Account</div>
+                    <div class="card-body">
+                        <p>Das Löschen Ihres Kontos ist eine dauerhafte Aktion und kann nicht rückgängig gemacht
+                            werden. Wenn Sie sicher sind, dass Sie Ihr Konto löschen möchten, wählen Sie die
+                            Schaltfläche unten.</p>
+                        <form action="{{ route('user.delete') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger-soft text-danger">
+                            Ich habe verstanden, Account löschen!
+                        </button>
+                    </form>
                 </div>
             </div>
             <div class="col-xl-8">

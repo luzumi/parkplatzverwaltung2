@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 @extends('layouts.app')
 @section('title', $viewData["title"])
 @section('subtitle', $viewData["subtitle"])
@@ -41,15 +42,20 @@
                                         <tr class="table-active">
                                             @if(!isset($car->parkingSpot))
 
-                                            <td>
-                                                <div class="radio">
-                                                    <label class="input-group-sm">
-                                                        <input type="radio" id='{{ $car->id }}' name="radio">
-                                                    </label>
-                                                </div>
-                                            </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="input-group-sm">
+                                                            <input type="radio" id='{{ $car->id }}' name="radio">
+                                                        </label>
+                                                    </div>
+                                                </td>
                                             @else
-                                                <td></td>
+                                                <td>
+                                                    <a href="{{ route('parking_spots.reserve.cancel', $car->parkingSpot->id) }}"
+                                                       class="btn btn-danger {{ $viewData["parking_spot"]->switchStatus() }} text-white ">
+                                                        Reservierung löschen
+                                                    </a>
+                                                </td>
                                             @endif
                                             <td>{{ $car->sign }}</td>
                                             <td>{{ $car->manufacturer }}</td>
@@ -65,13 +71,14 @@
                             <button type="submit" class="btn btn-primary">Absenden</button>
                         </form>
                     @endif
-
-                    Letzte Änderung: <p class="card-text">{{ $viewData["parking_spot"]->getUpdatedAt() }}</p>
-                    <p class="card-text"><small class="text-muted">****************************</small></p>
-                    <a href="{{ route('user.show', Auth::id()) }}"
-                       class="btn {{ $viewData["parking_spot"]->switchStatus() }} text-white offset-lg-7">
-                        zurück zur Übersicht
-                    </a>
+                    <div>
+                        Letzte Änderung: <p class="card-text">{{ $viewData["parking_spot"]->getUpdatedAt() }}</p>
+                        <p class="card-text"><small class="text-muted">****************************</small></p>
+                        <a href="{{ route('user.show', Auth::id()) }}"
+                           class="btn {{ $viewData["parking_spot"]->switchStatus() }} text-white offset-lg-7">
+                            zurück zur Übersicht
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

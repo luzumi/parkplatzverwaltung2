@@ -30,7 +30,6 @@ class UserController extends Controller
 
     public function show(): Factory|View|Application
     {
-
         $viewData = [];
         $user = User::findOrFail(Auth::id());
         $viewData['user'] = $user;
@@ -47,10 +46,12 @@ class UserController extends Controller
             ->join('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
             ->distinct()
             ->get();
+
+
         $viewData['address'] = Address::all()->where('user_id', Auth::id())->first();
         $viewData['title'] = $user['name'] . " - Parkplatzverwaltung";
         $viewData['subtitle'] = $user['name'] . " - User information";
-//dd($viewData);
+
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }
 
@@ -121,5 +122,20 @@ class UserController extends Controller
 
 
         return redirect()->route('user.show', Auth::id());
+    }
+
+    public function delete()
+    {
+        User::destroy(Auth::id());
+        Address::where('user_id', Auth::id())->delete();
+        Car::where('user_id', Auth::id())->delete();
+        ParkingSpot::where('user_id', Auth::id())->update([
+            'user_id'=>'1',
+            'car_id'=>null,
+            'image'=>'frei.jpg',
+            'status'=>'frei',
+        ]);
+
+        return redirect('/');
     }
 }

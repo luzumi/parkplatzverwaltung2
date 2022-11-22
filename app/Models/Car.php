@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * @method static findOrFail($id)
  * @method static create(array $creationData)
+ * @method static where(string $string, int|string|null $id)
  */
 class Car extends Model
 {

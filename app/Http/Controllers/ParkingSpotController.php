@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Models\Car;
 use App\Models\ParkingSpot;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -107,6 +109,7 @@ class ParkingSpotController extends Controller
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['user'] = User::all()->where('id', Auth::id())->first();
+        $viewData['address'] = Address::all()->where('id', Auth::id())->first();
 
         $parking_spot_id = $request['status'];
         $parking_spot_user = ParkingSpot::findOrFail($parking_spot_id);
@@ -139,5 +142,39 @@ class ParkingSpotController extends Controller
         $parking_spot_user->update();
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
+    }
+
+    public function cancel($ps_id): Application|Factory|View
+    {
+        $parking_spot = ParkingSpot::where('id', $ps_id)->first();
+
+        $parking_spot->setUserId('1');
+        $parking_spot->setCarId(null);
+        $parking_spot->setImage('frei.jpg');
+        $parking_spot->setStatus('frei');
+        $parking_spot->save();
+
+        $viewData = [];
+        $viewData["title"] = "Parkplatzansicht";
+        $viewData["subtitle"] = "Parkplatz Nr. " . $ps_id;
+
+        $viewData['user'] = User::findOrFail(Auth::id());
+        $viewData['parking_spot'] = ParkingSpot::findOrFail($ps_id);
+
+        $viewData['cars'] = Car::with('parkingSpot')
+            ->select(
+                'cars.id',
+                'cars.sign',
+                'cars.image',
+                'cars.manufacturer',
+                'cars.model',
+                'cars.color'
+            )
+            ->where('cars.user_id', Auth::id())
+            ->join('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
+            ->distinct()
+            ->get();
+
+        return view('parking_spots.show')->with("viewData", $viewData);
     }
 }
