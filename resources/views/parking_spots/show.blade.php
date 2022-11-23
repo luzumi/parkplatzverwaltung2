@@ -53,7 +53,8 @@
                                                 <td>
                                                     <a href="{{ route('parking_spots.reserve.cancel', $car->parkingSpot->id) }}"
                                                        class="btn btn-danger {{ $viewData["parking_spot"]->switchStatus() }} text-white ">
-                                                        Reservierung löschen
+                                                        <p class="pe-lg-4">Reservierung Parkplatz&nbsp;{{$car->parkingSpot->number}}&nbsp;löschen</p>
+
                                                     </a>
                                                 </td>
                                             @endif

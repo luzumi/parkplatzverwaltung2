@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Car;
 use App\Models\ParkingSpot;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -17,12 +18,13 @@ class AdminParkingSpotController extends Controller
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - Parkplatzübersicht - Parkplatzverwaltung';
-        $viewData['parking_spots'] = ParkingSpot::all();
+        $viewData['parking_spots'] = ParkingSpot::getAllParkingSpotsWithCars();
+        $viewData['cars'] = Car::getAllCarWithParkingSpot();
 
         return view('admin.parking_spot.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function storeNewParkingSpot(Request $request): RedirectResponse
     {
         ParkingSpot::validate($request);
 
@@ -31,7 +33,7 @@ class AdminParkingSpotController extends Controller
         $creationData = $request->only(['status']);
         $creationData['user_id'] = 1;
         $creationData['number'] = $count;
-        $creationData['row'] = intdiv($count + 1, 3) + 1;
+        $creationData['row'] = intdiv($count + 1, 4) + 1;
 
         if ($request->hasFile('image')) {
             $imageName = $request->input('status') . "." . $request->file('image')->extension();

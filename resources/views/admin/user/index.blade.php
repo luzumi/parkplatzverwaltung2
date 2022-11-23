@@ -14,14 +14,15 @@
                     @endforeach
                 </ul>
             @endif
-
             <form method="POST" action="{{ route('admin.user.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col">
                         <div class="mb-1 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="name" value="{{ old('name') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="name" value="{{ old('name') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-sm-12 col-form-label">Name</label>
                             </div>
                         </div>
@@ -29,7 +30,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="email" value="{{ old('email') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="email" value="{{ old('email') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">eMail</label>
                             </div>
                         </div>
@@ -37,7 +40,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="telefon" value="{{ old('telefon') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="telefon" value="{{ old('telefon') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Telefon</label>
                             </div>
                         </div>

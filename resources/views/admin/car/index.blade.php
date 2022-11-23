@@ -21,7 +21,9 @@
                     <div class="col">
                         <div class="mb-1 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="sign" value="{{ old('sign') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="sign" value="{{ old('sign') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-sm-12 col-form-label">Kennzeichen</label>
                             </div>
                         </div>
@@ -29,24 +31,30 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="manufacturer" value="{{ old('manufacturer') }}" type="text" class="form-control">
-                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Hersteller</label>
+                                <label>
+                                    <input name="manufacturer" value="{{ old('manufacturer') }}" type="text" class="form-control">
+                                </label>
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Hersteller</label>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="model" value="{{ old('model') }}" type="text" class="form-control">
-                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Model</label>
+                                <label>
+                                    <input name="model" value="{{ old('model') }}" type="text" class="form-control">
+                                </label>
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Model</label>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="color" value="{{ old('color') }}" type="text" class="form-control">
-                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Farbe</label>
+                                <label>
+                                    <input name="color" value="{{ old('color') }}" type="text" class="form-control">
+                                </label>
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Farbe</label>
                             </div>
                         </div>
                     </div>
@@ -76,6 +84,7 @@
                 <thead>
                 <tr>
                     <th scope="col">User</th>
+                    <th scope="col">Parkplatz</th>
                     <th scope="col">Vorschau</th>
                     <th scope="col">Kennzeichen</th>
                     <th scope="col">Hersteller</th>
@@ -88,7 +97,13 @@
                 <tbody>
                 @foreach ($viewData["cars"] as $car)
                     <tr class="img-thumbnail img-card">
-                        <td>{{ $car->getUserID() }}</td>
+{{--                        {{dd($car)}}--}}
+                        <td>{{ $car->getUserId() }}</td>
+                        @if(!isset($car->parkingSpot->number))
+                            <td>{{ '' }}</td>
+                        @else
+                            <td>{{ $car->parkingSpot->number }}</td>
+                        @endif
                         <td class="img-profile"><img src="{{ asset('/storage/media/'. $car->getImage()) }}" class="img-fluid rounded-start" alt="Image not found"></td>
                         <td>{{ $car->getSign() }}</td>
                         <td>{{ $car->getManufacturer() }}</td>

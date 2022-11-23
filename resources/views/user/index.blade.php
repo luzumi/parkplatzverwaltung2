@@ -10,7 +10,7 @@
                     <img src="{{ asset( './storage/media/' . $user->image) }}" class="card-img-top img-card"
                          alt="Image not found">
                     <div class="card-body text-center">
-                        <a href="{{ route('user.show', Auth::id()) }}"
+                        <a href="{{ route('user.show', [$user->id]) }}"
                            class="btn bg-primary text-white">
                             {{ $user->getName() }} <br> {{ $user->getRole() }}</a>
                     </div>

@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @method static findOrFail($id)
@@ -20,11 +20,63 @@ class ParkingSpot extends Model
 
     protected $fillable = ['user_id', 'car_id', 'number', 'row', 'image', 'status'];
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public static function validate(Request $request)
     {
         $request->validate([
             "status" => "required",
         ]);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function resetParkingSpot(): bool
+    {
+        return ParkingSpot::where('user_id', Auth::id())->update([
+            'user_id' => '1',
+            'car_id' => null,
+            'image' => 'frei.jpg',
+            'status' => 'frei',
+        ]);
+    }
+
+    /**
+     * @param $parkingSpotId
+     * @param $carId
+     * @return void
+     */
+    public static function updateParkingSpot($parkingSpotId, $carId)
+    {
+        $parking_spot = ParkingSpot::findOrFail($parkingSpotId);
+        $parking_spot->setId($parkingSpotId);
+        $parking_spot->setCarId($carId);
+        $parking_spot->setUserId(Auth::id());
+        $parking_spot->setStatus('reserviert');
+        $parking_spot->setImage('reserviert.jpg');
+        $parking_spot->update();
+    }
+
+    /**
+     * @return ParkingSpot[]|\LaravelIdea\Helper\App\Models\_IH_ParkingSpot_C
+     */
+    public static function getAllParkingSpotsWithCars()
+    {
+        return ParkingSpot::select(
+            'parking_spots.id',
+            'parking_spots.user_id',
+            'parking_spots.user_id',
+            'parking_spots.number',
+            'parking_spots.row',
+            'parking_spots.status',
+            'cars.sign',
+            'cars.image'
+        )
+            ->join('cars', 'parking_spots.car_id', '=', 'cars.id', 'left outer')
+            ->get();
     }
 
     /**
@@ -36,7 +88,7 @@ class ParkingSpot extends Model
             'frei', 'Behindertenparkplatz' => 'btn-success',
             'electro' => 'btn-info',
             'reserviert' => 'btn-warning',
-            'besetzt' =>'btn-outline-danger',
+            'besetzt' => 'btn-outline-danger',
             'gesperrt' => 'btn-danger',
             default => 'alert-dark ',
         };
@@ -54,8 +106,8 @@ class ParkingSpot extends Model
         };
     }
 
-
     //Getter/Setter
+
     public function getId()
     {
         return $this->attributes['id'];
@@ -64,6 +116,16 @@ class ParkingSpot extends Model
     public function setId($id)
     {
         $this->attributes['id'] = $id;
+    }
+
+    public function getCarId()
+    {
+        return $this->attributes['car_id'];
+    }
+
+    public function setCarId($car_id)
+    {
+        $this->attributes['car_id'] = $car_id;
     }
 
     public function getUserId()
@@ -76,14 +138,24 @@ class ParkingSpot extends Model
         $this->attributes['user_id'] = $user_id;
     }
 
-    public function getCarId()
+    public function getStatus()
     {
-        return $this->attributes['car_id'];
+        return $this->attributes['status'];
     }
 
-    public function setCarId($car_id)
+    public function setStatus($status)
     {
-        $this->attributes['car_id'] = $car_id;
+        $this->attributes['status'] = $status;
+    }
+
+    public function getImage()
+    {
+        return $this->attributes['image'];
+    }
+
+    public function setImage($image)
+    {
+        $this->attributes['image'] = $image;
     }
 
     public function getNumber()
@@ -106,26 +178,6 @@ class ParkingSpot extends Model
         $this->attributes['row'] = $row;
     }
 
-    public function getImage()
-    {
-        return $this->attributes['image'];
-    }
-
-    public function setImage($image)
-    {
-        $this->attributes['image'] = $image;
-    }
-
-    public function getStatus()
-    {
-        return $this->attributes['status'];
-    }
-
-    public function setStatus($status)
-    {
-        $this->attributes['status'] = $status;
-    }
-
     public function getUpdatedAt()
     {
         return $this->attributes['updated_at'];
@@ -136,6 +188,9 @@ class ParkingSpot extends Model
         $this->attributes['updated_at'] = $value;
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id')->withDefault([
@@ -143,6 +198,9 @@ class ParkingSpot extends Model
         ]);
     }
 
+    /**
+     * @return HasOne
+     */
     public function car(): HasOne
     {
         return $this->hasOne(Car::class);

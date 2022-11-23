@@ -19,7 +19,7 @@ class AdminCarController extends Controller
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - Fahrzeugübersicht - Parkplatzverwaltung';
-        $viewData['cars'] = Car::all();
+        $viewData['cars'] = Car::getAllCarWithParkingSpot();
 
         return view('admin.car.index')->with("viewData", $viewData);
     }

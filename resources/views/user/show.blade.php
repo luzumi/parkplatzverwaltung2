@@ -43,6 +43,7 @@
                                 <th>Farbe</th>
                                 <th>Vorschau</th>
                                 <th>Parkplatz</th>
+                                <th>Buchen/Stornieren</th>
                             </tr>
                             <object{{ $i = 0 }}>
                             @foreach($viewData['cars'] as $car)
@@ -63,6 +64,19 @@
                                             @endif
                                         </td>
                                         <td>{{ $car->parkingSpot->number ?? ''}} </td>
+                                        <td> @if(!isset($car->parkingSpot->number))
+                                                <a href="{{ route('cars.show', ['id'=> $car->getId()]) }}">
+                                                    Parkplatz auswählen
+                                                </a>
+                                            @else
+                                                <a href="{{ route('parking_spots.reserve.cancel', [$car->parkingSpot->id]) }}"
+                                                   class="btn btn-danger text-white ">
+                                                    <p class="pe-lg-4">Reservierung Parkplatz&nbsp;{{$car->parkingSpot->number}}&nbsp;löschen</p>
+                                                </a>
+{{--                                                {{dd($car->parkingSpot->number)}}--}}
+
+                                            @endif
+                                        </td>
                                     </tr>
                             @endforeach
                         </table>

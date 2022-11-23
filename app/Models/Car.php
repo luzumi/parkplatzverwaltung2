@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
+use LaravelIdea\Helper\App\Models\_IH_Car_C;
 
 /**
  * @method static findOrFail($id)
@@ -150,4 +153,37 @@ class Car extends Model
         return $this->hasOne(ParkingSpot::class);
     }
 
+    public static function getCarWithParkingSpot($user_id): Collection|array|_IH_Car_C
+    {
+        return Car::with('parkingSpot')
+            ->select(
+                'cars.id',
+                'cars.sign',
+                'cars.image',
+                'cars.manufacturer',
+                'cars.model',
+                'cars.color'
+            )
+            ->where('cars.user_id', $user_id)
+            ->leftJoin('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
+            ->distinct()
+            ->get();
+    }
+
+    public static function getAllCarWithParkingSpot()
+    {
+        return Car::with('parkingSpot')
+            ->select(
+                'cars.user_id',
+                'cars.id',
+                'cars.sign',
+                'cars.image',
+                'cars.manufacturer',
+                'cars.model',
+                'cars.color'
+            )
+            ->leftJoin('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
+            ->distinct()
+            ->get();
+    }
 }

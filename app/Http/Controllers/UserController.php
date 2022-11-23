@@ -28,51 +28,41 @@ class UserController extends Controller
         return view('user.index')->with("viewData", $viewData);
     }
 
-    public function show(): Factory|View|Application
+    public function show($user_id): Factory|View|Application
     {
+        $user = User::findOrFail($user_id);
+
         $viewData = [];
-        $user = User::findOrFail(Auth::id());
         $viewData['user'] = $user;
-        $viewData['cars'] = Car::with('parkingSpot')
-            ->select(
-                'cars.id',
-                'cars.sign',
-                'cars.image',
-                'cars.manufacturer',
-                'cars.model',
-                'cars.color'
-            )
-            ->where('cars.user_id', Auth::id())
-            ->join('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
-            ->distinct()
-            ->get();
+        $viewData['cars'] = Car::getCarWithParkingSpot($user_id);
+        $viewData['address'] = Address::all()->where('user_id', $user_id)->first();
 
-
-        $viewData['address'] = Address::all()->where('user_id', Auth::id())->first();
         $viewData['title'] = $user['name'] . " - Parkplatzverwaltung";
         $viewData['subtitle'] = $user['name'] . " - User information";
 
-        return view('user.show', [Auth::id()])->with("viewData", $viewData);
+        return view('user.show', [$user_id])->with("viewData", $viewData);
     }
 
-    public function editor($id): Factory|View|Application
+    public function editor($user_id): Factory|View|Application
     {
+        $user = User::findOrFail($user_id);
+
         $viewData = [];
-        $user = User::findOrFail($id);
-        $viewData["user"] = $user;
-        $viewData["title"] = $user["name"] . "Benutzerdaten editieren - Parkplatzverwaltung";
         $viewData["subtitle"] = $user["name"] . " - User editor";
         $viewData['address'] = Address::all()->where('user_id', Auth::id())->first();
-//dd($viewData['address']);
-        return view('user.editor-id', [$id])->with("viewData", $viewData);
+
+        $viewData["user"] = $user;
+        $viewData["title"] = $user["name"] . "Benutzerdaten editieren - Parkplatzverwaltung";
+        return view('user.editor-id', [$user_id])->with("viewData", $viewData);
+
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $user_id): RedirectResponse
     {
         User::validate($request);
 
         $input = $request->input('name');
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($user_id);
         $user->setName($input);
         $user->setEmail($request->input('email'));
         $user->setTelefon($request->input('telefon'));
@@ -90,20 +80,18 @@ class UserController extends Controller
                     file_get_contents($request->file('image')->getRealPath())
                 );
             }
-            $user->setImage($imageName ?? 'no image');
+            $user->setImage($imageName);
         }
-
         $user->save();
-
 
         return redirect()->route('user.show', Auth::id());
     }
 
-    public function updatePicture(Request $request, $id): RedirectResponse
+    public function updatePicture(Request $request, $user_id): RedirectResponse
     {
 //dd($request->file('image'));
         $input = Auth::user()->getName();
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($user_id);
 
         if ($request->file('image') !== null) {
             $extension = $request->file('image')->extension();
@@ -117,9 +105,7 @@ class UserController extends Controller
             }
             $user->setImage($imageName ?? 'no image');
         }
-
         $user->update();
-
 
         return redirect()->route('user.show', Auth::id());
     }
@@ -129,12 +115,7 @@ class UserController extends Controller
         User::destroy(Auth::id());
         Address::where('user_id', Auth::id())->delete();
         Car::where('user_id', Auth::id())->delete();
-        ParkingSpot::where('user_id', Auth::id())->update([
-            'user_id'=>'1',
-            'car_id'=>null,
-            'image'=>'frei.jpg',
-            'status'=>'frei',
-        ]);
+        ParkingSpot::resetParkingSpot();
 
         return redirect('/');
     }
