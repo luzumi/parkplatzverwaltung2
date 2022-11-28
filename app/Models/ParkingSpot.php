@@ -101,7 +101,7 @@ class ParkingSpot extends Model
     {
         return match ($this->status) {
             'frei', 'electro', 'Behindertenparkplatz' => ' - derzeit frei',
-            'reserviert', 'besetzt', 'gesperrt' => ' - Parken derzeit nicht möglich',
+            'reserviert', 'besetzt', 'gesperrt' =>  $this->status . ' - Reservierung nicht möglich',
             default => ' !!! Parkplatzstatus ungültig! Informieren SIe einen Administrator !!!',
         };
     }
