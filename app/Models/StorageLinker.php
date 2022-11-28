@@ -34,6 +34,10 @@ class StorageLinker extends Model
         'hash',
     ];
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public static function validate(Request $request)
     {
         $request->validate([

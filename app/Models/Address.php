@@ -26,7 +26,10 @@ class Address extends Model
         'Nummer',
     ];
 
-
+    /**
+     * @param Request $request
+     * @return void
+     */
     public static function validate(Request $request)
     {
         $request->validate([
@@ -38,6 +41,9 @@ class Address extends Model
         ]);
     }
 
+    /**
+     * @return HasOne
+     */
     public function user(): HasOne
     {
         return $this->hasOne(User::class);

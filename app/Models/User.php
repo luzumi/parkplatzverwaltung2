@@ -61,7 +61,9 @@ class User extends Authenticatable
         ]);
     }
 
-
+    /**
+     * @return BelongsTo
+     */
     public function car(): BelongsTo
     {
         return $this->belongsTo(Car::class, 'user_id', 'id')->withDefault([
@@ -70,26 +72,42 @@ class User extends Authenticatable
         ]);
     }
 
+    /**
+     * @return HasMany
+     */
     public function cars(): HasMany
     {
         return $this->hasMany(Car::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function parkingSpot(): HasMany
     {
         return $this->hasMany(ParkingSpot::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function parkingSpots(): BelongsToMany
     {
         return $this->belongsToMany(ParkingSpot::class);
     }
 
+    /**
+     * @return HasOne
+     */
     public function address(): HasOne
     {
         return $this->hasOne(Address::class);
     }
 
+    /**
+     * @param $roleName
+     * @return bool
+     */
     public function hasRole($roleName): bool
     {
         return $this->role == $roleName;

@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Car extends Model
 {
+    /**
+     * @param $request
+     * @return void
+     */
     public static function validate($request)
     {
         $request->validate([
@@ -26,16 +30,26 @@ class Car extends Model
 
     protected $fillable = ['user_id', 'sign', 'manufacturer', 'model', 'color', 'image', 'status'];
 
+    /**
+     * @return HasOne
+     */
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id');
     }
 
+    /**
+     * @return HasOne
+     */
     public function parkingSpot(): HasOne
     {
         return $this->hasOne(ParkingSpot::class);
     }
 
+    /**
+     * @param $user_id
+     * @return Collection|array
+     */
     public static function getCarWithParkingSpot($user_id): Collection|array
     {
         return Car::with('parkingSpot')
@@ -53,6 +67,9 @@ class Car extends Model
             ->get();
     }
 
+    /**
+     * @return Collection|array
+     */
     public static function getAllCarWithParkingSpot(): Collection|array
     {
         return Car::with('parkingSpot')
