@@ -52,11 +52,11 @@ class ParkingSpot extends Model
     public static function updateParkingSpot($parkingSpotId, $carId)
     {
         $parking_spot = ParkingSpot::findOrFail($parkingSpotId);
-        $parking_spot->setId($parkingSpotId);
-        $parking_spot->setCarId($carId);
-        $parking_spot->setUserId(Auth::id());
-        $parking_spot->setStatus('reserviert');
-        $parking_spot->setImage('reserviert.jpg');
+        $parking_spot->id = $parkingSpotId;
+        $parking_spot->car_id = $carId;
+        $parking_spot->user_id = Auth::id();
+        $parking_spot->status = 'reserviert';
+        $parking_spot->image = 'reserviert.jpg';
         $parking_spot->update();
     }
 
@@ -84,7 +84,7 @@ class ParkingSpot extends Model
      */
     public function switchStatus(): string
     {
-        return match ($this->getStatus()) {
+        return match ($this->status) {
             'frei', 'Behindertenparkplatz' => 'btn-success',
             'electro' => 'btn-info',
             'reserviert' => 'btn-warning',
@@ -99,7 +99,7 @@ class ParkingSpot extends Model
      */
     public function getStatusMessage(): string
     {
-        return match ($this->getStatus()) {
+        return match ($this->status) {
             'frei', 'electro', 'Behindertenparkplatz' => ' - derzeit frei',
             'reserviert', 'besetzt', 'gesperrt' => ' - Parken derzeit nicht möglich',
             default => ' !!! Parkplatzstatus ungültig! Informieren SIe einen Administrator !!!',

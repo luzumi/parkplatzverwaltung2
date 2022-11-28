@@ -44,6 +44,9 @@
                 <!-- Change password card-->
                 <div class="card mb-4 align-content-lg-center">
                     <div class="card-header">Change Password</div>
+                    <div>
+                        <button href="{{route('auth.forgot-password')}}"></button>
+                    </div>
                     <div class="card-body">
                         <form method="POST"
                               action="{{ route('admin.user.update', ['id'=> $viewData['user']->id]) }}"

@@ -130,5 +130,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/admin', 'Admin\AdminHomeController@index');
 });
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->middleware('guest')->name('password.request');
 
 Auth::routes();
