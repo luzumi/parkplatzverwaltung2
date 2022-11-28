@@ -63,12 +63,12 @@ class UserController extends Controller
 
         $input = $request->input('name');
         $user = User::findOrFail($user_id);
-        $user->setName($input);
-        $user->setEmail($request->input('email'));
-        $user->setTelefon($request->input('telefon'));
+        $user->name = $input;
+        $user->email = $request->input('email');
+        $user->telefon = $request->input('telefon');
 
         if ($request->input('password')) {
-            $user->setPassword($request->input('password'));
+            $user->password = $request->input('password');
         }
         if ($request->file('image') !== null) {
             $extension = $request->file('image')->extension();
@@ -80,7 +80,7 @@ class UserController extends Controller
                     file_get_contents($request->file('image')->getRealPath())
                 );
             }
-            $user->setImage($imageName);
+            $user->image = $imageName;
         }
         $user->save();
 
@@ -89,10 +89,10 @@ class UserController extends Controller
 
     public function updatePicture(Request $request, $user_id): RedirectResponse
     {
-//dd($request->file('image'));
-        $input = Auth::user()->getName();
+        $input = Auth::user()->name;
         $user = User::findOrFail($user_id);
 
+//dd($input);
         if ($request->file('image') !== null) {
             $extension = $request->file('image')->extension();
             $linker = new StorageLinker([$input, $extension]);
@@ -103,7 +103,7 @@ class UserController extends Controller
                     file_get_contents($request->file('image')->getRealPath())
                 );
             }
-            $user->setImage($imageName ?? 'no image');
+            $user->image = $imageName ?? 'no image';
         }
         $user->update();
 

@@ -35,16 +35,16 @@ class AdminCarController extends Controller
         $car = $request->only(['id', 'sign', 'manufacturer', 'model', 'color']);
         if ($request->hasFile('image')) {
             $imageName = $linker['hash'];
-            $car['image'] = $imageName;
+            $car->image = $imageName;
             Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
             );
         } else {
-            $car['image'] = 'testCar.png';
+            $car->image = 'testCar.png';
         }
 
-        $car['status'] = true;
+        $car->status = true;
 
         Car::create($car);
 
@@ -71,25 +71,24 @@ class AdminCarController extends Controller
     {
         Car::validate($request);
 
-        $input = $request->input('sign');
-        $extension = $request->file('image')->extension();
-        $linker = new StorageLinker([$input, $extension]);
-
         $car = Car::findOrFail($id);
-        $car->setSign($request->input('sign'));
-        $car->setManufacturer($request->input('manufacturer'));
-        $car->setModel($request->input('model'));
-        $car->setColor($request->input('color'));
-        $car->setImage($linker['hash']);
-
-
         if ($request->hasFile('image')) {
+            $input = $request->input('name') ?? 'unregistered_user.png';
+            $extension = $request->file('image')->extension();
+            $linker = new StorageLinker([$input, $extension]);
             $imageName = $linker['hash'];
             Storage::disk('public/media')->put(
                 $imageName,
                 file_get_contents($request->file('image')->getRealPath())
             );
+            $car->image = $linker['hash'];
         }
+
+
+        $car->sign = $request->input('sign');
+        $car->manufacturer= $request->input('manufacturer');
+        $car->model = $request->input('model');
+        $car->color = $request->input('color');
 
         $car->save();
 

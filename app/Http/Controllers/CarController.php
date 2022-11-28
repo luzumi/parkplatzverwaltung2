@@ -33,8 +33,7 @@ class CarController extends Controller
     {
         $viewData = [];
         $viewData['title'] = 'User add a Car - Parkplatzverwaltung';
-        $viewData['users'] = User::all()->where('id', Auth::id());
-        $viewData['name'] = User::findOrFail(Auth::id())['name'];
+        $viewData['users'] = User::findOrFail(Auth::id());
 
         return view('user.addCar.index')->with("viewData", $viewData);
     }
@@ -44,11 +43,11 @@ class CarController extends Controller
 
         $viewData = [];
         $car = Car::findOrFail($id);
-        $viewData['title'] = 'Reservierung: ' . $car->getSign();
-        $viewData['subtitle'] = 'Details von ' . $car->getSign();
+        $viewData['title'] = 'Reservierung: ' . $car->sign;
+        $viewData['subtitle'] = 'Details von ' . $car->sign;
 
         $viewData['car'] = $car;
-        $viewData['parking_spots'] = ParkingSpot::all()->where('status','=','frei');
+        $viewData['parking_spots'] = ParkingSpot::where('status','=','frei');
         $viewData['selected_spot'] = 0;
 
         return view('cars.show', [$id])->with('viewData', $viewData);
@@ -71,13 +70,13 @@ class CarController extends Controller
         }
 
         $newCar = new Car();
-        $newCar->setUserId(Auth::id());
-        $newCar->setSign($request->input('sign'));
-        $newCar->setManufacturer($request->input('manufacturer'));
-        $newCar->setModel($request->input('model'));
-        $newCar->setColor($request->input('color'));
-        $newCar->setImage($linker['hash']);
-        $newCar->setStatus(true);
+        $newCar->user_id = Auth::id();
+        $newCar->sign = $request->input('sign');
+        $newCar->manufacturer = $request->input('manufacturer');
+        $newCar->model = $request->input('model');
+        $newCar->color = $request->input('color');
+        $newCar->image = $linker['hash'];
+        $newCar->status = true;
         $newCar->save();
 
 

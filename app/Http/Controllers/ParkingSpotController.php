@@ -31,7 +31,7 @@ class ParkingSpotController extends Controller
 
         $viewData["user"] = User::findOrFail(Auth::id());
         $viewData["title"] = "Parkplatzansicht";
-        $viewData["subtitle"] = "Parkplatz Nr. " . $parking_spot->getNumber();
+        $viewData["subtitle"] = "Parkplatz Nr. " . $parking_spot->number;
         $viewData["parking_spot"] = $parking_spot;
 //        $viewData['cars'] = Car::getCarWithParkingSpot()
 
@@ -50,18 +50,16 @@ class ParkingSpotController extends Controller
 
         $offset = strripos($request->session()->previousUrl(), '/') + 1;
         $selected_ps_number = substr($request->session()->previousUrl(), $offset);
+        $viewData['user'] = User::findOrFail(Auth::id());
+        $parking_spot = ParkingSpot::where('id', $selected_ps_number)->get();
+        $car = Car::findOrFail($request->car_id);
 
-        $viewData['user'] = User::all()->where('id', Auth::id())->first();
-        $parking_spot = ParkingSpot::all()->where('id', $selected_ps_number);
-        $car = Car::all()->where('user_id', Auth::id());
-        $car_id = $car->first()->id;
         $parking_spot_id = $parking_spot->first()->id;
 
         $viewData['parking_spot'] = $parking_spot;
         $viewData['cars'] = $car;
 
-//        dd($request->session()->previousUrl() ,'storeIndex');
-        ParkingSpot::updateParkingSpot($parking_spot_id, $car_id);
+        ParkingSpot::updateParkingSpot($parking_spot_id, $car->id);
 
         return view('parking_spots.reserve.store_reserve')->with("viewData", $viewData);
     }
@@ -80,11 +78,11 @@ class ParkingSpotController extends Controller
         $parking_spot_id = $request->get('radio');
 
         $parking_spot = ParkingSpot::findOrFail($parking_spot_id);
-        $parking_spot->setId($parking_spot_id);
-        $parking_spot->setUserId(Auth::id());
-        $parking_spot->setCarId($car_id);
-        $parking_spot->setStatus('reserviert');
-        $parking_spot->setImage('reserviert.jpg');
+        $parking_spot->id = $parking_spot_id;
+        $parking_spot->user_id = Auth::id();
+        $parking_spot->carId = $car_id;
+        $parking_spot->status = 'reserviert';
+        $parking_spot->image = 'reserviert.jpg';
         $parking_spot->update();
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
@@ -96,18 +94,18 @@ class ParkingSpotController extends Controller
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
 
-        $viewData['user'] = User::all()->where('id', Auth::id())->first();
-        $viewData['address'] = Address::all()->where('user_id', Auth::id())->first();
+        $viewData['user'] = User::findOrFail(Auth::id());
+        $viewData['address'] = Address::where('user_id', Auth::id())->first();
 
         $parking_spot_id = $request['status'];
         $parking_spot = ParkingSpot::findOrFail($parking_spot_id);
 
         $offset = strripos($request->session()->previousUrl(), '/') + 1;
         $car_id = substr($request->session()->previousUrl(), $offset);
-        $parking_spot->setUserId(Auth::id());
-        $parking_spot->setCarId($car_id);
-        $parking_spot->setStatus('reserviert');
-        $parking_spot->setImage('reserviert.jpg');
+        $parking_spot->user_id = Auth::id();
+        $parking_spot->car_id = $car_id;
+        $parking_spot->status = 'reserviert';
+        $parking_spot->image = 'reserviert.jpg';
         $parking_spot->update();
 
         $car = Car::getCarWithParkingSpot(Auth::id());

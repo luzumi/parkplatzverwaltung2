@@ -72,18 +72,8 @@ class AdminParkingSpotController extends Controller
         ParkingSpot::validate($request);
 
         $parking_spot = ParkingSpot::findOrFail($id);
-        $parking_spot->setStatus($request->input('status'));
-
-        $parking_spot['image'] = $request->input('status') . ".jpg";
-
-//        if ($request->hasFile('image')) {
-//            $imageName = $request->input('status') . "." . $request->file('image')->extension();
-//            $parking_spot['image'] = $imageName;
-//            Storage::disk('public')->put(
-//                $imageName,
-//                file_get_contents($request->file('image')->getRealPath())
-//            );
-//        }
+        $parking_spot->status = $request->input('status');
+        $parking_spot->image = $request->input('status') . ".jpg";
 
         $parking_spot->save();
 

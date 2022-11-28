@@ -62,117 +62,6 @@ class User extends Authenticatable
     }
 
 
-    public function getId()
-    {
-        return $this->attributes['id'];
-    }
-
-    public function setId($id)
-    {
-        $this->attributes['id'] = $id;
-    }
-
-    public function getName()
-    {
-        return $this->attributes['name'];
-    }
-
-    public function setName($name)
-    {
-        $this->attributes['name'] = $name;
-    }
-
-    public function getEmail()
-    {
-        return $this->attributes['email'];
-    }
-
-    public function setEmail($email)
-    {
-        $this->attributes['email'] = $email;
-    }
-
-    public function getEmailVerifiedAt()
-    {
-        return $this->attributes['email_verified_at'];
-    }
-
-    public function setEmailVerifiedAt($email_verified_at)
-    {
-        $this->attributes['email_verified_at'] = $email_verified_at;
-    }
-
-    public function getPassword()
-    {
-        return $this->attributes['password'];
-    }
-
-    public function setPassword($password)
-    {
-        if ($this->getPassword() !== $password){
-            $this->attributes['password'] = $password;
-        }
-    }
-
-    public function getImage()
-    {
-        return $this->attributes['image'];
-    }
-
-    public function setImage($image)
-    {
-        $this->attributes['image'] = $image;
-    }
-
-    public function getRole()
-    {
-        return $this->attributes['role'];
-    }
-
-    public function setRole($image)
-    {
-        $this->attributes['role'] = $image;
-    }
-
-    public function getBalance()
-    {
-        return $this->attributes['balance'];
-    }
-
-    public function setBalance($image)
-    {
-        $this->attributes['balance'] = $image;
-    }
-    public function getTelefon()
-    {
-        return $this->attributes['telefon'];
-    }
-
-    public function setTelefon($telefon)
-    {
-        $this->attributes['telefon'] = $telefon;
-    }
-
-    public function getRememberToken()
-    {
-        return $this->attributes['remember_token'];
-    }
-
-    public function setRememberToken($value)
-    {
-        $this->attributes['remember_token'] = $value;
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->attributes['updated_at'];
-    }
-
-    public function setUpdatedAt($value)
-    {
-        $this->attributes['updated_at'] = $value;
-    }
-
     public function car(): BelongsTo
     {
         return $this->belongsTo(Car::class, 'user_id', 'id')->withDefault([
@@ -203,6 +92,6 @@ class User extends Authenticatable
 
     public function hasRole($roleName): bool
     {
-        return $this->getRole() == $roleName;
+        return $this->role == $roleName;
     }
 }

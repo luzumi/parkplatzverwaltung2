@@ -14,7 +14,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('admin.car.update', ['id'=> $viewData['car']->getId()]) }}"
+            <form method="POST" action="{{ route('admin.car.update', ['id'=> $viewData['car']->id]) }}"
                   enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -22,7 +22,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="sign" value="{{ $viewData['car']->getSign() }}" type="text" class="form-control-sm">
+                                <label>
+                                    <input name="sign" value="{{ $viewData['car']->sign }}" type="text" class="form-control-sm">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Kennzeichen:</label>
                             </div>
                         </div>
@@ -30,7 +32,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="manufacturer" value="{{ $viewData['car']->getManufacturer() }}" type="text" class="form-control-sm">
+                                <label>
+                                    <input name="manufacturer" value="{{ $viewData['car']->manufacturer }}" type="text" class="form-control-sm">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Hersteller:</label>
                             </div>
                         </div>
@@ -38,7 +42,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="model" value="{{ $viewData['car']->getModel() }}" type="text" class="form-control-sm">
+                                <label>
+                                    <input name="model" value="{{ $viewData['car']->model }}" type="text" class="form-control-sm">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Modell:</label>
                             </div>
                         </div>
@@ -46,7 +52,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="color" value="{{ $viewData['car']->getColor() }}" type="text" class="form-control-sm">
+                                <label>
+                                    <input name="color" value="{{ $viewData['car']->color }}" type="text" class="form-control-sm">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Farbe:</label>
                             </div>
                         </div>

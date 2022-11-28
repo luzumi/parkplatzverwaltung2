@@ -14,7 +14,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('admin.parking-spot.update', ['id'=> $viewData['parking_spot']->getId()]) }}"
+            <form method="POST" action="{{ route('admin.parking-spot.update', ['id'=> $viewData['parking_spot']->id]) }}"
                   enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -22,14 +22,16 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <select name="status">
-                                    <option value="frei">frei</option>
-                                    <option value="electro">electro</option>
-                                    <option value="reserviert">reserviert</option>
-                                    <option value="Behindertenparkplatz">Behindertenparkplatz</option>
-                                    <option value="besetzt">besetzt</option>
-                                    <option value="gesperrt">gesperrt</option>
-                                </select>
+                                <label>
+                                    <select name="status">
+                                        <option value="frei">frei</option>
+                                        <option value="electro">electro</option>
+                                        <option value="reserviert">reserviert</option>
+                                        <option value="Behindertenparkplatz">Behindertenparkplatz</option>
+                                        <option value="besetzt">besetzt</option>
+                                        <option value="gesperrt">gesperrt</option>
+                                    </select>
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Status:</label>
                             </div>
                         </div>

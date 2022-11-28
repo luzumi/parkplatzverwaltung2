@@ -87,21 +87,21 @@
                 <tbody>
                 @foreach ($viewData["users"] as $user)
                     <tr >
-                        <td>{{ $user->getId() }}</td>
+                        <td>{{ $user->id }}</td>
                         <td><img src="{{ asset('/storage/media/'. $user->image) }}"
                                  class="img-profile" alt="image not found"></td>
-                        <td>{{ $user->getName() }}</td>
-                        <td>{{ $user->getEmail() }}</td>
-                        <td>{{ $user->getTelefon() }}</td>
-                        <td>{{ $user->getRole() }}</td>
-                        <td>{{ '...' . substr($user->getImage(), 40) }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->telefon }}</td>
+                        <td>{{ $user->role }}</td>
+                        <td>{{ '...' . substr($user->image, 40) }}</td>
                         <td>
-                            <a class="btn btn-primary" href="{{ route('admin.user.edit', ['id'=>$user->getId()]) }}">
+                            <a class="btn btn-primary" href="{{ route('admin.user.edit', ['id'=>$user->id]) }}">
                                 <i class="bi-pencil"> </i>
                             </a>
                         </td>
                         <td>
-                            <form action="{{ route('admin.user.delete', $user->getID()) }}" method="POST">
+                            <form action="{{ route('admin.user.delete', $user->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger">

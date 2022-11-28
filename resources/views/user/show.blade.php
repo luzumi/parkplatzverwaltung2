@@ -6,16 +6,16 @@
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="{{ asset('/storage/media/'. $viewData['user']->getImage()) }}"
+                <img src="{{ asset('/storage/media/'. $viewData['user']->image) }}"
                      class="img-card rounded-start"
                      alt="Image not found">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">
-                        Name: {{ $viewData["user"]->getName() }} <br>
-                        eMail: {{ $viewData["user"]->getEmail() }} <br>
-                        Telefon: {{ $viewData["user"]->getTelefon() }} <br>
+                        Name: {{ $viewData["user"]->name }} <br>
+                        eMail: {{ $viewData["user"]->email }} <br>
+                        Telefon: {{ $viewData["user"]->telefon }} <br>
 
                         Land: {{ $viewData["address"]['Land'] }} <br>
                         PLZ: {{ $viewData["address"]['PLZ'] }} <br>
@@ -23,12 +23,12 @@
                         Straße: {{ $viewData["address"]['Strasse'] . " "
                         . $viewData["address"]['Nummer'] }} <br>
                         <br>
-                        <p class="mb-sm-auto">Letzter Login: {{ $viewData["user"]->getupdatedAt() }}</p>
+                        <p class="mb-sm-auto">Letzter Login: {{ $viewData["user"]->updatedAt }}</p>
 
-                        User-Rolle: {{ $viewData["user"]->getRole() }} <br><br>
+                        User-Rolle: {{ $viewData["user"]->role }} <br><br>
                         <p class="card-text">
                             <a class="align-content-lg-center"
-                               href="{{ route('user.editor-id', $viewData["user"]->getId()) }}">
+                               href="{{ route('user.editor-id', $viewData["user"]->id) }}">
                                 <small class="text-muted">Userdaten bearbeiten</small>
                             </a>
                         </p>
@@ -54,7 +54,7 @@
                                         <td>{{ $car->color }}</td>
                                         <td>
                                         @if(!isset($viewData['cars'][$i++]->parkingSpot->number))
-                                                <a href="{{ route('cars.show', ['id'=> $car->getId()]) }}">
+                                                <a href="{{ route('cars.show', ['id'=> $car->id]) }}">
                                                     <img src="{{ asset('/storage/media/'. $car->image) }}"
                                                          class="img-thumbnail row-cols-sm-4" alt="image not found">
                                                 </a>
@@ -65,7 +65,7 @@
                                         </td>
                                         <td>{{ $car->parkingSpot->number ?? ''}} </td>
                                         <td> @if(!isset($car->parkingSpot->number))
-                                                <a href="{{ route('cars.show', ['id'=> $car->getId()]) }}">
+                                                <a href="{{ route('cars.show', ['id'=> $car->id]) }}">
                                                     Parkplatz auswählen
                                                 </a>
                                             @else

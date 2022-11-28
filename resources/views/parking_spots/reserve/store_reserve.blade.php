@@ -14,9 +14,10 @@
                     <h3 class="offset-lg-5">
                         {{ $viewData['user']->first()->getAttribute('name') }}
                         <h5 class="card-body ">
+{{--{{dd($viewData)}}--}}
                             Der Parkplatz Nr.<strong>{{ $viewData['parking_spot']->first()->getAttribute('number') }}</strong>
                             wurde für Ihr Fahrzeug mit dem Kennzeichen
-                            <strong>{{ $viewData['cars']->first()->getAttribute('sign') }}</strong>
+                            <strong>{{ $viewData['cars']->sign }}</strong>
                             zur Reservierung angemeldet.
                         </h5>
                     </h3>

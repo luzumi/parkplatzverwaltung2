@@ -63,10 +63,10 @@
                 <tbody>
                 @foreach ($viewData["parking_spots"] as $parking_spot)
                     <tr>
-                        <td>{{ $parking_spot->getId() }}</td>
-                        <td>{{ $parking_spot->getNumber() }}</td>
-                        <td>{{ $parking_spot->getRow() }}</td>
-                        <td>{{ $parking_spot->getStatus() }}</td>
+                        <td>{{ $parking_spot->id }}</td>
+                        <td>{{ $parking_spot->number }}</td>
+                        <td>{{ $parking_spot->row }}</td>
+                        <td>{{ $parking_spot->status }}</td>
                         <td>{{ $parking_spot->sign ?? '' }}</td>
                         <td>
                             <img src="{{ asset('/storage/media/'. $parking_spot->image) }}"
@@ -79,7 +79,7 @@
                             </a>
                         </td>
                         <td>
-                            <form action="{{ route('admin.parking_spot.delete', $parking_spot->getID()) }}"
+                            <form action="{{ route('admin.parking_spot.delete', $parking_spot->id) }}"
                                   method="POST">
                                 @csrf
                                 @method('DELETE')

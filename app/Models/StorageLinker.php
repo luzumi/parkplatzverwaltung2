@@ -42,23 +42,9 @@ class StorageLinker extends Model
         ]);
     }
 
-    public function getOriginalName()
-    {
-        return $this->attributes['original'];
-    }
+//    public function getHash()
+//    {
+//        return $this->attributes['hash'];
+//    }
 
-    public function getHash()
-    {
-        return $this->attributes['hash'];
-    }
-
-    public function setOriginalName($value)
-    {
-        $this->attributes['original'] = $value;
-    }
-
-    public function setHash($value)
-    {
-        $this->attributes['hash'] = $value;
-    }
 }

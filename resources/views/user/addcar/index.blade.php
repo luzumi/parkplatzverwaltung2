@@ -4,7 +4,7 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            Neues Fahrzeug erstellen {{ $viewData['name']}}
+            Neues Fahrzeug erstellen {{ $viewData['users']->name}}
         </div>
         <div class="card-body">
             @if($errors->any())
@@ -21,7 +21,9 @@
                     <div class="col">
                         <div class="mb-1 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="sign" value="{{ old('sign') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="sign" value="{{ old('sign') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-sm-12 col-form-label">Kennzeichen</label>
                             </div>
                         </div>
@@ -29,7 +31,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="manufacturer" value="{{ old('manufacturer') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="manufacturer" value="{{ old('manufacturer') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Hersteller</label>
                             </div>
                         </div>
@@ -37,7 +41,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="model" value="{{ old('model') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="model" value="{{ old('model') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Model</label>
                             </div>
                         </div>
@@ -45,7 +51,9 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="color" value="{{ old('color') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="color" value="{{ old('color') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Farbe</label>
                             </div>
                         </div>

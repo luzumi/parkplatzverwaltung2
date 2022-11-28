@@ -3,13 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Auth;
-use LaravelIdea\Helper\App\Models\_IH_Car_C;
 
 /**
  * @method static findOrFail($id)
@@ -31,118 +26,6 @@ class Car extends Model
 
     protected $fillable = ['user_id', 'sign', 'manufacturer', 'model', 'color', 'image', 'status'];
 
-
-    //Getter/Setter
-    public function getId()
-    {
-        return $this->attributes['id'];
-    }
-
-    public function setId($id)
-    {
-        $this->attributes['id'] = $id;
-    }
-
-    public function getUserId()
-    {
-        return $this->attributes['user_id'];
-    }
-
-    public function setUserId($user_id)
-    {
-        $this->attributes['user_id'] = $user_id;
-    }
-
-    public function getSign()
-    {
-        return $this->attributes['sign'];
-    }
-
-    public function setSign($sign)
-    {
-        $this->attributes['sign'] = $sign;
-    }
-
-    public function getManufacturer()
-    {
-        return $this->attributes['manufacturer'];
-    }
-
-    public function setManufacturer($manufacturer)
-    {
-        $this->attributes['manufacturer'] = $manufacturer;
-    }
-
-    public function getModel()
-    {
-        return $this->attributes['model'];
-    }
-
-    public function setModel($model)
-    {
-        $this->attributes['model'] = $model;
-    }
-
-    public function getColor()
-    {
-        return $this->attributes['color'];
-    }
-
-    public function setColor($color)
-    {
-        $this->attributes['color'] = $color;
-    }
-
-    public function getImage()
-    {
-        return $this->attributes['image'];
-    }
-
-    public function setImage($image)
-    {
-        $this->attributes['image'] = $image;
-    }
-
-    public function getStatus()
-    {
-        return $this->attributes['status'];
-    }
-
-    public function setStatus($status)
-    {
-        $this->attributes['status'] = $status;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->attributes['created_at'];
-    }
-
-    public function setCreatedAt($value)
-    {
-        $this->attributes['created_at'] = $value;
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->attributes['updated_at'];
-    }
-
-    public function setUpdatedAt($value)
-    {
-        $this->attributes['updated_at'] = $value;
-    }
-
-    public function getUser()
-    {
-        return $this->attributes['user'];
-    }
-
-    public function setUser($user)
-    {
-        $this->attributes['user'] = $user;
-    }
-
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id');
@@ -153,7 +36,7 @@ class Car extends Model
         return $this->hasOne(ParkingSpot::class);
     }
 
-    public static function getCarWithParkingSpot($user_id): Collection|array|_IH_Car_C
+    public static function getCarWithParkingSpot($user_id): Collection|array
     {
         return Car::with('parkingSpot')
             ->select(
@@ -170,7 +53,7 @@ class Car extends Model
             ->get();
     }
 
-    public static function getAllCarWithParkingSpot()
+    public static function getAllCarWithParkingSpot(): Collection|array
     {
         return Car::with('parkingSpot')
             ->select(

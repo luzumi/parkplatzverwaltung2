@@ -4,14 +4,14 @@
 @section('content')
     <div class="card mb-3">
         <div class="row">
-            <img src="{{ asset('/storage/media/'.$viewData['car']->getImage()) }}" class="img-fluid rounded-start"
+            <img src="{{ asset('/storage/media/'.$viewData['car']->image) }}" class="img-fluid rounded-start"
                  alt="Image not found">
             <p class="card-body">
             <h5 class="card-title">
-                {{ $viewData["car"]->getManufacturer() }}
-                {{ $viewData["car"]->getModel() }}
-                {{ $viewData["car"]->getColor() }}
-            <p class="card-text">{{ $viewData["car"]->getSign() }}</p>
+                {{ $viewData["car"]->manufacturer }}
+                {{ $viewData["car"]->model }}
+                {{ $viewData["car"]->color }}
+            <p class="card-text">{{ $viewData["car"]->sign }}</p>
             </h5>
 
             <div class="card-text">

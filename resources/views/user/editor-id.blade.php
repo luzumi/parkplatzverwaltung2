@@ -19,7 +19,7 @@
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                         <!-- Profile picture upload button-->
                         <form method="POST"
-                              action="{{ route('user.updatePicture', ['id'=> $viewData['user']->getId()]) }}"
+                              action="{{ route('user.updatePicture', ['id'=> $viewData['user']->id]) }}"
                               enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -27,8 +27,8 @@
                                 <div class="col">
                                     <div class="mb-3 row">
                                         <div class="col-lg-10 col-md-6 col-sm-12">
-                                            <input name="image" value="{{ $viewData['user']->getImage() }}" type="file" class="form-control" >
-                                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Image:</label>
+                                            <input name="image" value="{{ $viewData['user']->image }}" type="file" class="form-control" >
+                                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">{{ $viewData['user']->image }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -46,7 +46,7 @@
                     <div class="card-header">Change Password</div>
                     <div class="card-body">
                         <form method="POST"
-                              action="{{ route('admin.user.update', ['id'=> $viewData['user']->getId()]) }}"
+                              action="{{ route('admin.user.update', ['id'=> $viewData['user']->id]) }}"
                               enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -112,7 +112,7 @@
                 <div class="card mb-4">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('user.update', ['id'=> $viewData['user']->getId()]) }}"
+                        <form method="POST" action="{{ route('user.update', ['id'=> $viewData['user']->id]) }}"
                               enctype="multipart/form-data">
                             @csrf
                             @method('PUT')

@@ -12,7 +12,7 @@
                     <div class="card-body text-center">
                         <a href="{{ route('user.show', [$user->id]) }}"
                            class="btn bg-primary text-white">
-                            {{ $user->getName() }} <br> {{ $user->getRole() }}</a>
+                            {{ $user['name'] }} <br> {{ $user->role }}</a>
                     </div>
                 </div>
             </div>

@@ -46,10 +46,10 @@ class AdminUserController extends Controller
             $user['image'] = 'unregistered_user.png';
         }
 
-        $user['role'] = 'client';
-        $user['password'] = 'password';
-        $user['remember_token'] = 'token_';
-        $user['email_verified_at'] = now();
+        $user->role = 'client';
+        $user->password = 'password';
+        $user->remember_token = 'token_';
+        $user->email_verified_at = now();
 
         User::create($user);
 
@@ -67,7 +67,7 @@ class AdminUserController extends Controller
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
         $viewData['user'] = User::findOrFail($id);
-        $viewData['address'] = Address::all()->where('user_id', $id)->first();
+        $viewData['address'] = Address::where('user_id', $id)->first();
 
         return view('admin.user.edit')->with('viewData', $viewData);
 
@@ -78,9 +78,9 @@ class AdminUserController extends Controller
         User::validate($request);
         $input = $request->input('name');
         $user = User::findOrFail($id);
-        $user->setName($input);
-        $user->setEmail($request->input('email'));
-        $user->setTelefon($request->input('telefon'));
+        $user->name = $input;
+        $user->email = $request->input('email');
+        $user->telefon = $request->input('telefon');
 
         if ($request->hasFile('image')) {
             $extension = $request->file('image')->extension();
@@ -91,25 +91,24 @@ class AdminUserController extends Controller
                 file_get_contents($request->file('image')->getRealPath())
 
             );
-            $user->setImage($imageName);
+            $user->image = $imageName;
         }
 
         $user->update();
 
-        $address = Address::all()->where('user_id', $id)->first();
+        $address = Address::where('user_id', $id)->first();
         $address->Land = $request['Land'];
         $address->PLZ = $request->input('PLZ');
         $address->Stadt = $request->input('Stadt');
         $address->Strasse = $request->input('Strasse');
         $address->Nummer = $request->input('Nummer');
-        $address->setCreatedAt(now());
-        $address->setUpdatedAt(now());
+
 //        dd($address);
         $address->update();
 
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
         $viewData['users'] = User::all();
-        $viewData['address'] = Address::all()->where('user_id', $id)->first();
+        $viewData['address'] = Address::where('user_id', $id)->first();
 
         return view('admin.user.index')->with("viewData", $viewData);
     }
