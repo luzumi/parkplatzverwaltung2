@@ -53,14 +53,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function validate(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:30',
-            'email' => 'email:rfc,dns|required|max:50'
-        ]);
-    }
-
     /**
      * @return BelongsTo
      */

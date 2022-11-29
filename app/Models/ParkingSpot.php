@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use LaravelIdea\Helper\App\Models\_IH_ParkingSpot_C;
 
 /**
  * @method static findOrFail($id)
@@ -21,17 +22,6 @@ class ParkingSpot extends Model
     protected $fillable = ['user_id', 'car_id', 'number', 'row', 'image', 'status'];
 
     /**
-     * @param Request $request
-     * @return void
-     */
-    public static function validate(Request $request)
-    {
-        $request->validate([
-            "status" => "required",
-        ]);
-    }
-
-    /**
      * @return bool
      */
     public static function resetParkingSpot(): bool
@@ -39,47 +29,48 @@ class ParkingSpot extends Model
         return ParkingSpot::where('user_id', Auth::id())->update([
             'user_id' => '1',
             'car_id' => null,
-            'image' => 'frei.jpg',
             'status' => 'frei',
+            'image' => 'frei.jpg',
         ]);
     }
 
     /**
      * @param $parkingSpotId
      * @param $carId
-     * @return void
+     * @return bool
      */
-    public static function updateParkingSpot($parkingSpotId, $carId)
+    public static function updateParkingSpot($parkingSpotId, $carId): bool
     {
-        $parking_spot = ParkingSpot::findOrFail($parkingSpotId);
-        $parking_spot->id = $parkingSpotId;
-        $parking_spot->car_id = $carId;
-        $parking_spot->user_id = Auth::id();
-        $parking_spot->status = 'reserviert';
-        $parking_spot->image = 'reserviert.jpg';
-        $parking_spot->update();
+        return ParkingSpot::findOrFail($parkingSpotId)->update([
+            'user_id' => $parkingSpotId,
+            'car_id' => $carId,
+            'status' => 'reserviert',
+            'image' => 'reserviert.jpg',
+        ]);
     }
 
     /**
-     * @return ParkingSpot[]|\LaravelIdea\Helper\App\Models\_IH_ParkingSpot_C
+     * @return ParkingSpot[]|_IH_ParkingSpot_C
      */
-    public static function getAllParkingSpotsWithCars()
+    public static function getAllParkingSpotsWithCars(): array|_IH_ParkingSpot_C
     {
-        return ParkingSpot::select(
-            'parking_spots.id',
-            'parking_spots.user_id',
-            'parking_spots.user_id',
-            'parking_spots.number',
-            'parking_spots.row',
-            'parking_spots.status',
-            'cars.sign',
-            'cars.image'
-        )
-            ->join('cars', 'parking_spots.car_id', '=', 'cars.id', 'left outer')
-            ->get();
+        return ParkingSpot::with('cars')->get();
+//        return ParkingSpot::select(
+//            'parking_spots.id',
+//            'parking_spots.user_id',
+//            'parking_spots.user_id',
+//            'parking_spots.number',
+//            'parking_spots.row',
+//            'parking_spots.status',
+//            'cars.sign',
+//            'cars.image'
+//        )
+//            ->join('cars', 'parking_spots.car_id', '=', 'cars.id', 'left outer')
+//            ->get();
     }
 
     /**
+     * switch the CSS-Style for Buttons
      * @return string CSS-Style
      */
     public function switchStatus(): string
@@ -95,6 +86,7 @@ class ParkingSpot extends Model
     }
 
     /**
+     * switch the Output for ButtonText
      * @return string ButtonText
      */
     public function getStatusMessage(): string

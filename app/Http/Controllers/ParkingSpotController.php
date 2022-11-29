@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ParkingSpotRequest;
 use App\Models\Address;
 use App\Models\Car;
 use App\Models\ParkingSpot;
@@ -45,11 +46,11 @@ class ParkingSpotController extends Controller
     public function storeIndex(Request $request): Factory|View|Application
     {
         $viewData = [];
-        $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
-        $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
+        $viewData['title'] = $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
 
         $offset = strripos($request->session()->previousUrl(), '/') + 1;
         $selected_ps_number = substr($request->session()->previousUrl(), $offset);
+
         $viewData['user'] = User::findOrFail(Auth::id());
         $parking_spot = ParkingSpot::where('id', $selected_ps_number)->get();
         $car = Car::findOrFail($request->car_id);
@@ -65,25 +66,23 @@ class ParkingSpotController extends Controller
     }
 
 
-    public function store(Request $request): Factory|View|Application
+    public function store(ParkingSpotRequest $request): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
 
-        ParkingSpot::validate($request);
-
         $offset = strripos($request->session()->previousUrl(), '/') + 1;
         $car_id = substr($request->session()->previousUrl(), $offset);
         $parking_spot_id = $request->get('radio');
 
-        $parking_spot = ParkingSpot::findOrFail($parking_spot_id);
-        $parking_spot->id = $parking_spot_id;
-        $parking_spot->user_id = Auth::id();
-        $parking_spot->carId = $car_id;
-        $parking_spot->status = 'reserviert';
-        $parking_spot->image = 'reserviert.jpg';
-        $parking_spot->update();
+        $parking_spot = ParkingSpot::findOrFail($parking_spot_id)->update([
+            'user_id' => Auth::id(),
+            'carId' => $car_id,
+            'status' => 'reserviert',
+            'image' => 'reserviert.jpg',
+        ]);
+
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }

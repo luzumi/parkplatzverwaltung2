@@ -54,16 +54,16 @@ Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')
 Route::get('user/editor/{id}', 'App\Http\Controllers\UserController@editor')
     ->name("user.editor-id");
 
-Route::put('user/{id}/update', 'App\Http\Controllers\UserController@update')
+Route::put('user/{id}/update', 'App\Services\UserService@update')
     ->name("user.update");
 
-Route::put('user/{id}/updatePicture', 'App\Http\Controllers\UserController@updatePicture')
+Route::put('user/{id}/updatePicture', 'App\Services\UserService@updatePicture')
     ->name("user.updatePicture");
 
 Route::put('address/{id}/create', 'App\Http\Controllers\AddressController@create')
     ->name("address.create");
 
-Route::delete('/user/delete/', 'App\Http\Controllers\UserController@delete')
+Route::delete('/user/delete/', 'App\Services\UserService@delete')
     ->name("user.delete");
 
 Route::get('/user/addCar/index', 'App\Http\Controllers\CarController@storeIndex')

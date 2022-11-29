@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ParkingSpotRequest;
 use App\Models\Car;
 use App\Models\ParkingSpot;
 use Illuminate\Contracts\Foundation\Application;
@@ -24,9 +25,8 @@ class AdminParkingSpotController extends Controller
         return view('admin.parking_spot.index')->with("viewData", $viewData);
     }
 
-    public function storeNewParkingSpot(Request $request): RedirectResponse
+    public function storeNewParkingSpot(ParkingSpotRequest $request): RedirectResponse
     {
-        ParkingSpot::validate($request);
 
         $count = ParkingSpot::all()->count() + 1;
 
@@ -67,10 +67,8 @@ class AdminParkingSpotController extends Controller
 
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(ParkingSpotRequest $request, $id): RedirectResponse
     {
-        ParkingSpot::validate($request);
-
         $parking_spot = ParkingSpot::findOrFail($id);
         $parking_spot->status = $request->input('status');
         $parking_spot->image = $request->input('status') . ".jpg";

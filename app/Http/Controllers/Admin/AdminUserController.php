@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Models\Address;
 use App\Models\StorageLinker;
 use App\Models\User;
@@ -25,10 +26,8 @@ class AdminUserController extends Controller
         return view('admin.user.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(UserRequest $request): RedirectResponse
     {
-        User::validate($request);
-
         $input = $request->input('name') ?? 'unregistered_user.png';
         $extension = $request->file('image')->extension();
         $linker = new StorageLinker([$input, $extension]);
@@ -73,9 +72,9 @@ class AdminUserController extends Controller
 
     }
 
-    public function update(Request $request, $id): Application|Factory|View
+    public function update(UserRequest $request, $id): Application|Factory|View
     {
-        User::validate($request);
+//        User::validate($request);
         $input = $request->input('name');
         $user = User::findOrFail($id);
         $user->name = $input;

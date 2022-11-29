@@ -53,18 +53,21 @@ class Car extends Model
     public static function getCarWithParkingSpot($user_id): Collection|array
     {
         return Car::with('parkingSpot')
-            ->select(
-                'cars.id',
-                'cars.sign',
-                'cars.image',
-                'cars.manufacturer',
-                'cars.model',
-                'cars.color'
-            )
-            ->where('cars.user_id', $user_id)
-            ->leftJoin('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
-            ->distinct()
-            ->get();
+            ->where('cars.user_id', $user_id)->get();
+
+//        return Car::with('parkingSpot')
+//            ->select(
+//                'cars.id',
+//                'cars.sign',
+//                'cars.image',
+//                'cars.manufacturer',
+//                'cars.model',
+//                'cars.color'
+//            )
+//            ->where('cars.user_id', $user_id)
+//            ->leftJoin('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
+//            ->distinct()
+//            ->get();
     }
 
     /**
@@ -72,18 +75,19 @@ class Car extends Model
      */
     public static function getAllCarWithParkingSpot(): Collection|array
     {
-        return Car::with('parkingSpot')
-            ->select(
-                'cars.user_id',
-                'cars.id',
-                'cars.sign',
-                'cars.image',
-                'cars.manufacturer',
-                'cars.model',
-                'cars.color'
-            )
-            ->leftJoin('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
-            ->distinct()
-            ->get();
+        return Car::with('parkingSpot')->get();
+//        return Car::with('parkingSpot')
+//            ->select(
+//                'cars.user_id',
+//                'cars.id',
+//                'cars.sign',
+//                'cars.image',
+//                'cars.manufacturer',
+//                'cars.model',
+//                'cars.color'
+//            )
+//            ->leftJoin('parking_spots', 'parking_spots.user_id', '=', 'cars.user_id')
+//            ->distinct()
+//            ->get();
     }
 }

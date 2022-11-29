@@ -24,9 +24,7 @@ class AddressController extends Controller
         $address->Stadt = $request->input('Stadt');
         $address->Strasse = $request->input('Strasse');
         $address->Nummer = $request->input('Nummer');
-        $address->createdAt = now();
-        $address->supdatedAt = now();
-//        dd($address);
+
         $address->save();
 
         $viewData['user'] = Auth::user();
