@@ -3,7 +3,7 @@
 @section('subtitle', $viewData['subtitle'])
 
 @section('content')
-{{--    {{dd($viewData['address']->getAttribute('Land'))}}--}}
+    {{--    {{dd($viewData['address']->getAttribute('Land'))}}--}}
     <div class="container-xl px-4 mt-4">
         <hr class="mt-0 mb-4">
         <div class="row">
@@ -24,11 +24,12 @@
                             @csrf
                             @method('PUT')
                             <div class="row">
-                                <div class="col">
-                                    <div class="mb-3 row">
+                                <div class="col col-12">
+                                    <div class="mb-6 row">
                                         <div class="col-lg-10 col-md-6 col-sm-12">
-                                            <input name="image" value="{{ $viewData['user']->image }}" type="file" class="form-control" >
-                                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">{{ $viewData['user']->image }}</label>
+                                            <input name="image" value="{{ $viewData['user']->image }}" type="file"
+                                                   class="form-control col-10">
+                                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Profilbild&nbsp;uploaden</label>
                                         </div>
                                     </div>
                                 </div>
@@ -42,51 +43,110 @@
                     </div>
                 </div>
                 <!-- Change password card-->
+
                 <div class="card mb-4 align-content-lg-center">
-                    <div class="card-header">Change Password</div>
-                    <div>
-                        <button href="{{route('auth.forgot-password')}}"></button>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST"
-                              action="{{ route('admin.user.update', ['id'=> $viewData['user']->id]) }}"
-                              enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <!-- Form Group (current password)-->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="mb-3 row">
-                                        <div class="col-lg-10 col-md-6 col-sm-12">
-                                            <div class="mb-3">
-                                                <label class="small mb-1" for="currentPassword">Current Password</label>
-                                                <input class="form-control" id="currentPassword" type="password"
-                                                       placeholder="Enter current password">
+                    <div class="card-header">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">{{ __('Change Password') }}</div>
+
+                                        <form action="{{ route('user.update-password') }}" method="POST">
+                                            @csrf
+                                            <div class="card-body">
+                                                @if (session('status'))
+                                                    <div class="alert alert-success" role="alert">
+                                                        {{ session('status') }}
+                                                    </div>
+                                                @elseif (session('error'))
+                                                    <div class="alert alert-danger" role="alert">
+                                                        {{ session('error') }}
+                                                    </div>
+                                                @endif
+
+                                                <div class="mb-3">
+                                                    <label for="oldPasswordInput" class="form-label">Old
+                                                        Password</label>
+                                                    <input name="old_password" type="password"
+                                                           class="form-control @error('old_password') is-invalid @enderror"
+                                                           id="oldPasswordInput"
+                                                           placeholder="Old Password">
+                                                    @error('old_password')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="newPasswordInput" class="form-label">New
+                                                        Password</label>
+                                                    <input name="new_password" type="password"
+                                                           class="form-control @error('new_password') is-invalid @enderror"
+                                                           id="newPasswordInput"
+                                                           placeholder="New Password">
+                                                    @error('new_password')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirmNewPasswordInput" class="form-label">Confirm New
+                                                        Password</label>
+                                                    <input name="new_password_confirmation" type="password"
+                                                           class="form-control" id="confirmNewPasswordInput"
+                                                           placeholder="Confirm New Password">
+                                                </div>
+
                                             </div>
-                                            <!-- Form Group (new password)-->
-                                            <div class="mb-3">
-                                                <label class="small mb-1" for="newPassword">New Password</label>
-                                                <input class="form-control" id="newPassword" type="password"
-                                                       placeholder="Enter new password">
+
+                                            <div class="card-footer">
+                                                <button class="btn btn-success">Submit</button>
                                             </div>
-                                            <!-- Form Group (confirm password)-->
-                                            <div class="mb-3">
-                                                <label class="small mb-1" for="password">Confirm Password</label>
-                                                <input class="form-control" id="password" type="password"
-                                                       placeholder="Confirm new password">
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                            <div class="col">
-                                                &nbsp;
-                                            </div>
-                                        </div>
+
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
+                    {{--                    <div class="card-body">--}}
+                    {{--                        <form method="POST"--}}
+                    {{--                              action="{{ route('admin.user.update', ['id'=> $viewData['user']->id]) }}"--}}
+                    {{--                              enctype="multipart/form-data">--}}
+                    {{--                            @csrf--}}
+                    {{--                            @method('PUT')--}}
+                    {{--                            <!-- Form Group (current password)-->--}}
+                    {{--                            <div class="row">--}}
+                    {{--                                <div class="col">--}}
+                    {{--                                    <div class="mb-3 row">--}}
+                    {{--                                        <div class="col-lg-10 col-md-6 col-sm-12">--}}
+                    {{--                                            <div class="mb-3">--}}
+                    {{--                                                <label class="small mb-1" for="currentPassword">Current Password</label>--}}
+                    {{--                                                <input class="form-control" id="currentPassword" type="password"--}}
+                    {{--                                                       placeholder="Enter current password">--}}
+                    {{--                                            </div>--}}
+                    {{--                                            <!-- Form Group (new password)-->--}}
+                    {{--                                            <div class="mb-3">--}}
+                    {{--                                                <label class="small mb-1" for="newPassword">New Password</label>--}}
+                    {{--                                                <input class="form-control" id="newPassword" type="password"--}}
+                    {{--                                                       placeholder="Enter new password">--}}
+                    {{--                                            </div>--}}
+                    {{--                                            <!-- Form Group (confirm password)-->--}}
+                    {{--                                            <div class="mb-3">--}}
+                    {{--                                                <label class="small mb-1" for="password">Confirm Password</label>--}}
+                    {{--                                                <input class="form-control" id="password" type="password"--}}
+                    {{--                                                       placeholder="Confirm new password">--}}
+                    {{--                                            </div>--}}
+                    {{--                                            <button type="submit" class="btn btn-primary">Save</button>--}}
+                    {{--                                            <div class="col">--}}
+                    {{--                                                &nbsp;--}}
+                    {{--                                            </div>--}}
+                    {{--                                        </div>--}}
+                    {{--                                    </div>--}}
+                    {{--                                </div>--}}
+                    {{--                            </div>--}}
+                    {{--                        </form>--}}
+                    {{--                    </div>--}}
                 </div>
-            </div>
+
                 <div class="col-lg-12">
                     <!-- Delete account card-->
                     <div class="card-header">Delete Account</div>
@@ -95,12 +155,13 @@
                             werden. Wenn Sie sicher sind, dass Sie Ihr Konto löschen möchten, wählen Sie die
                             Schaltfläche unten.</p>
                         <form action="{{ route('user.delete') }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger-soft text-danger">
-                            Ich habe verstanden, Account löschen!
-                        </button>
-                    </form>
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger-soft text-danger">
+                                Ich habe verstanden, Account löschen!
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="col-xl-8">
