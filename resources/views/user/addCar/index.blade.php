@@ -15,7 +15,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('user.addCar.storeCar') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('user.addCar.addCar') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col">
