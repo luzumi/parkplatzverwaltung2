@@ -22,52 +22,13 @@ class ParkingSpot extends Model
     protected $fillable = ['user_id', 'car_id', 'number', 'row', 'image', 'status'];
 
     /**
-     * @return bool
-     */
-    public static function resetParkingSpot(): bool
-    {
-        return ParkingSpot::where('user_id', Auth::id())->update([
-            'user_id' => '1',
-            'car_id' => null,
-            'status' => 'frei',
-            'image' => 'frei.jpg',
-        ]);
-    }
-
-    /**
-     * @param $parkingSpotId
-     * @param $carId
-     * @return bool
-     */
-    public static function updateParkingSpot($parkingSpotId, $carId): bool
-    {
-        return ParkingSpot::findOrFail($parkingSpotId)->update([
-            'user_id' => $parkingSpotId,
-            'car_id' => $carId,
-            'status' => 'reserviert',
-            'image' => 'reserviert.jpg',
-        ]);
-    }
-
-    /**
      * @return ParkingSpot[]|_IH_ParkingSpot_C
      */
     public static function getAllParkingSpotsWithCars(): array|_IH_ParkingSpot_C
     {
         return ParkingSpot::with('cars')->get();
-//        return ParkingSpot::select(
-//            'parking_spots.id',
-//            'parking_spots.user_id',
-//            'parking_spots.user_id',
-//            'parking_spots.number',
-//            'parking_spots.row',
-//            'parking_spots.status',
-//            'cars.sign',
-//            'cars.image'
-//        )
-//            ->join('cars', 'parking_spots.car_id', '=', 'cars.id', 'left outer')
-//            ->get();
     }
+
 
     /**
      * switch the CSS-Style for Buttons
@@ -84,6 +45,7 @@ class ParkingSpot extends Model
             default => 'alert-dark ',
         };
     }
+
 
     /**
      * switch the Output for ButtonText
@@ -108,6 +70,7 @@ class ParkingSpot extends Model
             'user_id' => '1'
         ]);
     }
+
 
     /**
      * @return HasOne
