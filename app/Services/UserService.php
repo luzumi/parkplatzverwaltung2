@@ -8,15 +8,11 @@ use App\Http\Requests\UserRequest;
 use App\Models\Address;
 use App\Models\Car;
 use App\Models\ParkingSpot;
-use App\Models\StorageLinker;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
@@ -34,7 +30,7 @@ class UserService
             'telefon' => $request->input('telefon'),
         ]);
 
-        return redirect()->route('user.show', Auth::id());
+        return redirect()->route('user.show', $user_id);
     }
 
     /**
@@ -49,7 +45,7 @@ class UserService
             'image' => $setImageName->handle($request, $user),
         ]);
 
-        return redirect()->route('user.show', Auth::id());
+        return redirect()->route('user.show', $user_id);
     }
 
     /**

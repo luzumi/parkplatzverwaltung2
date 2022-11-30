@@ -43,7 +43,7 @@ class UserController extends Controller
 
         $viewData = [];
         $viewData["subtitle"] = $user["name"] . " - User editor";
-        $viewData['address'] = Address::where('user_id', Auth::id())->first();
+        $viewData['address'] = Address::where('user_id', $user_id)->first();
         $viewData["user"] = $user;
         $viewData["title"] = $user["name"] . "Benutzerdaten editieren - Parkplatzverwaltung";
 
