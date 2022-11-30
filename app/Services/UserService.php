@@ -19,13 +19,18 @@ use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
+    /**
+     * @param Request $request
+     * @return User
+     */
     public function createUser(Request $request): User
     {
         // Create user
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'image' => 'unregistered_user.jpg'
         ]);
 
         // Image upload and update user
@@ -37,15 +42,19 @@ class UserService
         return $user;
     }
 
+    /**
+     * @param UserRequest $request
+     * @param $user_id
+     * @return RedirectResponse
+     */
     public function update(UserRequest $request, $user_id): RedirectResponse
     {
         $user = User::findOrFail($user_id);
-        $this->setImageIfExist($request, $user);
-
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->telefon = $request->input('telefon');
-        $user->save();
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'telefon' => $request->input('telefon'),
+        ]);
 
         return redirect()->route('user.show', Auth::id());
     }
@@ -58,7 +67,9 @@ class UserService
     public function updatePicture(UserPictureRequest $request, $user_id): RedirectResponse
     {
         $user = User::findOrFail($user_id);
-        $this->setImageIfExist($request, $user);
+        $user->update([
+            'image' => $this->setImageIfExist($request, $user),
+        ]);
 
         return redirect()->route('user.show', Auth::id());
     }
@@ -67,27 +78,24 @@ class UserService
     /**
      * @param UserRequest|UserPictureRequest $request
      * @param User $user
-     * @return void
+     * @return string
      */
-    public function setImageIfExist(UserRequest|UserPictureRequest $request, User $user): void
+    public function setImageIfExist(UserRequest|UserPictureRequest $request, User $user): string
     {
-        if ($request->hasFile('image')) {
-            $linker = new StorageLinker([
-                $request->file('originalName'),
-                $request->file('image')->extension(),
-            ]);
-            $linker->save();
-            $imageName = $linker['hash'];
+            if ($request->hasFile('image')) {
+                $storageLinker = new StorageLinker([
+                    $user->name,
+                    $request->file('image')->extension()]);
 
-            Storage::disk('public/media')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-            $user->update([
-                'image' => $imageName,
-            ]);
-//            dd($request, $linker, $imageName, $user);
-        }
+                $imageName = $storageLinker['hash'];
+
+                Storage::disk('public/media')->put(
+                    $imageName,
+                    file_get_contents($request->file('image')->getRealPath())
+                );
+            }
+            $user->image = $imageName;
+        return $user->image;
     }
 
     /**
