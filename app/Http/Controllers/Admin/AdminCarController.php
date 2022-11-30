@@ -24,9 +24,7 @@ class AdminCarController extends Controller
         return view('admin.car.index')->with("viewData", $viewData);
     }
 
-    public function store(CarRequest   $request,
-                          CreateNewCar $createNewCar,
-                          SetImageName $setImageName): RedirectResponse
+    public function store(CarRequest $request, CreateNewCar $createNewCar, SetImageName $setImageName): RedirectResponse
     {
         $createNewCar->handle($request, $setImageName);
         return back();

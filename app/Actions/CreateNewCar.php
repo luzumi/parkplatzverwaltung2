@@ -16,7 +16,7 @@ class CreateNewCar extends Model
      */
     public function handle(CarRequest $request, SetImageName $setImageName): Car
     {
-        return Car::create([
+        return Car::updateOrCreate([
             'user_id' => Auth::id(),
             'sign' => $request->input('sign'),
             'manufacturer' => $request->input('manufacturer'),

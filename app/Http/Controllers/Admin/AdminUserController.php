@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\AdminCreateUser;
+use App\Actions\SaveAddress;
+use App\Actions\SetImageName;
+use App\Actions\UpdateUser;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddressRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Address;
-use App\Models\StorageLinker;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class AdminUserController extends Controller
 {
+    /**
+     * @return Factory|View|Application
+     */
     public function index(): Factory|View|Application
     {
         $viewData = [];
@@ -26,41 +30,35 @@ class AdminUserController extends Controller
         return view('admin.user.index')->with("viewData", $viewData);
     }
 
-    public function store(UserRequest $request): RedirectResponse
+
+    /**
+     * @param UserRequest $request
+     * @param AdminCreateUser $createUser
+     * @param SetImageName $setImageName
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function store(UserRequest $request, AdminCreateUser $createUser, SetImageName $setImageName, User $user): RedirectResponse
     {
-        $input = $request->input('name') ?? 'unregistered_user.png';
-        $extension = $request->file('image')->extension();
-        $linker = new StorageLinker([$input, $extension]);
-
-        $user = $request->only(['name', 'email', 'telefon']);
-
-        if ($request->hasFile('image')) {
-            $imageName = $linker['hash'];
-            $user['image'] = $imageName;
-            Storage::disk('public/media')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        } else {
-            $user['image'] = 'unregistered_user.png';
-        }
-
-        $user->role = 'client';
-        $user->password = 'password';
-        $user->remember_token = 'token_';
-        $user->email_verified_at = now();
-
-        User::create($user);
+        $createUser->handle($request, $setImageName, $user);
 
         return back();
     }
 
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
     public function delete($id): RedirectResponse
     {
         User::destroy($id);
         return back();
     }
 
+    /**
+     * @param $id
+     * @return Factory|View|Application
+     */
     public function edit($id): Factory|View|Application
     {
         $viewData = [];
@@ -72,42 +70,28 @@ class AdminUserController extends Controller
 
     }
 
-    public function update(UserRequest $request, $id): Application|Factory|View
+    /**
+     * @param UserRequest $request
+     * @param AddressRequest $addressRequest
+     * @param SetImageName $setImageName
+     * @param UpdateUser $updateUser
+     * @param SaveAddress $saveAddress
+     * @param $user_id
+     * @return Application|Factory|View
+     */
+    public function update(UserRequest    $request,
+                           AddressRequest $addressRequest,
+                           SetImageName   $setImageName,
+                           UpdateUser     $updateUser,
+                           SaveAddress    $saveAddress,
+                                          $user_id): Application|Factory|View
     {
-//        User::validate($request);
-        $input = $request->input('name');
-        $user = User::findOrFail($id);
-        $user->name = $input;
-        $user->email = $request->input('email');
-        $user->telefon = $request->input('telefon');
-
-        if ($request->hasFile('image')) {
-            $extension = $request->file('image')->extension();
-            $linker = new StorageLinker([$input, $extension]);
-            $imageName = $linker['hash'];
-            Storage::disk('public/media')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-
-            );
-            $user->image = $imageName;
-        }
-
-        $user->update();
-
-        $address = Address::where('user_id', $id)->first();
-        $address->Land = $request['Land'];
-        $address->PLZ = $request->input('PLZ');
-        $address->Stadt = $request->input('Stadt');
-        $address->Strasse = $request->input('Strasse');
-        $address->Nummer = $request->input('Nummer');
-
-//        dd($address);
-        $address->update();
+        $updateUser->update($request, $updateUser, $setImageName, $user_id);
+        $saveAddress->handle($addressRequest, $user_id);
 
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
         $viewData['users'] = User::all();
-        $viewData['address'] = Address::where('user_id', $id)->first();
+        $viewData['address'] = Address::where('user_id', $user_id)->first();
 
         return view('admin.user.index')->with("viewData", $viewData);
     }
