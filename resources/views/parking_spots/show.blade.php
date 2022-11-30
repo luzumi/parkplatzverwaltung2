@@ -24,7 +24,6 @@
                               action="{{ route('parking_spots.reserve_index',  [$viewData["parking_spot"]->number]) }}"
                               enctype="multipart/form-data">
                             @csrf
-
                             <h5 class="card-title">
                                 Name: {{ $viewData["user"]->name }} <br><br>
                                 Fahrzeuge:
@@ -42,7 +41,7 @@
                                         <tr class="table-active">
                                             @if(!isset($car->parkingSpot))
                                                 <td>
-                                                    <div class="radio">
+                                                    <div class="status">
                                                         <label class="input-group-sm">
                                                             <input type="radio" id='{{ $car->id }}' name="car_id" value="{{ $car->id }}">
                                                         </label>
@@ -72,8 +71,9 @@
                         </form>
                     @endif
                     <div>
-                        Letzte Änderung: <p class="card-text">{{ $viewData["parking_spot"]->updatedAt }}</p>
-                        <p class="card-text"><small class="text-muted">****************************</small></p>
+                        <p class="card-text"><small class="text-muted">***********************************************</small></p>
+                        <p class="card-text">Letzte Änderung: {{ $viewData["parking_spot"]->updated_at }}</p>
+                        <p class="card-text"><small class="text-muted">***********************************************</small></p>
                         <a href="{{ route('user.show', Auth::id()) }}"
                            class="btn {{ $viewData["parking_spot"]->switchStatus() }} text-white offset-lg-7">
                             zurück zur Übersicht

@@ -33,7 +33,7 @@ Route::get('/parking_spots/', 'App\Http\Controllers\ParkingSpotController@index'
 Route::get('/parking_spot/{id}/', 'App\Http\Controllers\ParkingSpotController@show')
     ->name("parking_spots.show");
 
-Route::post('/parking_spots/reserve/reserve/{id}/', 'App\Http\Controllers\ParkingSpotController@storeIndex')
+Route::post('/parking_spots/reserve/reserve/{number}/', 'App\Http\Controllers\ParkingSpotController@storeIndex')
     ->name("parking_spots.reserve_index");
 
 Route::post('/parking_spots/reserve/store', 'App\Http\Controllers\ParkingSpotController@storeThisCar')
@@ -69,8 +69,8 @@ Route::delete('/user/delete/', 'App\Services\UserService@delete')
 Route::get('/user/addCar/index', 'App\Http\Controllers\CarController@storeIndex')
     ->name('user.addCar.index');
 
-Route::post('/user/addCar/storeCar', 'App\Http\Controllers\CarController@storeCar')
-    ->name('user.addCar.storeCar');
+Route::post('/user/addCar/addCar', 'App\Http\Controllers\CarController@addCar')
+    ->name('user.addCar.addCar');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
 
