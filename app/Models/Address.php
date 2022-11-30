@@ -27,21 +27,6 @@ class Address extends Model
     ];
 
     /**
-     * @param Request $request
-     * @return void
-     */
-    public static function validate(Request $request)
-    {
-        $request->validate([
-            'Land' => 'required|string|max:30',
-            'PLZ' => 'required|integer|digits:5',
-            'Stadt' => 'required|string',
-            'Strasse' => 'required|string',
-            'Nummer' => 'required|integer',
-        ]);
-    }
-
-    /**
      * @return HasOne
      */
     public function user(): HasOne

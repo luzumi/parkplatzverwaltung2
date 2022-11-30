@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SaveAddress;
+use App\Http\Requests\AddressRequest;
 use App\Models\Address;
 use App\Models\Car;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -15,28 +18,16 @@ use Illuminate\Support\Facades\Auth;
  */
 class AddressController extends Controller
 {
-    public function create(Request $request, $id): Application|Factory|View
+    public function create(AddressRequest $request, SaveAddress $saveAddress, int $user_id): Application|Factory|View
     {
-        Address::validate($request);
-        $address = Address::where('user_id', $id)->first();
-        $address->Land = $request['Land'];
-        $address->PLZ = $request->input('PLZ');
-        $address->Stadt = $request->input('Stadt');
-        $address->Strasse = $request->input('Strasse');
-        $address->Nummer = $request->input('Nummer');
+        $address = $saveAddress->handle($request, $user_id);
 
-        $address->save();
-
-        $viewData['user'] = Auth::user();
-        $viewData['cars'] = Car::where('user_id', $id);
-        $viewData['address'] = Address::where('user_id', $id)->first();
-
+        $viewData['user'] = User::findOrFail($user_id);
+        $viewData['cars'] = Car::where('user_id', $user_id);
+        $viewData['address'] = $address;
         $viewData['title'] = $viewData['user']->name . " - Parkplatzverwaltung";
         $viewData['subtitle'] = $viewData['user']->name . " - User information";
 
-        return view('user.show', [$id])->with("viewData", $viewData);
+        return view('user.show', [$user_id])->with("viewData", $viewData);
     }
-
-
-
 }
