@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\UpdateCar;
+use App\Actions\CreateNewCar;
+use App\Actions\SetImageName;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CarRequest;
 use App\Models\Car;
-use App\Models\StorageLinker;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class AdminCarController extends Controller
 {
@@ -19,35 +19,16 @@ class AdminCarController extends Controller
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - Fahrzeugübersicht - Parkplatzverwaltung';
-        $viewData['cars'] = Car::getAllCarWithParkingSpot();
+        $viewData['cars'] = Car::with('parkingSpot')->get();
 
         return view('admin.car.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(CarRequest   $request,
+                          CreateNewCar $createNewCar,
+                          SetImageName $setImageName): RedirectResponse
     {
-        Car::validate($request);
-
-        $input = $request->input('sign');
-        $extension = $request->file('image')->extension();
-        $linker = new StorageLinker([$input, $extension]);
-
-        $car = $request->only(['id', 'sign', 'manufacturer', 'model', 'color']);
-        if ($request->hasFile('image')) {
-            $imageName = $linker['hash'];
-            $car->image = $imageName;
-            Storage::disk('public/media')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        } else {
-            $car->image = 'testCar.png';
-        }
-
-        $car->status = true;
-
-        Car::create($car);
-
+        $createNewCar->handle($request, $setImageName);
         return back();
     }
 
@@ -67,30 +48,9 @@ class AdminCarController extends Controller
 
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(CarRequest $request, SetImageName $setImageName, int $car_id, UpdateCar $updateCar): RedirectResponse
     {
-        Car::validate($request);
-
-        $car = Car::findOrFail($id);
-        if ($request->hasFile('image')) {
-            $input = $request->input('name') ?? 'unregistered_user.png';
-            $extension = $request->file('image')->extension();
-            $linker = new StorageLinker([$input, $extension]);
-            $imageName = $linker['hash'];
-            Storage::disk('public/media')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-            $car->image = $linker['hash'];
-        }
-
-
-        $car->sign = $request->input('sign');
-        $car->manufacturer= $request->input('manufacturer');
-        $car->model = $request->input('model');
-        $car->color = $request->input('color');
-
-        $car->save();
+        $updateCar->handle($request, $setImageName, $car_id);
 
         return redirect()->route('admin.car.index');
     }
