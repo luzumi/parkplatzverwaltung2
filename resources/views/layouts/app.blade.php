@@ -38,7 +38,7 @@
                         @csrf
                     </form>
                 @endguest
-                <img class="img-profile rounded-circle"
+                <img class="img-profile rounded-circle  col-1"
                      src=" {{asset( '/storage/media/'. (Auth::user()->image ?? 'undraw_profile.svg')) }} " alt="z">
             </div>
         </div>

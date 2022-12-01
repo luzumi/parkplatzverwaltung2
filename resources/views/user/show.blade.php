@@ -6,9 +6,9 @@
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="{{ asset('/storage/media/'. $viewData['user']->image) }}"
-                     class="img-card rounded-start"
-                     alt="Image not found">
+                    <img src="{{ asset('/storage/media/'. $viewData['user']->image) }}"
+                         class="img-card rounded-start"
+                         alt="">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
@@ -46,26 +46,28 @@
                                 <th>Buchen/Stornieren</th>
                             </tr>
                             <object{{ $i = 0 }}>
-                            @foreach($viewData['cars'] as $car)
+                                @foreach($viewData['cars'] as $car)
                                     <tr class="table-active">
                                         <td>{{ $car->sign }}</td>
                                         <td>{{ $car->manufacturer }}</td>
                                         <td>{{ $car->model }}</td>
                                         <td>{{ $car->color }}</td>
                                         <td>
-{{-- Fahrzeugbild bekommt einen Link, wenn es noch keinem Parkplatz zugeordnet ist--}}
-                                        @if(!isset($viewData['cars'][$i++]->parkingSpot->number))
+                                            {{-- Fahrzeugbild bekommt einen Link, wenn es noch keinem Parkplatz zugeordnet ist--}}
+                                            @if(!isset($viewData['cars'][$i++]->parkingSpot->number))
                                                 <a href="{{ route('cars.show', ['id'=> $car->id]) }}">
                                                     <img src="{{ asset('/storage/media/'. $car->image) }}"
-                                                         class="img-thumbnail row-cols-sm-4" alt="image not found">
+                                                         class="img-thumbnail row-cols-sm-4"
+                                                         alt="{{asset('/storage/media/testcar.png')}}">
                                                 </a>
                                             @else
                                                 <img src="{{ asset('/storage/media/'. $car->image) }}"
-                                                     class="img-thumbnail row-cols-sm-4" alt="image not found">
+                                                     class="img-thumbnail row-cols-sm-4"
+                                                     alt="{{asset('/storage/media/testCar.png')}}">
                                             @endif
                                         </td>
                                         <td>{{ $car->parkingSpot->number ?? ''}} </td>
-{{-- Parkplatznummer wird angezeigt, wenn das fahrzeug einen Parkplatz reserviert hat, alternativ erscheint ein Button zur Stornierung des Parkplatzes--}}
+                                        {{-- Parkplatznummer wird angezeigt, wenn das fahrzeug einen Parkplatz reserviert hat, alternativ erscheint ein Button zur Stornierung des Parkplatzes--}}
                                         <td> @if(!isset($car->parkingSpot->number))
                                                 <a href="{{ route('cars.show', ['id'=> $car->id]) }}">
                                                     Parkplatz auswählen
@@ -73,7 +75,8 @@
                                             @else
                                                 <a href="{{ route('parking_spots.reserve.cancel', [$car->parkingSpot->id]) }}"
                                                    class="btn btn-danger text-white ">
-                                                    <p class="pe-lg-4">Reservierung Parkplatz&nbsp;{{$car->parkingSpot->number}}&nbsp;löschen</p>
+                                                    <p class="pe-lg-4">Reservierung
+                                                        Parkplatz&nbsp;{{$car->parkingSpot->number}}&nbsp;löschen</p>
                                                 </a>
                                             @endif
                                         </td>

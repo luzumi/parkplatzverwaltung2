@@ -62,7 +62,7 @@
                                             <td>{{ $car->model }}</td>
                                             <td>{{ $car->color }}</td>
                                             <td><img src="{{ asset('/storage/media/'. $car->image) }}"
-                                                     class="img-thumbnail col-sm-6" alt="image not found"></td>
+                                                     class="img-thumbnail col-sm-6" alt="{{asset('/storage/media/testCar.png')}}"></td>
                                         </tr>
                                     @endforeach
                                 </table>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('image')->default('storage/app/public/undraw_profile.svg');
+            $table->string('image')->default('unregistered_user.png');
             $table->string('telefon')->nullable();
             $table->string('status')->default(true);
             $table->string('role')->default('client');

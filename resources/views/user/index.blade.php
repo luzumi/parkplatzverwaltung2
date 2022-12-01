@@ -8,7 +8,7 @@
             <div class="col-md-4 col-lg-3 mb-2">
                 <div class="card">
                     <img src="{{ asset( './storage/media/' . $user->image) }}" class="card-img-top img-card"
-                         alt="Image not found">
+                         alt="{{asset('/storage/media/unregistered_user.png')}}">
                     <div class="card-body text-center">
                         <a href="{{ route('user.show', [$user->id]) }}"
                            class="btn bg-primary text-white">

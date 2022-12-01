@@ -5,7 +5,7 @@
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="{{ asset('/storage/media/'. $viewData['car']->image) }}" class="img-fluid rounded-start" alt="Image not found">
+                <img src="{{ asset('/storage/media/'. $viewData['car']->image) }}" class="img-fluid rounded-start" alt="{{asset('/storage/media/testCar.png')}}">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
@@ -15,7 +15,7 @@
                         Telefon: {{ $viewData["user"]->telefon }} <br>
                         User-Rolle: {{ $viewData["user"]->role }} <br>
                     </h5>
-                    <img src="{{ asset('/storage/media/'. $viewData['user']->image) }}" class="img-fluid rounded-start" alt="Image not found">
+                    <img src="{{ asset('/storage/media/'. $viewData['user']->image) }}" class="img-fluid rounded-start" alt="{{asset('/storage/media/testCar.png')}}">
                     Letzter Login: <p class="card-text">{{ $viewData["user"]->updatedAt }}</p>
                     <p class="card-text"><small class="text-muted">Userdaten bearbeiten</small></p>
                 </div>
