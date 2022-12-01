@@ -18,16 +18,10 @@ use Illuminate\Support\Facades\Auth;
  */
 class AddressController extends Controller
 {
-    public function create(AddressRequest $request, SaveAddress $saveAddress, int $user_id): Application|Factory|View
+    public function create(AddressRequest $request, SaveAddress $saveAddress, int $user_id): \Illuminate\Http\RedirectResponse
     {
         $address = $saveAddress->handle($request, $user_id);
 
-        $viewData['user'] = User::findOrFail($user_id);
-        $viewData['cars'] = Car::where('user_id', $user_id);
-        $viewData['address'] = $address;
-        $viewData['title'] = $viewData['user']->name . " - Parkplatzverwaltung";
-        $viewData['subtitle'] = $viewData['user']->name . " - User information";
-
-        return view('user.show', [$user_id])->with("viewData", $viewData);
+        return redirect()->route('user.show', $user_id);
     }
 }

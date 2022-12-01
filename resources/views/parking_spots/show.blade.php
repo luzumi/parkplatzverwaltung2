@@ -21,9 +21,10 @@
 
                     @if($viewData["parking_spot"]->status == 'frei')
                         <form method="POST"
-                              action="{{ route('parking_spots.reserve_index',  [$viewData["parking_spot"]->number]) }}"
+                              action="{{ route('parking_spots.storeThisCar') }}"
                               enctype="multipart/form-data">
                             @csrf
+                            @method('POST')
                             <h5 class="card-title">
                                 Name: {{ $viewData["user"]->name }} <br><br>
                                 Fahrzeuge:
@@ -44,7 +45,12 @@
                                                 <td>
                                                     <div class="status">
                                                         <label class="input-group-sm">
-                                                            <input type="radio" id='{{ $car->id }}' name="car_id" value="{{ $car->id }}">
+{{--                                                            <input type="radio" id='{{ $car->id }}' name="car_id" value="{{ $car->id }}">--}}
+                                                            <a href="{{ route('cars.show', ['id'=> $car->id]) }}">
+                                                                <img src="{{ asset('/storage/media/parking_spot.png') }}"
+                                                                     class="img-thumbnail row-cols-sm-4"
+                                                                     alt="cd">
+                                                            </a>
                                                         </label>
                                                     </div>
                                                 </td>
@@ -53,7 +59,6 @@
                                                     <a href="{{ route('parking_spots.reserve.cancel', $car->parkingSpot->id) }}"
                                                        class="btn btn-danger {{ $viewData["parking_spot"]->switchStatus() }} text-white ">
                                                         <p class="pe-lg-4">Reservierung Parkplatz&nbsp;{{$car->parkingSpot->number}}&nbsp;löschen</p>
-
                                                     </a>
                                                 </td>
                                             @endif
@@ -62,7 +67,7 @@
                                             <td>{{ $car->model }}</td>
                                             <td>{{ $car->color }}</td>
                                             <td><img src="{{ asset('/storage/media/'. $car->image) }}"
-                                                     class="img-thumbnail col-sm-6" alt="{{asset('/storage/media/testCar.png')}}"></td>
+                                                     class="img-thumbnail col-sm-6" alt="{{ asset('/storage/media/testCar.png') }}"></td>
                                         </tr>
                                     @endforeach
                                 </table>

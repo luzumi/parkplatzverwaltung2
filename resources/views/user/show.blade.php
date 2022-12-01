@@ -58,7 +58,7 @@
                                                 <a href="{{ route('cars.show', ['id'=> $car->id]) }}">
                                                     <img src="{{ asset('/storage/media/'. $car->image) }}"
                                                          class="img-thumbnail row-cols-sm-4"
-                                                         alt="{{asset('/storage/media/testcar.png')}}">
+                                                         alt="cd">
                                                 </a>
                                             @else
                                                 <img src="{{ asset('/storage/media/'. $car->image) }}"

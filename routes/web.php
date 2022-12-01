@@ -33,7 +33,7 @@ Route::get('/parking_spots/', 'App\Http\Controllers\ParkingSpotController@index'
 Route::get('/parking_spot/{id}/', 'App\Http\Controllers\ParkingSpotController@show')
     ->name("parking_spots.show");
 
-Route::post('/parking_spots/reserve/reserve/{number}/', 'App\Http\Controllers\ParkingSpotController@storeIndex')
+Route::post('/parking_spots/reserve/reserve/', 'App\Http\Controllers\ParkingSpotController@storeIndex')
     ->name("parking_spots.reserve_index");
 
 Route::post('/parking_spots/reserve/store', 'App\Http\Controllers\ParkingSpotController@storeThisCar')

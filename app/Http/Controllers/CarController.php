@@ -54,7 +54,6 @@ class CarController extends Controller
         $viewData['subtitle'] = 'Details von ' . $car->sign;
         $viewData['car'] = $car;
         $viewData['parking_spots'] = ParkingSpot::where('status', 'frei')->get();
-//        $viewData['selected_spot'] = 0;
 
         return view('cars.show', [$id])->with('viewData', $viewData);
     }

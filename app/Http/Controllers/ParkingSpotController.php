@@ -70,17 +70,17 @@ class ParkingSpotController extends Controller
     public function storeThisCar(ParkingSpotRequest $request): Factory|View|Application
     {
         ParkingSpotService::update($request);
-
         $viewData = [];
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['user'] = User::findOrFail(Auth::id());
+        $viewData['parking_spot'] = ParkingSpot::where('id', $request->input('status'))->first();
         $viewData['address'] = Address::where('user_id', Auth::id())->first();
         $viewData['cars'] = Car::with('parkingSpot')
             ->where('user_id', Auth::id())
             ->get();
 
-        return view('user.show', [Auth::id()])->with("viewData", $viewData);
+        return view('parking_spots.reserve.store_reserve')->with("viewData", $viewData);
     }
 
     public function cancel($ps_id): Application|Factory|View

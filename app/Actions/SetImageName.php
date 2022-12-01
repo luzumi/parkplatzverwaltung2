@@ -30,7 +30,8 @@ class SetImageName
                 file_get_contents($request->file('image')->getRealPath())
             );
         }
-        $model->image = $imageName ?? $model->image;
+        $model->image = $imageName ?? $model->image ?? 'testCar.png';
+
         return $model->image;
     }
 }
