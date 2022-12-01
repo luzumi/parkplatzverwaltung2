@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    {{--{{dd($viewData)}}--}}
+{{-- Anzeige der vorhandenen Parkplätze--}}
     <div class="card">
         <div class="card-header">
             Manage Parking-Spots
@@ -67,11 +67,14 @@
                         <td>{{ $parking_spot->number }}</td>
                         <td>{{ $parking_spot->row }}</td>
                         <td>{{ $parking_spot->status }}</td>
+{{-- Ausgabe des Nummernschildes --}}
                         <td>{{ $parking_spot->sign ?? '' }}</td>
+{{-- Ausgabe des Vorschaubildes --}}
                         <td>
                             <img src="{{ asset('/storage/media/'. $parking_spot->image) }}"
                                  class="img-profile" alt=" ">
                         </td>
+{{-- Buttons edit und delete--}}
                         <td>
                             <a class="btn btn-primary"
                                href="{{ route('admin.parking-spot.edit', ['id'=>$parking_spot->id]) }}">

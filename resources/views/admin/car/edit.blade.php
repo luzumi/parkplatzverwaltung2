@@ -13,7 +13,7 @@
                     @endforeach
                 </ul>
             @endif
-
+{{--Usereingaben--}}
             <form method="POST" action="{{ route('admin.car.update', ['id'=> $viewData['car']->id]) }}"
                   enctype="multipart/form-data">
                 @csrf
@@ -73,7 +73,7 @@
                         &nbsp;
                     </div>
                 </div>
-
+{{--absenden--}}
                 <button type="submit" class="btn btn-primary">Edit</button>
             </form>
         </div>

@@ -4,6 +4,7 @@
 @section('content')
     <div class="card mb-3">
         <div class="row">
+{{-- Anzeige des ausgewählten fahrzeuges --}}
             <img src="{{ asset('/storage/media/'.$viewData['car']->image) }}" class="img-fluid rounded-start"
                  alt="Image not found">
             <p class="card-body">
@@ -11,9 +12,8 @@
                 {{ $viewData["car"]->manufacturer }}
                 {{ $viewData["car"]->model }}
                 {{ $viewData["car"]->color }}
-            <p class="card-text">{{ $viewData["car"]->sign }}</p>
+                <p class="card-text">{{ $viewData["car"]->sign }}</p>
             </h5>
-
             <div class="card-text">
                 <table class="table table-bordered">
                     <tr class="table-primary">
@@ -28,6 +28,7 @@
                                     <div class="mb-3 row">
                                         <div class="col-lg-10 col-md-6 col-sm-12">
                                             <label for="spot">
+{{-- Auswahlmöglichkeit der noch reservierbaren Fahrzeuge --}}
                                                 <select name="status" id="spot">
                                                     @foreach($viewData['parking_spots'] as $spot)
                                                         <option value="{{ $spot->id }}" name="id">{{$spot->number}}</option>

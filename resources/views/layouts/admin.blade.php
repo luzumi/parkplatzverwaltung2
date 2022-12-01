@@ -14,7 +14,7 @@
 
 <body>
 <div class="row g-0">
-    <!-- sidebar -->
+{{-- sidebar --}}
     <div class="p-3 col fixed text-white bg-dark">
         <a href="{{ route('admin.home.index') }}" class="text-white text-decoration-none">
             <span class="fs-4">Admin Panel</span>
@@ -23,7 +23,6 @@
         <ul class="nav flex-column">
             <li><a href="{{ route('admin.home.index') }}" class="nav-link text-white">- Admin - Home</a></li>
             <li><a href="{{ route("admin.car.index") }}" class="nav-link text-white">- Admin - alle Fahrzeuge</a></li>
-            <li><a href="{{ route("admin.car.index") }}" class="nav-link text-white">- Admin - Fahrzeuge</a></li>
             <li><a href="{{ route("user.index") }}" class="nav-link text-white">- Admin - alle Users</a></li>
             <li><a href="{{ route("admin.user.index") }}" class="nav-link text-white">- Admin - User</a></li>
             <li><a href="{{ route("admin.parking_spot.index") }}" class="nav-link text-white">- Admin - Parkplätze</a>
@@ -42,7 +41,6 @@
                 <a role="button" class="nav-link active"
                    onclick="document.getElementById('logout').submit();">Logout</a>
                 @csrf
-                {{--            <span class="profile-font">--}}{{--<a href="{{ route('logout.perform') }}" > Logout </a>--}}{{--</span>--}}
                 <img class="img-profile rounded-circle"
                      src="{{ asset('/storage/media/' . User::findOrFail(Auth::id())->image) }}"
                      alt="Image not Found">

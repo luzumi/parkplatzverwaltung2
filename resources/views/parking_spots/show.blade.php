@@ -36,10 +36,11 @@
                                         <th>Farbe</th>
                                         <th>Vorschau</th>
                                     </tr>
-
+{{-- Auflistung der Fahrzeuge des Users--}}
                                     @foreach($viewData['cars'] as $car)
                                         <tr class="table-active">
-                                            @if(!isset($car->parkingSpot))
+{{-- Wenn Fahrzeug bereits einen Parkplatz reserviert hat wird ein Button zum Löschen angezeigt, statt des Radiobuttons--}}
+                                        @if(!isset($car->parkingSpot))
                                                 <td>
                                                     <div class="status">
                                                         <label class="input-group-sm">

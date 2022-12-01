@@ -53,6 +53,7 @@
                                         <td>{{ $car->model }}</td>
                                         <td>{{ $car->color }}</td>
                                         <td>
+{{-- Fahrzeugbild bekommt einen Link, wenn es noch keinem Parkplatz zugeordnet ist--}}
                                         @if(!isset($viewData['cars'][$i++]->parkingSpot->number))
                                                 <a href="{{ route('cars.show', ['id'=> $car->id]) }}">
                                                     <img src="{{ asset('/storage/media/'. $car->image) }}"
@@ -64,6 +65,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $car->parkingSpot->number ?? ''}} </td>
+{{-- Parkplatznummer wird angezeigt, wenn das fahrzeug einen Parkplatz reserviert hat, alternativ erscheint ein Button zur Stornierung des Parkplatzes--}}
                                         <td> @if(!isset($car->parkingSpot->number))
                                                 <a href="{{ route('cars.show', ['id'=> $car->id]) }}">
                                                     Parkplatz auswählen
@@ -73,15 +75,12 @@
                                                    class="btn btn-danger text-white ">
                                                     <p class="pe-lg-4">Reservierung Parkplatz&nbsp;{{$car->parkingSpot->number}}&nbsp;löschen</p>
                                                 </a>
-{{--                                                {{dd($car->parkingSpot->number)}}--}}
-
                                             @endif
                                         </td>
                                     </tr>
                             @endforeach
                         </table>
                     </h5>
-{{--                    {{dd($viewData['address']['Strasse'])}}--}}
                 </div>
             </div>
         </div>

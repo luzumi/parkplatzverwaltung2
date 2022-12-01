@@ -27,20 +27,22 @@ class ParkingSpotController extends Controller
 
     public function show($parking_spot_id): Factory|View|Application
     {
+        $parking_spot = ParkingSpot::findOrFail($parking_spot_id);
+
         $viewData = [];
         $viewData["user"] = User::findOrFail(Auth::id());
         $viewData["title"] = "Parkplatzansicht";
-        $parking_spot = ParkingSpot::findOrFail($parking_spot_id);
         $viewData["subtitle"] = "Parkplatz Nr. " . $parking_spot->number;
         $viewData["parking_spot"] = $parking_spot;
-        $viewData["cars"] = Car::with('parkingSpot')->where('cars.user_id', Auth::id())->get();
+        $viewData["cars"] = Car::with('parkingSpot')
+            ->where('cars.user_id', Auth::id())
+            ->get();
 
         return view('parking_spots.show')->with("viewData", $viewData);
     }
 
     public function storeIndex(ParkingSpotRequest $request): Factory|View|Application
     {
-//        dd('storeIndex', $request);
         ParkingSpotService::update($request);
 
         $user = User::findOrFail(Auth::id())->first();
@@ -57,7 +59,7 @@ class ParkingSpotController extends Controller
     public function store(ParkingSpotRequest $request): Factory|View|Application
     {
         ParkingSpotService::update($request);
-//        dd('store', $request);
+
         $viewData = [];
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
@@ -68,14 +70,15 @@ class ParkingSpotController extends Controller
     public function storeThisCar(ParkingSpotRequest $request): Factory|View|Application
     {
         ParkingSpotService::update($request);
-//dd('storeThisCar', $request);
 
         $viewData = [];
         $viewData['title'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['subtitle'] = 'Reserve a parking spot - Parkplatzverwaltung';
         $viewData['user'] = User::findOrFail(Auth::id());
         $viewData['address'] = Address::where('user_id', Auth::id())->first();
-        $viewData['cars'] = Car::with('parkingSpot')->where('user_id', Auth::id())->get();
+        $viewData['cars'] = Car::with('parkingSpot')
+            ->where('user_id', Auth::id())
+            ->get();
 
         return view('user.show', [Auth::id()])->with("viewData", $viewData);
     }
@@ -89,7 +92,9 @@ class ParkingSpotController extends Controller
         $viewData["subtitle"] = "Parkplatz Nr. " . $ps_id;
         $viewData['user'] = User::findOrFail(Auth::id());
         $viewData['parking_spots'] = ParkingSpot::all();
-        $viewData['cars'] = Car::with('parkingSpot')->where('cars.user_id', Auth::id())->get();
+        $viewData['cars'] = Car::with('parkingSpot')
+            ->where('cars.user_id', Auth::id())
+            ->get();
 
         return view('parking_spots.index')->with("viewData", $viewData);
     }

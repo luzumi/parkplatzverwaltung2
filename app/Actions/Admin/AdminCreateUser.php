@@ -8,6 +8,10 @@ use App\Models\User;
 
 class AdminCreateUser
 {
+    /**
+     * @param UserRequest $request
+     * @return User
+     */
     public function handle(UserRequest $request): User
     {
         return User::updateOrCreate([

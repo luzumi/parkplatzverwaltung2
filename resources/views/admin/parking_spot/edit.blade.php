@@ -37,19 +37,6 @@
                         </div>
                     </div>
                 </div>
-{{--                <div class="row">--}}
-{{--                    <div class="col">--}}
-{{--                        <div class="mb-3 row">--}}
-{{--                            <div class="col-lg-10 col-md-6 col-sm-12">--}}
-{{--                                <input class="form-control" type="file" name="image">--}}
-{{--                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label-sm">Image:</label>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="col">--}}
-{{--                        &nbsp;--}}
-{{--                    </div>--}}
-{{--                </div>--}}
                 <button type="submit" class="btn btn-primary">Edit</button>
             </form>
         </div>

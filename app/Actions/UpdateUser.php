@@ -7,6 +7,13 @@ use App\Models\User;
 
 class UpdateUser
 {
+    /**
+     * @param UserRequest $request
+     * @param UpdateUser $updateUser
+     * @param SetImageName $setImageName
+     * @param int $user_id
+     * @return User
+     */
     public function update(UserRequest  $request,
                            UpdateUser   $updateUser,
                            SetImageName $setImageName,

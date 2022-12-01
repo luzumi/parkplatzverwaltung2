@@ -3,12 +3,11 @@
 @section('subtitle', $viewData['subtitle'])
 
 @section('content')
-    {{--    {{dd($viewData['address']->getAttribute('Land'))}}--}}
     <div class="container-xl px-4 mt-4">
         <hr class="mt-0 mb-4">
         <div class="row">
             <div class="col-xl-4">
-                <!-- Profile picture card-->
+                {{--Profile picture card--}}
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
@@ -16,7 +15,7 @@
                         <img class="img-account-profile rounded-circle mb-2"
                              src="{{ asset('/storage/media/'. $viewData['user']->image) }}" alt="y">
                         <!-- Profile picture help block-->
-                        <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                        <div class="small font-italic text-muted mb-4">JPG or PNG</div>
                         <!-- Profile picture upload button-->
                         <form method="POST"
                               action="{{ route('user.updatePicture', ['id'=> $viewData['user']->id]) }}"
@@ -42,8 +41,7 @@
                         </form>
                     </div>
                 </div>
-                <!-- Change password card-->
-
+                {{-- Change password card --}}
                 <div class="card mb-4 align-content-lg-center">
                     <div class="card-header">
                         <div class="container">
@@ -64,7 +62,6 @@
                                                         {{ session('error') }}
                                                     </div>
                                                 @endif
-
                                                 <div class="mb-3">
                                                     <label for="oldPasswordInput" class="form-label">Old
                                                         Password</label>
@@ -94,61 +91,19 @@
                                                            class="form-control" id="confirmNewPasswordInput"
                                                            placeholder="Confirm New Password">
                                                 </div>
-
                                             </div>
-
                                             <div class="card-footer">
                                                 <button class="btn btn-success">Submit</button>
                                             </div>
-
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{--                    <div class="card-body">--}}
-                    {{--                        <form method="POST"--}}
-                    {{--                              action="{{ route('admin.user.update', ['id'=> $viewData['user']->id]) }}"--}}
-                    {{--                              enctype="multipart/form-data">--}}
-                    {{--                            @csrf--}}
-                    {{--                            @method('PUT')--}}
-                    {{--                            <!-- Form Group (current password)-->--}}
-                    {{--                            <div class="row">--}}
-                    {{--                                <div class="col">--}}
-                    {{--                                    <div class="mb-3 row">--}}
-                    {{--                                        <div class="col-lg-10 col-md-6 col-sm-12">--}}
-                    {{--                                            <div class="mb-3">--}}
-                    {{--                                                <label class="small mb-1" for="currentPassword">Current Password</label>--}}
-                    {{--                                                <input class="form-control" id="currentPassword" type="password"--}}
-                    {{--                                                       placeholder="Enter current password">--}}
-                    {{--                                            </div>--}}
-                    {{--                                            <!-- Form Group (new password)-->--}}
-                    {{--                                            <div class="mb-3">--}}
-                    {{--                                                <label class="small mb-1" for="newPassword">New Password</label>--}}
-                    {{--                                                <input class="form-control" id="newPassword" type="password"--}}
-                    {{--                                                       placeholder="Enter new password">--}}
-                    {{--                                            </div>--}}
-                    {{--                                            <!-- Form Group (confirm password)-->--}}
-                    {{--                                            <div class="mb-3">--}}
-                    {{--                                                <label class="small mb-1" for="password">Confirm Password</label>--}}
-                    {{--                                                <input class="form-control" id="password" type="password"--}}
-                    {{--                                                       placeholder="Confirm new password">--}}
-                    {{--                                            </div>--}}
-                    {{--                                            <button type="submit" class="btn btn-primary">Save</button>--}}
-                    {{--                                            <div class="col">--}}
-                    {{--                                                &nbsp;--}}
-                    {{--                                            </div>--}}
-                    {{--                                        </div>--}}
-                    {{--                                    </div>--}}
-                    {{--                                </div>--}}
-                    {{--                            </div>--}}
-                    {{--                        </form>--}}
-                    {{--                    </div>--}}
                 </div>
-
                 <div class="col-lg-12">
-                    <!-- Delete account card-->
+                    {{-- Delete account card --}}
                     <div class="card-header">Delete Account</div>
                     <div class="card-body">
                         <p>Das Löschen Ihres Kontos ist eine dauerhafte Aktion und kann nicht rückgängig gemacht
@@ -172,7 +127,7 @@
                         @endforeach
                     </ul>
                 @endif
-                <!-- Account details card-->
+{{-- Account details card --}}
                 <div class="card mb-4">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
@@ -180,28 +135,27 @@
                               enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <!-- Form Group (username)-->
                             <div class="mb-3">
-                                <label class="small mb-1" for="name">Name </label>
-                                <input class="form-control" id="name" type="text" name="name"
-                                       placeholder="Enter your Name" value="{{$viewData['user']['name']}}">
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="name">Name </label>
+                                    <input class="form-control" id="name" type="text" name="name"
+                                           placeholder="Enter your Name" value="{{$viewData['user']['name']}}">
+                                </div>
                             </div>
-
                             <div class="mb-3">
-                                <label class="small mb-1" for="email">Email address</label>
-                                <input class="form-control" id="email" type="email" name="email"
-                                       placeholder="Enter your email address" value="{{$viewData['user']->email}}">
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="email">Email address</label>
+                                    <input class="form-control" id="email" type="email" name="email"
+                                           placeholder="Enter your email address" value="{{$viewData['user']->email}}">
+                                </div>
                             </div>
-                            <!-- Form Row-->
                             <div class="row gx-3 mb-3">
-                                <!-- Form Group (phone number)-->
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="telefon">Phone number</label>
                                     <input class="form-control" id="telefon" type="tel" name="telefon"
                                            placeholder="Enter your phone number" value="{{$viewData['user']->telefon}}">
                                 </div>
                             </div>
-                            <!-- Save changes button-->
                             <button type="submit" class="btn btn-primary">Save changes</button>
                             <div class="col">
                                 &nbsp;
@@ -209,7 +163,7 @@
                         </form>
                     </div>
                 </div>
-                <!-- Account details card-->
+{{-- Address details card --}}
                 <div class="card mb-4">
                     <div class="card-header">Address Details</div>
                     <div class="card-body">
@@ -248,7 +202,6 @@
                                        placeholder="Enter your House-Number"
                                        value="{{$viewData['address']->getAttribute('Nummer')}}">
                             </div>
-                            <!-- Save changes button-->
                             <button type="submit" class="btn btn-primary">Save changes</button>
                             <div class="col">
                                 &nbsp;
@@ -256,9 +209,7 @@
                         </form>
                     </div>
                 </div>
-                {{--                    {{dd($viewData)}}--}}
             </div>
         </div>
     </div>
-
 @endsection

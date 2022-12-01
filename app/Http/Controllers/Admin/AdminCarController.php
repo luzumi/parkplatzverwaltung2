@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Actions\Admin\UpdateCar;
+use App\Actions\Admin\AdminUpdateCar;
 use App\Actions\CreateNewCar;
 use App\Actions\SetImageName;
 use App\Http\Controllers\Controller;
@@ -15,6 +15,9 @@ use Illuminate\Http\RedirectResponse;
 
 class AdminCarController extends Controller
 {
+    /**
+     * @return Factory|View|Application
+     */
     public function index(): Factory|View|Application
     {
         $viewData = [];
@@ -24,18 +27,32 @@ class AdminCarController extends Controller
         return view('admin.car.index')->with("viewData", $viewData);
     }
 
+    /**
+     * @param CarRequest $request
+     * @param CreateNewCar $createNewCar
+     * @param SetImageName $setImageName
+     * @return RedirectResponse
+     */
     public function store(CarRequest $request, CreateNewCar $createNewCar, SetImageName $setImageName): RedirectResponse
     {
         $createNewCar->handle($request, $setImageName);
         return back();
     }
 
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
     public function delete($id): RedirectResponse
     {
         Car::destroy($id);
         return back();
     }
 
+    /**
+     * @param $id
+     * @return Factory|View|Application
+     */
     public function edit($id): Factory|View|Application
     {
         $viewData = [];
@@ -46,7 +63,14 @@ class AdminCarController extends Controller
 
     }
 
-    public function update(CarRequest $request, SetImageName $setImageName, int $car_id, UpdateCar $updateCar): RedirectResponse
+    /**
+     * @param CarRequest $request
+     * @param SetImageName $setImageName
+     * @param int $car_id
+     * @param AdminUpdateCar $updateCar
+     * @return RedirectResponse
+     */
+    public function update(CarRequest $request, SetImageName $setImageName, int $car_id, AdminUpdateCar $updateCar): RedirectResponse
     {
         $updateCar->handle($request, $setImageName, $car_id);
 

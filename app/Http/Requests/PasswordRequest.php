@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CarRequest extends FormRequest
+class PasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
@@ -21,14 +21,11 @@ class CarRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            "sign" => "required|max:12",
-            'manufacturer' => "required",
-            "model" => "required",
-            "color" => "required",
-            "image" => "image",
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
         ];
     }
 }

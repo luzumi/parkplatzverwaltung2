@@ -15,6 +15,7 @@
                 </ul>
             @endif
         </div>
+{{-- Edit der Hautdaten Name, Email, Telefon... --}}
         <form method="POST" action="{{ route('admin.user.update', ['id'=> $viewData['user']->id]) }}"
               enctype="multipart/form-data">
             @csrf
@@ -70,8 +71,7 @@
                         </div>
                     </div>
                 </div>
-
-                {{--                Address--}}
+{{-- Edit der Addresse--}}
                 <div class="row">
                     <div class="col">
                         <div class="mb-3 row">
@@ -136,8 +136,8 @@
                         </div>
                     </div>
                 </div>
-                {{--                    {{dd($viewData['address'])}}--}}
             </div>
+{{-- Upload eines neuen Profilbildes --}}
             <div class="row">
                 <div class="col">
                     <div class="mb-3 row">

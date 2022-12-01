@@ -14,7 +14,7 @@
                     @endforeach
                 </ul>
             @endif
-
+{{--Usereingaben - Editiere ausgewähltes fahrzeug--}}
             <form method="POST" action="{{ route('admin.car.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
@@ -74,10 +74,10 @@
             </form>
         </div>
     </div>
-
+{{-- Tabelle aller Fahrzeuge--}}
     <div class="card">
         <div class="card-header">
-            Manage Products
+            Manage Cars
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
@@ -97,7 +97,7 @@
                 <tbody>
                 @foreach ($viewData["cars"] as $car)
                     <tr class="img-thumbnail img-card">
-{{--                        {{dd($car)}}--}}
+{{-- Fahrzeug hat Parkplatz reserviert? wenn ja, Anzeige der Parkplatznummer --}}
                         <td>{{ $car->user_id }}</td>
                         @if(!isset($car->parkingSpot->number))
                             <td>{{ '' }}</td>
@@ -109,6 +109,7 @@
                         <td>{{ $car->manufacturer }}</td>
                         <td>{{ $car->model }}</td>
                         <td>{{ $car->color }}</td>
+{{--Buttons für Edit und Delete--}}
                         <td>
                             <a class="btn btn-primary" href="{{ route('admin.car.edit', ['id'=>$car->id]) }}">
                                 <i class="bi-pencil"> </i>

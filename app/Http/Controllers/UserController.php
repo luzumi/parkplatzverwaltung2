@@ -8,11 +8,12 @@ use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-
+    /**
+     * @return Factory|View|Application
+     */
     public function index(): Factory|View|Application
     {
         $viewData = [];
@@ -23,6 +24,10 @@ class UserController extends Controller
         return view('user.index')->with("viewData", $viewData);
     }
 
+    /**
+     * @param $user_id
+     * @return Factory|View|Application
+     */
     public function show($user_id): Factory|View|Application
     {
         $user = User::findOrFail($user_id);
@@ -37,6 +42,10 @@ class UserController extends Controller
         return view('user.show', [$user_id])->with("viewData", $viewData);
     }
 
+    /**
+     * @param $user_id
+     * @return Factory|View|Application
+     */
     public function editor($user_id): Factory|View|Application
     {
         $user = User::findOrFail($user_id);

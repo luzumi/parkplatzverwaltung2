@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\AdminCreateNewParkingSpot;
+use App\Actions\Admin\AdminUpdateParkingSpot;
+use App\Actions\SetImageName;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ParkingSpotRequest;
 use App\Models\Car;
@@ -15,6 +18,9 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminParkingSpotController extends Controller
 {
+    /**
+     * @return Factory|View|Application
+     */
     public function index(): Factory|View|Application
     {
         $viewData = [];
@@ -25,38 +31,32 @@ class AdminParkingSpotController extends Controller
         return view('admin.parking_spot.index')->with("viewData", $viewData);
     }
 
-    public function storeNewParkingSpot(ParkingSpotRequest $request): RedirectResponse
+    /**
+     * @param ParkingSpotRequest $request
+     * @param AdminCreateNewParkingSpot $createNewParkingSpot
+     * @return RedirectResponse
+     */
+    public function storeNewParkingSpot(ParkingSpotRequest $request, AdminCreateNewParkingSpot $createNewParkingSpot): RedirectResponse
     {
-
-        $count = ParkingSpot::all()->count() + 1;
-
-        $creationData = $request->only(['status']);
-        $creationData['user_id'] = 1;
-        $creationData['number'] = $count;
-        $creationData['row'] = intdiv($count + 1, 4) + 1;
-
-        if ($request->hasFile('image')) {
-            $imageName = $request->input('status') . "." . $request->file('image')->extension();
-            $creationData['image'] = $imageName;
-            Storage::disk('public/media')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        } else {
-            $creationData['image'] = $request['status'] . '.jpg';
-        }
-
-        ParkingSpot::create($creationData);
+        $createNewParkingSpot->handle($request);
 
         return back();
     }
 
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
     public function delete($id): RedirectResponse
     {
         ParkingSpot::destroy($id);
         return back();
     }
 
+    /**
+     * @param $id
+     * @return Factory|View|Application
+     */
     public function edit($id): Factory|View|Application
     {
         $viewData = [];
@@ -67,13 +67,16 @@ class AdminParkingSpotController extends Controller
 
     }
 
-    public function update(ParkingSpotRequest $request, $id): RedirectResponse
+    /**
+     * @param ParkingSpotRequest $request
+     * @param SetImageName $setImageName
+     * @param int $car_id
+     * @param AdminUpdateParkingSpot $updateParkingSpot
+     * @return RedirectResponse
+     */
+    public function update(ParkingSpotRequest $request, SetImageName $setImageName, int $car_id, AdminUpdateParkingSpot $updateParkingSpot): RedirectResponse
     {
-        $parking_spot = ParkingSpot::findOrFail($id);
-        $parking_spot->status = $request->input('status');
-        $parking_spot->image = $request->input('status') . ".jpg";
-
-        $parking_spot->save();
+        $updateParkingSpot->handle($request, $setImageName, $car_id);
 
         return redirect()->route('admin.parking_spot.index');
     }

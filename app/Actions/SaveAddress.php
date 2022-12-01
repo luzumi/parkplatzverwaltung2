@@ -7,6 +7,11 @@ use App\Models\Address;
 
 class SaveAddress
 {
+    /**
+     * @param AddressRequest $request
+     * @param int $user_id
+     * @return Address
+     */
     public function handle(AddressRequest $request, int $user_id): Address
     {
         return Address::updateOrCreate([

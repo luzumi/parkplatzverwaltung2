@@ -59,7 +59,7 @@
 
     <div class="card">
         <div class="card-header">
-            Manage Products
+            Manage Users
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
@@ -86,7 +86,9 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->telefon }}</td>
                         <td>{{ $user->role }}</td>
+                    {{-- verkürzte Ausgabe des Imagelinks --}}
                         <td>{{ '...' . substr($user->image, 40) }}</td>
+                    {{-- Buttons edit und delete --}}
                         <td>
                             <a class="btn btn-primary" href="{{ route('admin.user.edit', ['id'=>$user->id]) }}">
                                 <i class="bi-pencil"> </i>
