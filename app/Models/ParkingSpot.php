@@ -26,7 +26,7 @@ class ParkingSpot extends Model
      */
     public static function getAllParkingSpotsWithCars(): array|_IH_ParkingSpot_C
     {
-        return ParkingSpot::with('cars')->get();
+        return ParkingSpot::with('car')->get();
     }
 
 
