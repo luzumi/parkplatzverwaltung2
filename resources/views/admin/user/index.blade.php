@@ -14,39 +14,36 @@
                     @endforeach
                 </ul>
             @endif
-
             <form method="POST" action="{{ route('admin.user.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col">
                         <div class="mb-1 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="name" value="{{ old('name') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="name" value="{{ old('name') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-sm-12 col-form-label">Name</label>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
-                            <dic class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="email" value="{{ old('email') }}" type="text" class="form-control">
+                            <div class="col-lg-10 col-md-6 col-sm-12">
+                                <label>
+                                    <input name="email" value="{{ old('email') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">eMail</label>
-                            </dic>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="mb-3 row">
-                            <dic class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="telefon" value="{{ old('telefon') }}" type="text" class="form-control">
-                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Telefon</label>
-                            </dic>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input class="form-control-sm" type="file" name="image">
-                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Bild</label>
+                                <label>
+                                    <input name="telefon" value="{{ old('telefon') }}" type="text" class="form-control">
+                                </label>
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Telefon</label>
                             </div>
                         </div>
                     </div>
@@ -62,17 +59,18 @@
 
     <div class="card">
         <div class="card-header">
-            Manage Products
+            Manage Users
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
+                    <th scope="col">Vorschau</th>
                     <th scope="col">Name</th>
                     <th scope="col">email</th>
                     <th scope="col">Telefon</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Role</th>
                     <th scope="col">Bild</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
@@ -80,20 +78,24 @@
                 </thead>
                 <tbody>
                 @foreach ($viewData["users"] as $user)
-                    <tr>
-                        <td>{{ $user->getId() }}</td>
-                        <td>{{ $user->getName() }}</td>
-                        <td>{{ $user->getEmail() }}</td>
-                        <td>{{ $user->getTelefon() }}</td>
-                        <td>{{ $user->getStatus() }}</td>
-                        <td>{{ $user->getImage() }}</td>
+                    <tr >
+                        <td>{{ $user->id }}</td>
+                        <td><img src="{{ asset('/storage/media/'. $user->image) }}"
+                                 class="img-profile" alt="image not found"></td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->telefon }}</td>
+                        <td>{{ $user->role }}</td>
+                    {{-- verkürzte Ausgabe des Imagelinks --}}
+                        <td>{{ '...' . substr($user->image, 40) }}</td>
+                    {{-- Buttons edit und delete --}}
                         <td>
-                            <a class="btn btn-primary" href="{{ route('admin.user.edit', ['id'=>$user->getId()]) }}">
+                            <a class="btn btn-primary" href="{{ route('admin.user.edit', ['id'=>$user->id]) }}">
                                 <i class="bi-pencil"> </i>
                             </a>
                         </td>
                         <td>
-                            <form action="{{ route('admin.user.delete', $user->getID()) }}" method="POST">
+                            <form action="{{ route('admin.user.delete', $user->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger">

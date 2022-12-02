@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 01. Nov 2022 um 23:35
+-- Erstellungszeit: 02. Nov 2022 um 14:01
 -- Server-Version: 10.4.25-MariaDB
 -- PHP-Version: 8.1.10
 
@@ -115,7 +115,7 @@ CREATE TABLE `parking_spots` (
 
 INSERT INTO `parking_spots` (`id`, `number`, `row`, `image`, `status`, `created_at`, `updated_at`) VALUES
 (14, '1', '1', 'frei.jpg', 'frei', '2022-11-01 21:07:08', '2022-11-01 21:07:08'),
-(15, '2', '2', 'frei.jpg', 'frei', '2022-11-01 21:07:10', '2022-11-01 21:07:10'),
+(15, '2', '2', 'reserviert.jpg', 'reserviert', '2022-11-01 21:07:10', '2022-11-02 08:04:34'),
 (16, '3', '2', 'frei.jpg', 'frei', '2022-11-01 21:07:11', '2022-11-01 21:07:11'),
 (17, '4', '2', 'electro.jpg', 'electro', '2022-11-01 21:07:13', '2022-11-01 21:07:13'),
 (18, '5', '3', 'besetzt.jpg', 'besetzt', '2022-11-01 21:07:18', '2022-11-01 21:07:18'),

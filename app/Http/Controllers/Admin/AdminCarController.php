@@ -2,61 +2,58 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\AdminUpdateCar;
+use App\Actions\CreateNewCar;
+use App\Actions\SetImageName;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CarRequest;
 use App\Models\Car;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AdminCarController extends Controller
 {
-    public function index()
+    /**
+     * @return Factory|View|Application
+     */
+    public function index(): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - Fahrzeugübersicht - Parkplatzverwaltung';
-        $viewData['cars'] = Car::all();
+        $viewData['cars'] = Car::with('parkingSpot')->get();
 
         return view('admin.car.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request)
+    /**
+     * @param CarRequest $request
+     * @param CreateNewCar $createNewCar
+     * @param SetImageName $setImageName
+     * @return RedirectResponse
+     */
+    public function store(CarRequest $request, CreateNewCar $createNewCar, SetImageName $setImageName): RedirectResponse
     {
-        Car::validate($request);
-
-//        $newCar = new Car();
-//        $newCar -> setSign($request->input('sign'));
-//        $newCar -> setManufacturer($request->input('manufacturer'));
-//        $newCar -> setModel($request->input('model'));
-//        $newCar -> setColor($request->input('color'));
-//        $newCar -> setImage($request->input('testCar.png'));
-//        $newCar -> setStatus(true);
-//        $newCar -> save();
-
-        $creationData = $request->only(['sign', 'manufacturer', 'model', 'color']);
-
-        if ($request->hasFile('image')) {
-            $imageName = $request->input('sign') . "." . $request->file('image')->extension();
-            $creationData['image'] = $imageName;
-            Storage::disk('public')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        } else {
-            $creationData['image'] = 'testCar.png';
-        }
-
-        $creationData['status'] = true;
-        Car::create($creationData);
-
+        $createNewCar->handle($request, $setImageName);
         return back();
     }
 
-    public function delete($id)
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function delete($id): RedirectResponse
     {
         Car::destroy($id);
         return back();
     }
 
-    public function edit($id)
+    /**
+     * @param $id
+     * @return Factory|View|Application
+     */
+    public function edit($id): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
@@ -66,26 +63,16 @@ class AdminCarController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    /**
+     * @param CarRequest $request
+     * @param SetImageName $setImageName
+     * @param int $car_id
+     * @param AdminUpdateCar $updateCar
+     * @return RedirectResponse
+     */
+    public function update(CarRequest $request, SetImageName $setImageName, int $car_id, AdminUpdateCar $updateCar): RedirectResponse
     {
-        Car::validate($request);
-
-        $car = Car::findOrFail($id);
-        $car->setSign($request->input('sign'));
-        $car->setManufacturer($request->input('manufacturer'));
-        $car->setModel($request->input('model'));
-        $car->setColor($request->input('color'));
-
-
-        if ($request->hasFile('image')) {
-            $imageName = $request->input('sign') . "." . $request->file('image')->extension();
-            Storage::disk('public')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        }
-
-        $car->save();
+        $updateCar->handle($request, $setImageName, $car_id);
 
         return redirect()->route('admin.car.index');
     }

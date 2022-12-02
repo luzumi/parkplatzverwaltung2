@@ -2,55 +2,62 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\AdminCreateNewParkingSpot;
+use App\Actions\Admin\AdminUpdateParkingSpot;
+use App\Actions\SetImageName;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ParkingSpotRequest;
+use App\Models\Car;
 use App\Models\ParkingSpot;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class AdminParkingSpotController extends Controller
 {
-    public function index()
+    /**
+     * @return Factory|View|Application
+     */
+    public function index(): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - Parkplatzübersicht - Parkplatzverwaltung';
-        $viewData['parking_spots'] = ParkingSpot::all();
+        $viewData['parking_spots'] = ParkingSpot::getAllParkingSpotsWithCars();
+        $viewData['cars'] = Car::with('parkingSpot')->get();
 
         return view('admin.parking_spot.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request)
+    /**
+     * @param ParkingSpotRequest $request
+     * @param AdminCreateNewParkingSpot $createNewParkingSpot
+     * @return RedirectResponse
+     */
+    public function storeNewParkingSpot(ParkingSpotRequest $request, AdminCreateNewParkingSpot $createNewParkingSpot): RedirectResponse
     {
-        ParkingSpot::validate($request);
-
-        $count = ParkingSpot::all()->count() + 1;
-
-        $creationData = $request->only(['status']);
-        $creationData['number'] = $count;
-        $creationData['row'] = intdiv($count + 1, 3) + 1;
-        if ($request->hasFile('image')) {
-            $imageName = $request->input('sign') . "." . $request->file('image')->extension();
-            $creationData['image'] = $imageName;
-            Storage::disk('public')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        } else {
-            $creationData['image'] = $request['status'] . '.jpg';
-        }
-
-
-        ParkingSpot::create($creationData);
+        $createNewParkingSpot->handle($request);
 
         return back();
     }
 
-    public function delete($id)
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function delete($id): RedirectResponse
     {
         ParkingSpot::destroy($id);
         return back();
     }
 
-    public function edit($id)
+    /**
+     * @param $id
+     * @return Factory|View|Application
+     */
+    public function edit($id): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
@@ -60,24 +67,16 @@ class AdminParkingSpotController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    /**
+     * @param ParkingSpotRequest $request
+     * @param SetImageName $setImageName
+     * @param int $car_id
+     * @param AdminUpdateParkingSpot $updateParkingSpot
+     * @return RedirectResponse
+     */
+    public function update(ParkingSpotRequest $request, SetImageName $setImageName, int $car_id, AdminUpdateParkingSpot $updateParkingSpot): RedirectResponse
     {
-        ParkingSpot::validate($request);
-
-        $parking_spot = ParkingSpot::findOrFail($id);
-        $parking_spot->setStatus($request->input('status'));
-
-
-        if ($request->hasFile('image')) {
-            $imageName = $request->input('status') . "." . $request->file('image')->extension();
-            $parking_spot['image'] = $imageName;
-            Storage::disk('public')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        }
-
-        $parking_spot->save();
+        $updateParkingSpot->handle($request, $setImageName, $car_id);
 
         return redirect()->route('admin.parking_spot.index');
     }

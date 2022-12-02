@@ -3,20 +3,36 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @method static findOrFail(int|string|null $id)
  * @method static create(array $creationData)
- * @method static findOrFail($id)
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
+    public $name;
 
-    protected $fillable = ['name', 'email', 'email_verified_at', 'password', 'image', 'telefon', 'remember_token', 'status'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -37,129 +53,55 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function validate(\Illuminate\Http\Request $request)
+    /**
+     * @return BelongsTo
+     */
+    public function car(): BelongsTo
     {
-        $request->validate([
-            "name" => "required",
-            "email" => "required|email",
-            "telefon" => "required",
-            "image" => "image",
+        return $this->belongsTo(Car::class, 'user_id', 'id')->withDefault([
+            'status' => true,
+            'image' => 'testCar.png',
         ]);
     }
 
+    /**
+     * @return HasMany
+     */
+    public function cars(): HasMany
+    {
+        return $this->hasMany(Car::class);
+    }
 
     /**
-     * CAR ATTRIBUTES
-     * $this->attributes['id'] - int - contains the user primary key
-     * $this->attributes['name'] - string - contains the user name
-     * $this->attributes['email'] - string - contains the user email-adresse
-     * $this->attributes['email-verified-at'] - string - contains the user email-verified
-     * $this->attributes['password'] - string - contains the user password
-     * $this->attributes['image'] - string - contains the user image
-     * $this->attributes['telefon'] - string - contains the user telefon
-     * $this->attributes['status'] - string - contains the user status
-     * $this->attributes['remember_token'] - string - contains the user remember_token
-     * $this->attributes['created_at'] - timestamp - contains the user creation date
-     * $this->attributes['updated_at'] - timestamp - contains the user updated date
-     *
+     * @return HasMany
      */
-    public function getId()
+    public function parkingSpot(): HasMany
     {
-        return $this->attributes['id'];
+        return $this->hasMany(ParkingSpot::class);
     }
 
-    public function setId($id)
+    /**
+     * @return BelongsToMany
+     */
+    public function parkingSpots(): BelongsToMany
     {
-        $this->attributes['id'] = $id;
+        return $this->belongsToMany(ParkingSpot::class);
     }
 
-    public function getName()
+    /**
+     * @return HasOne
+     */
+    public function address(): HasOne
     {
-        return $this->attributes['name'];
+        return $this->hasOne(Address::class);
     }
 
-    public function setName($name)
+    /**
+     * @param $roleName
+     * @return bool
+     */
+    public function hasRole($roleName): bool
     {
-        $this->attributes['name'] = $name;
-    }
-
-    public function getEmail()
-    {
-        return $this->attributes['email'];
-    }
-
-    public function setEmail($email)
-    {
-        $this->attributes['email'] = $email;
-    }
-
-    public function getEmailVerifiedAt()
-    {
-        return $this->attributes['email_verified_at'];
-    }
-
-    public function setEmailVerifiedAt($email_verified_at)
-    {
-        $this->attributes['email_verified_at'] = $email_verified_at;
-    }
-
-//TODO: Anzeige Passwort nur für aktuellen User erlauben
-    public function getPassword()
-    {
-        return $this->attributes['password'];
-    }
-
-    public function setPassword($password)
-    {
-        $this->attributes['password'] = $password;
-    }
-
-    public function getImage()
-    {
-        return $this->attributes['image'];
-    }
-
-    public function setImage($image)
-    {
-        $this->attributes['image'] = $image;
-    }
-
-    public function getTelefon()
-    {
-        return $this->attributes['telefon'];
-    }
-
-    public function setTelefon($telefon)
-    {
-        $this->attributes['telefon'] = $telefon;
-    }
-
-    public function getStatus()
-    {
-        return $this->attributes['status'];
-    }
-
-    public function setStatus($status)
-    {
-        $this->attributes['status'] = $status;
-    }
-    public function getRememberToken()
-    {
-        return $this->attributes['remember_token'];
-    }
-
-    public function setRememberToken($value)
-    {
-        $this->attributes['remember_token'] = $value;
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->attributes['updated_at'];
-    }
-
-    public function setUpdatedAt($value)
-    {
-        $this->attributes['updated_at'] = $value;
+        return $this->role == $roleName;
     }
 }

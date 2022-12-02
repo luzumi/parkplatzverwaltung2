@@ -2,38 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
+use App\Models\Car;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class UserController extends Controller
 {
-//        ["id"=>"1", "name"=>"Holger Erkenbrecher",  "email"=>"Guzuguz@hotas.as",    "image" => "1.jpg", "telefon"=>"088 388943234", "status"=>"admin"],
-//        ["id"=>"2", "name"=>"Ernst Müller",         "email"=>"emuell@muell.er",     "image" => "2.jpg", "telefon"=>"026 7545155", "status"=>"anonym"],
-//        ["id"=>"3", "name"=>"Leo Damm",             "email"=>"LeoDamm@webbe.ff",    "image" => "3.jpg", "telefon"=>"042 2566221", "status"=>"user"],
-//        ["id"=>"4", "name"=>"Gabi Förster",         "email"=>"gabiF@hot.ea",        "image" => "4.jpg", "telefon"=>"0234 246567223", "status"=>"user"],
-//        ["id"=>"5", "name"=>"Conny Schmidt",        "email"=>"Lemmi@email.de",      "image" => "5.jpg", "telefon"=>"0172 679932576", "status"=>"anonym"],
-//        ["id"=>"6", "name"=>"Siegfried von Ahmen",  "email"=>"info@von-ahmen.ll",   "image" => "6.jpg", "telefon"=>"0234 678989558", "status"=>"anonym"],
-//        ["id"=>"7", "name"=>"Joe Frezer",           "email"=>"jizzuzi@email.de",    "image" => "7.jpg", "telefon"=>"077 367366", "status"=>"user"],
-//        ["id"=>"8", "name"=>"Ollo Mollo",           "email"=>"lool@kista.de",       "image" => "8.jpg", "telefon"=>"03467 68994", "status"=>"user"],
-//        ["id"=>"9", "name"=>"Dennis Sokker",        "email"=>"sportsman@stadion.us","image" => "9.jpg", "telefon"=>"030 3467445677", "status"=>"anonym"],
-
-
-    public function index()
+    /**
+     * @return Factory|View|Application
+     */
+    public function index(): Factory|View|Application
     {
         $viewData = [];
         $viewData["title"] = "Parkplatzverwaltung";
-        $viewData["subtitle"] =  "User-Übersicht";
+        $viewData["subtitle"] = "User-Übersicht";
         $viewData["users"] = User::all();
+
         return view('user.index')->with("viewData", $viewData);
     }
 
-    public function show($id)
+    /**
+     * @param $user_id
+     * @return Factory|View|Application
+     */
+    public function show($user_id): Factory|View|Application
     {
+        $user = User::findOrFail($user_id);
+
         $viewData = [];
-        $user = User::findOrFail($id);
-        $viewData["title"] = $user["name"]." - Parkplatzverwaltung";
-        $viewData["subtitle"] =  $user["name"]." - User information";
+        $viewData['user'] = $user;
+        $viewData['cars'] = Car::with('parkingSpot')->where('cars.user_id', $user_id)->get();
+        $viewData['address'] = Address::where('user_id', $user_id)->first();
+        $viewData['title'] = $user['name'] . " - Parkplatzverwaltung";
+        $viewData['subtitle'] = $user['name'] . " - User information";
+
+        return view('user.show', [$user_id])->with("viewData", $viewData);
+    }
+
+    /**
+     * @param $user_id
+     * @return Factory|View|Application
+     */
+    public function editor($user_id): Factory|View|Application
+    {
+        $user = User::findOrFail($user_id);
+
+        $viewData = [];
+        $viewData["subtitle"] = $user["name"] . " - User editor";
+        $viewData['address'] = Address::where('user_id', $user_id)->first();
         $viewData["user"] = $user;
-        return view('user.show')->with("viewData", $viewData);
+        $viewData["title"] = $user["name"] . "Benutzerdaten editieren - Parkplatzverwaltung";
+
+        return view('user.editor-id', [$user_id])->with("viewData", $viewData);
+
     }
 }

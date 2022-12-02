@@ -2,130 +2,81 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use LaravelIdea\Helper\App\Models\_IH_ParkingSpot_C;
 
 /**
- * @method static create(array $creationData)
  * @method static findOrFail($id)
+ * @method static create(array $creationData)
+ * @method static where(string $string, string $selected_ps_number)
  */
 class ParkingSpot extends Model
 {
+    use HasFactory;
+
+    protected $fillable = ['user_id', 'car_id', 'number', 'row', 'image', 'status'];
+
     /**
-     * CAR ATTRIBUTES
-     * $this->attributes['id'] - int - contains the parking_spot primary key
-     * $this->attributes['number'] - string - contains the parking_spot number
-     * $this->attributes['row'] - string - contains the parking_spot row
-     * $this->attributes['image'] - string - contains the parking_spot image
-     * $this->attributes['status'] - string - contains the parking_spot status
-     * $this->attributes['created_at'] - timestamp - contains the parking_spot creation date
-     * $this->attributes['updated_at'] - timestamp - contains the parking_spot updated date
-     *
+     * @return ParkingSpot[]|_IH_ParkingSpot_C
      */
-
-    protected $fillable = ['number', 'row', 'image', 'status'];
-
-    public static function validate(\Illuminate\Http\Request $request)
+    public static function getAllParkingSpotsWithCars(): array|_IH_ParkingSpot_C
     {
-        $request->validate([
-            "status" => "required",
-        ]);
+        return ParkingSpot::with('car')->get();
     }
 
+
     /**
+     * switch the CSS-Style for Buttons
      * @return string CSS-Style
      */
-    public function switchStatus()
+    public function switchStatus(): string
     {
-        return match ($this->getStatus()) {
+        return match ($this->status) {
             'frei', 'Behindertenparkplatz' => 'btn-success',
             'electro' => 'btn-info',
             'reserviert' => 'btn-warning',
-            'besetzt' =>'btn-outline-danger',
+            'besetzt' => 'btn-outline-danger',
             'gesperrt' => 'btn-danger',
             default => 'alert-dark ',
         };
     }
 
-    public function getStatus()
-    {
-        return $this->attributes['status'];
-    }
 
     /**
+     * switch the Output for ButtonText
      * @return string ButtonText
      */
-    public function getStatusMessage()
+    public function getStatusMessage(): string
     {
-        return match ($this->getStatus()) {
+        return match ($this->status) {
             'frei', 'electro', 'Behindertenparkplatz' => ' - derzeit frei',
-            'reserviert', 'besetzt', 'gesperrt' => ' - Parken derzeit nicht möglich',
+            'reserviert', 'besetzt', 'gesperrt' =>  $this->status . ' - Reservierung nicht möglich',
             default => ' !!! Parkplatzstatus ungültig! Informieren SIe einen Administrator !!!',
         };
     }
 
-    public function getId()
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
-        return $this->attributes['id'];
+        return $this->belongsTo(User::class, 'user_id', 'id')->withDefault([
+            'user_id' => '1'
+        ]);
     }
 
-    public function setId($id)
-    {
-        $this->attributes['id'] = $id;
-    }
 
-    public function getNumber()
+    /**
+     * @return HasOne
+     */
+    public function car(): HasOne
     {
-        return $this->attributes['number'];
+        return $this->hasOne(Car::class);
     }
-
-    public function setNumber($number)
-    {
-        $this->attributes['number'] = $number;
-    }
-
-    public function getRow()
-    {
-        return $this->attributes['row'];
-    }
-
-    public function setRow($row)
-    {
-        $this->attributes['row'] = $row;
-    }
-
-    public function getImage()
-    {
-        return $this->attributes['image'];
-    }
-
-    public function setImage($image)
-    {
-        $this->attributes['image'] = $image;
-    }
-
-    public function setStatus($status)
-    {
-        $this->attributes['status'] = $status;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->attributes['created_at'];
-    }
-
-    public function setCreatedAt($createdAt)
-    {
-        $this->attributes['created_at'] = $createdAt;
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->attributes['updated_at'];
-    }
-
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->attributes['updated_at'] = $updatedAt;
-    }
-
 }

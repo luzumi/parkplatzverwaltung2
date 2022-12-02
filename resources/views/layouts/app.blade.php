@@ -1,4 +1,5 @@
-<!doctype html>
+@php use Illuminate\Support\Facades\Auth; @endphp
+    <!doctype html>
 <html lang="de">
 <head>
     <meta charset="utf-8"/>
@@ -20,10 +21,25 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ms-auto">
                 <a class="nav-link active" href="{{ route('home.index') }}">Home</a>
-                <a class="nav-link active" href="{{ route('user.index') }}">User</a>
-                <a class="nav-link active" href="{{ route('car.index') }}">Cars</a>
+                @if (auth()->check())
+                    <a class="nav-link active" href="{{ route('user.show', (Auth::check())? Auth::id() : 0) }}">User</a>
+                    <a class="nav-link active" href="{{ route('user.addCar.index') }}">Add Car</a>
+                @endif
                 <a class="nav-link active" href="{{ route('parking_spot.index') }}">Parkplatz</a>
                 <a class="nav-link active" href="{{ route('home.about') }}">About</a>
+                <div class="vr bg-white mx-2 d-none d-lg-block"></div>
+                @guest
+                    <a class="nav-link active" href="{{ route('login') }}">Login</a>
+                    <a class="nav-link active" href="{{ route('register') }}">Register</a>
+                @else
+                    <form id="logout" action="{{ route('logout') }}" method="POST">
+                        <a role="button" class="nav-link active"
+                           onclick="document.getElementById('logout').submit();">Logout</a>
+                        @csrf
+                    </form>
+                @endguest
+                <img class="img-profile rounded-circle  col-1"
+                     src=" {{asset( '/storage/media/'. (Auth::user()->image ?? 'undraw_profile.svg')) }} " alt="z">
             </div>
         </div>
     </div>

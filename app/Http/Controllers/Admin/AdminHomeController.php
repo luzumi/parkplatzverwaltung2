@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class AdminHomeController extends Controller
 {
-    public function index()
+    /**
+     * @return Application|Factory|View
+     */
+    public function index(): Application|Factory|View
     {
         $viewData = [];
         $viewData['title'] = 'Adminpage - Home -Parkplatzverwaltung';

@@ -14,14 +14,16 @@
                     @endforeach
                 </ul>
             @endif
-
+{{--Usereingaben - Editiere ausgewähltes fahrzeug--}}
             <form method="POST" action="{{ route('admin.car.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col">
                         <div class="mb-1 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="sign" value="{{ old('sign') }}" type="text" class="form-control">
+                                <label>
+                                    <input name="sign" value="{{ old('sign') }}" type="text" class="form-control">
+                                </label>
                                 <label class="col-lg-10 col-sm-12 col-form-label">Kennzeichen</label>
                             </div>
                         </div>
@@ -29,24 +31,30 @@
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="manufacturer" value="{{ old('manufacturer') }}" type="text" class="form-control">
-                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Hersteller</label>
+                                <label>
+                                    <input name="manufacturer" value="{{ old('manufacturer') }}" type="text" class="form-control">
+                                </label>
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Hersteller</label>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="model" value="{{ old('model') }}" type="text" class="form-control">
-                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Model</label>
+                                <label>
+                                    <input name="model" value="{{ old('model') }}" type="text" class="form-control">
+                                </label>
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Model</label>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3 row">
                             <div class="col-lg-10 col-md-6 col-sm-12">
-                                <input name="color" value="{{ old('color') }}" type="text" class="form-control">
-                            <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Farbe</label>
+                                <label>
+                                    <input name="color" value="{{ old('color') }}" type="text" class="form-control">
+                                </label>
+                                <label class="col-lg-10 col-md-6 col-sm-12 col-form-label">Farbe</label>
                             </div>
                         </div>
                     </div>
@@ -66,16 +74,18 @@
             </form>
         </div>
     </div>
-
+{{-- Tabelle aller Fahrzeuge--}}
     <div class="card">
         <div class="card-header">
-            Manage Products
+            Manage Cars
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Parkplatz</th>
+                    <th scope="col">Vorschau</th>
                     <th scope="col">Kennzeichen</th>
                     <th scope="col">Hersteller</th>
                     <th scope="col">Modell</th>
@@ -86,19 +96,27 @@
                 </thead>
                 <tbody>
                 @foreach ($viewData["cars"] as $car)
-                    <tr>
-                        <td>{{ $car->getId() }}</td>
-                        <td>{{ $car->getSign() }}</td>
-                        <td>{{ $car->getManufacturer() }}</td>
-                        <td>{{ $car->getModel() }}</td>
-                        <td>{{ $car->getColor() }}</td>
+                    <tr class="img-thumbnail img-card">
+{{-- Fahrzeug hat Parkplatz reserviert? wenn ja, Anzeige der Parkplatznummer --}}
+                        <td>{{ $car->user_id }}</td>
+                        @if(!isset($car->parkingSpot->number))
+                            <td>{{ '' }}</td>
+                        @else
+                            <td>{{ $car->parkingSpot->number }}</td>
+                        @endif
+                        <td class="img-profile"><img src="{{ asset('/storage/media/'. $car->image) }}" class="img-fluid rounded-start" alt="Image not found"></td>
+                        <td>{{ $car->sign }}</td>
+                        <td>{{ $car->manufacturer }}</td>
+                        <td>{{ $car->model }}</td>
+                        <td>{{ $car->color }}</td>
+{{--Buttons für Edit und Delete--}}
                         <td>
-                            <a class="btn btn-primary" href="{{route('admin.car.edit', ['id'=>$car->getId()])}}">
+                            <a class="btn btn-primary" href="{{ route('admin.car.edit', ['id'=>$car->id]) }}">
                                 <i class="bi-pencil"> </i>
                             </a>
                         </td>
                         <td>
-                            <form action="{{ route('admin.car.delete', $car->getID()) }}" method="POST">
+                            <form action="{{ route('admin.car.delete', $car->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger">

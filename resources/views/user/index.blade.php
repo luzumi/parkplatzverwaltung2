@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@php use Illuminate\Support\Facades\Auth; @endphp
+@extends('layouts.admin')
 @section('title', $viewData["title"])
 @section('subtitle', $viewData["subtitle"])
 @section('content')
@@ -6,12 +7,12 @@
         @foreach ($viewData["users"] as $user)
             <div class="col-md-4 col-lg-3 mb-2">
                 <div class="card">
-                    <img src="{{ asset('/storage/'. $user->getImage()) }}" class="card-img-top img-card"
-                         alt="Image not found">
+                    <img src="{{ asset( './storage/media/' . $user->image) }}" class="card-img-top img-card"
+                         alt="{{asset('/storage/media/unregistered_user.png')}}">
                     <div class="card-body text-center">
-                        <a href="{{ route('user.show', ['id'=> $user->getId()]) }}"
+                        <a href="{{ route('user.show', [$user->id]) }}"
                            class="btn bg-primary text-white">
-                            {{ $user->getName() }} <br> {{ $user->getStatus() }}</a>
+                            {{ $user['name'] }} <br> {{ $user->role }}</a>
                     </div>
                 </div>
             </div>

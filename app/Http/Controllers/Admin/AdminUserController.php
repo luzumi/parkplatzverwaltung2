@@ -2,14 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\AdminCreateUser;
+use App\Actions\SaveAddress;
+use App\Actions\SetImageName;
+use App\Actions\UpdateUser;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddressRequest;
+use App\Http\Requests\UserRequest;
+use App\Models\Address;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AdminUserController extends Controller
 {
-    public function index()
+    /**
+     * @return Factory|View|Application
+     */
+    public function index(): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Panel - User-Übersicht - Parkplatzverwaltung';
@@ -18,79 +30,69 @@ class AdminUserController extends Controller
         return view('admin.user.index')->with("viewData", $viewData);
     }
 
-    public function store(Request $request)
+
+    /**
+     * @param UserRequest $request
+     * @param AdminCreateUser $createUser
+     * @param SetImageName $setImageName
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function store(UserRequest $request, AdminCreateUser $createUser, SetImageName $setImageName, User $user): RedirectResponse
     {
-        User::validate($request);
-
-//        $newCar = new Car();
-//        $newCar -> setSign($request->input('sign'));
-//        $newCar -> setManufacturer($request->input('manufacturer'));
-//        $newCar -> setModel($request->input('model'));
-//        $newCar -> setColor($request->input('color'));
-//        $newCar -> setImage($request->input('testCar.png'));
-//        $newCar -> setStatus(true);
-//        $newCar -> save();
-
-        $creationData = $request->only(['name', 'email', 'telefon']);
-
-
-        if ($request->hasFile('image')) {
-            $imageName = $request->input('name') .".". $request->file('image')->extension();
-            $creationData['image'] = $imageName;
-            Storage::disk('public')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        } else {
-            $creationData['image'] = 'unregistered_user.png';
-        }
-
-        $creationData['status'] = 'user';
-        $creationData['password'] = 'password';
-        $creationData['remember_token'] = 'token_';
-        $creationData['email_verified_at'] = now();
-
-        User::create($creationData);
+        $createUser->handle($request, $setImageName, $user);
 
         return back();
     }
 
-    public function delete($id)
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function delete($id): RedirectResponse
     {
         User::destroy($id);
         return back();
     }
 
-    public function edit($id)
+    /**
+     * @param $id
+     * @return Factory|View|Application
+     */
+    public function edit($id): Factory|View|Application
     {
         $viewData = [];
         $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
         $viewData['user'] = User::findOrFail($id);
+        $viewData['address'] = Address::where('user_id', $id)->first();
 
         return view('admin.user.edit')->with('viewData', $viewData);
 
     }
 
-    public function update(Request $request, $id)
+    /**
+     * @param UserRequest $request
+     * @param AddressRequest $addressRequest
+     * @param SetImageName $setImageName
+     * @param UpdateUser $updateUser
+     * @param SaveAddress $saveAddress
+     * @param $user_id
+     * @return Application|Factory|View
+     */
+    public function update(UserRequest    $request,
+                           AddressRequest $addressRequest,
+                           SetImageName   $setImageName,
+                           UpdateUser     $updateUser,
+                           SaveAddress    $saveAddress,
+                                          $user_id): Application|Factory|View
     {
-        User::validate($request);
+        $updateUser->update($request, $updateUser, $setImageName, $user_id);
+        $saveAddress->handle($addressRequest, $user_id);
 
-        $user = User::findOrFail($id);
-        $user->setName($request->input('name'));
-        $user->setEmail($request->input('email'));
-        $user->setTelefon($request->input('telefon'));
-        $user->setStatus($request->input('status'));
+        $viewData['title'] = 'Admin-Page - Editiere Fahrzeug - Parkplatzverwaltung';
+        $viewData['users'] = User::all();
+        $viewData['address'] = Address::where('user_id', $user_id)->first();
 
-        if ($request->hasFile('image')) {
-            $imageName = $request->input('name') . "." . $request->file('image')->extension();
-            Storage::disk('public')->put(
-                $imageName,
-                file_get_contents($request->file('image')->getRealPath())
-            );
-        }
-
-        $user->save();
-
-        return redirect()->route('admin.user.index');
+        return view('admin.user.index')->with("viewData", $viewData);
     }
 }
